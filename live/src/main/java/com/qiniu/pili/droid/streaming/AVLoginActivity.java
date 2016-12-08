@@ -8,11 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.abooc.test.data.User;
-import com.abooc.test.data.UserLoader;
 import com.abooc.util.Debug;
 import com.abooc.widget.Toast;
-import com.alibaba.fastjson.JSON;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
@@ -21,8 +18,6 @@ import com.leancloud.im.chatroom.AVIMClientManager;
 import com.leancloud.im.chatroom.ConversationEventHandler;
 import com.leancloud.im.chatroom.R;
 import com.leancloud.im.chatroom.activity.AVBaseActivity;
-
-import java.util.ArrayList;
 
 /**
  * Created by wli on 15/8/13.
@@ -46,19 +41,6 @@ public class AVLoginActivity extends AVBaseActivity implements OnClickListener {
         logText = (TextView) findViewById(R.id.activity_login_text_log);
         loginButton = (Button) findViewById(R.id.activity_login_btn_login);
         loginButton.setOnClickListener(this);
-
-        /**
-         * 调试获取用户列表
-         */
-        UserLoader.loadUsers(new UserLoader.OnGetUsersListener() {
-            @Override
-            public void onGet(ArrayList<User> users) {
-//                Object toJSON = JSONArray.toJSON(users);
-                String text = JSON.toJSONString(users);
-                Debug.out("content:\n" + text);
-                logText.setText(text);
-            }
-        });
 
     }
 
