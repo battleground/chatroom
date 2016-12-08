@@ -39,10 +39,13 @@ import com.leancloud.im.chatroom.utils.AssetsUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 所有会话列表页（群组会话、系统会话、暂态会话）
+ */
 public class ChatRoomListFragment extends Fragment implements ViewHolder.OnRecyclerItemClickListener {
 
 
-//    String memberId;
+    //    String memberId;
     private SwipeRefreshLayout mRefreshLayout;
     private RecyclerView mRoomList;
     private LiveRoomAdapter mAdapter;
@@ -89,6 +92,13 @@ public class ChatRoomListFragment extends Fragment implements ViewHolder.OnRecyc
         mAdapter.setOnRecyclerItemClickListener(this);
         mRoomList.setAdapter(mAdapter);
 
+        view.findViewById(R.id.Refresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clear();
+                queryConversations();
+            }
+        });
         mEmptyView = (TextView) view.findViewById(R.id.Empty);
         mListView = (ListView) view.findViewById(R.id.ListView);
         mListView.setEmptyView(mEmptyView);
