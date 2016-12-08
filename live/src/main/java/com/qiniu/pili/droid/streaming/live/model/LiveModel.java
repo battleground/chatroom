@@ -34,7 +34,7 @@ public class LiveModel implements ILiveModel {
                     }
                 });*/
         OkHttpUtils.post().url(Constacts.DEVAPI)
-                .addParams("streamKey",reqLiveBean.getStreamKey())
+                .addParams("streamKey", reqLiveBean.getStreamKey())
                 .addParams("apptoken", reqLiveBean.getApptoken())
                 .addParams("from", reqLiveBean.getFrom())
                 .addParams("method", reqLiveBean.getMethod())
@@ -44,7 +44,7 @@ public class LiveModel implements ILiveModel {
                 .execute(new MyStringCallback(RespCreateLiveBean.class) {
                     @Override
                     public void onSuccess(RespBaseBean bean, int id) {
-                        listener.createLiveSuccess((RespCreateLiveBean)bean);
+                        listener.createLiveSuccess((RespCreateLiveBean) bean);
                     }
 
                     @Override
@@ -59,7 +59,7 @@ public class LiveModel implements ILiveModel {
     public void lookLive(ReqLiveBean reqLiveBean, final OnLiveLookListener listener) {
 
         OkHttpUtils.post().url(Constacts.DEVAPI)
-                .addParams("streamKey",reqLiveBean.getStreamKey())
+                .addParams("streamKey", reqLiveBean.getStreamKey())
                 .addParams("apptoken", reqLiveBean.getApptoken())
                 .addParams("from", reqLiveBean.getFrom())
                 .addParams("method", reqLiveBean.getMethod())

@@ -11,13 +11,15 @@ public interface ILiveModel {
 
     /**
      * 创建直播
+     *
      * @param reqLiveBean 请求参数对象
-     * @param listener 回调监听
+     * @param listener    回调监听
      */
     void createLive(ReqLiveBean reqLiveBean, OnLiveCreateListener listener);
 
     /**
      * 播放
+     *
      * @param reqLiveBean
      * @param listener
      */

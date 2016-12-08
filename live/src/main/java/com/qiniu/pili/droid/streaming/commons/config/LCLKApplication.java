@@ -38,12 +38,11 @@ public class LCLKApplication extends Application {
     /**
      * 获取 getApplicationContext
      */
-    public static Context getAppContext(){
+    public static Context getAppContext() {
         return appContext;
     }
 
     /**
-     *
      * @return
      */
     public static boolean hasNetwork() {

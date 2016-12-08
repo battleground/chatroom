@@ -14,6 +14,7 @@ public class RotateLayout extends ViewGroup implements Rotatable {
     private static final String TAG = "RotateLayout";
     private int mOrientation;
     protected View mChild;
+
     public RotateLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         // The transparent background here is a workaround of the render issue
@@ -53,7 +54,7 @@ public class RotateLayout extends ViewGroup implements Rotatable {
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
         int w = 0, h = 0;
-        switch(mOrientation) {
+        switch (mOrientation) {
             case 0:
             case 180:
                 measureChild(mChild, widthSpec, heightSpec);

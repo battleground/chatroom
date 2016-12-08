@@ -94,11 +94,11 @@ public class StreamingBaseActivity extends Activity implements
     private boolean mIsNeedFB = false;
     private boolean isEncOrientationPort = true;
 
-    protected static final int MSG_START_STREAMING  = 0;
-    protected static final int MSG_STOP_STREAMING   = 1;
-    private static final int MSG_SET_ZOOM           = 2;
-    private static final int MSG_MUTE               = 3;
-    private static final int MSG_FB                 = 4;
+    protected static final int MSG_START_STREAMING = 0;
+    protected static final int MSG_STOP_STREAMING = 1;
+    private static final int MSG_SET_ZOOM = 2;
+    private static final int MSG_MUTE = 3;
+    private static final int MSG_FB = 4;
 
     protected String mStatusMsgContent;
 
@@ -523,7 +523,7 @@ public class StreamingBaseActivity extends Activity implements
                     Log.i(TAG, "current camera id:" + (Integer) extra);
                 }
                 Log.i(TAG, "camera switched");
-                final int currentCamId = (Integer)extra;
+                final int currentCamId = (Integer) extra;
                 this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -691,7 +691,7 @@ public class StreamingBaseActivity extends Activity implements
 
     protected void setFocusAreaIndicator() {
         if (mRotateLayout == null) {
-            mRotateLayout = (RotateLayout)findViewById(R.id.focus_indicator_rotate_layout);
+            mRotateLayout = (RotateLayout) findViewById(R.id.focus_indicator_rotate_layout);
             mMediaStreamingManager.setFocusAreaIndicator(mRotateLayout,
                     mRotateLayout.findViewById(R.id.focus_indicator));
         }
@@ -721,7 +721,7 @@ public class StreamingBaseActivity extends Activity implements
     }
 
     private void saveToSDCard(String filename, Bitmap bmp) throws IOException {
-        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             File file = new File(Environment.getExternalStorageDirectory(), filename);
             BufferedOutputStream bos = null;
             try {

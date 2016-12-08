@@ -16,6 +16,7 @@ public class CameraPreviewFrameView extends GLSurfaceView {
 
     public interface Listener {
         boolean onSingleTapUp(MotionEvent e);
+
         boolean onZoomValueChanged(float factor);
     }
 

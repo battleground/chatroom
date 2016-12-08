@@ -55,8 +55,8 @@ public class ExtCapStreamingActivity extends Activity implements
     private SurfaceView mSurfaceView;
 
     protected boolean mShutterButtonPressed = false;
-    protected static final int MSG_START_STREAMING  = 0;
-    protected static final int MSG_STOP_STREAMING   = 1;
+    protected static final int MSG_START_STREAMING = 0;
+    protected static final int MSG_STOP_STREAMING = 1;
 
     protected String mStatusMsgContent;
 

@@ -17,58 +17,58 @@ public class LivePresenter {
     public static final int STARTLIVE = 1;
     public static final int LOOKLIVE = 2;
 
-     private LiveModel liveModel;
-     private CreateLiveView createLiveView;
+    private LiveModel liveModel;
+    private CreateLiveView createLiveView;
 
-     public LivePresenter(CreateLiveView createLiveView) {
-          this.createLiveView = createLiveView;
-          this.liveModel = new LiveModel();
-     }
+    public LivePresenter(CreateLiveView createLiveView) {
+        this.createLiveView = createLiveView;
+        this.liveModel = new LiveModel();
+    }
 
     /**
      * 开始直播
      */
-    public void startLive(){
-          createLiveView.showLoading();
-          liveModel.createLive(createLiveView.getReqLiveBean(STARTLIVE), new OnLiveCreateListener() {
-               @Override
-               public void createLiveSuccess(RespCreateLiveBean respCreateLiveBean) {
-                    createLiveView.toLCLKRecordActivity(respCreateLiveBean);
-               }
+    public void startLive() {
+        createLiveView.showLoading();
+        liveModel.createLive(createLiveView.getReqLiveBean(STARTLIVE), new OnLiveCreateListener() {
+            @Override
+            public void createLiveSuccess(RespCreateLiveBean respCreateLiveBean) {
+                createLiveView.toLCLKRecordActivity(respCreateLiveBean);
+            }
 
-               @Override
-               public void createLiveFailed() {
-                    createLiveView.showFailedError();
-               }
+            @Override
+            public void createLiveFailed() {
+                createLiveView.showFailedError();
+            }
 
-               @Override
-               public void onComplete() {
-                    createLiveView.hideLoading();
-               }
-          });
-     }
+            @Override
+            public void onComplete() {
+                createLiveView.hideLoading();
+            }
+        });
+    }
 
     /**
      * 观看直播
      */
-    public void lookLive(){
-         createLiveView.showLoading();
-         liveModel.lookLive(createLiveView.getReqLiveBean(LOOKLIVE), new OnLiveLookListener() {
-             @Override
-             public void lookLiveSuccess(RespLookLiveBean respLookLiveBean) {
-                 createLiveView.toLCLKPlayActivity(respLookLiveBean);
-             }
+    public void lookLive() {
+        createLiveView.showLoading();
+        liveModel.lookLive(createLiveView.getReqLiveBean(LOOKLIVE), new OnLiveLookListener() {
+            @Override
+            public void lookLiveSuccess(RespLookLiveBean respLookLiveBean) {
+                createLiveView.toLCLKPlayActivity(respLookLiveBean);
+            }
 
-             @Override
-             public void lookLiveFailed() {
-                 createLiveView.showFailedError();
-             }
+            @Override
+            public void lookLiveFailed() {
+                createLiveView.showFailedError();
+            }
 
-             @Override
-             public void onComplete() {
-                 createLiveView.hideLoading();
-             }
-         });
+            @Override
+            public void onComplete() {
+                createLiveView.hideLoading();
+            }
+        });
 
 
     }

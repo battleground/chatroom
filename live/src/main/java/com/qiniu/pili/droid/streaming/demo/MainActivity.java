@@ -31,8 +31,8 @@ public class MainActivity extends Activity {
     private static final String url = "Your app server url which get StreamJson";
     private static final String url2 = "Your app server url which get PublishUrl";
 
-    private static final String INPUT_TYPE_STREAM_JSON      = "StreamJson";
-    private static final String INPUT_TYPE_AUTHORIZED_URL   = "AuthorizedUrl";
+    private static final String INPUT_TYPE_STREAM_JSON = "StreamJson";
+    private static final String INPUT_TYPE_AUTHORIZED_URL = "AuthorizedUrl";
     private static final String INPUT_TYPE_UNAUTHORIZED_URL = "UnauthorizedUrl";
 
     private static final String[] mInputTypeList = {
@@ -66,8 +66,7 @@ public class MainActivity extends Activity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             mPermissionEnabled = true;
             return true;
-        }
-        else {
+        } else {
             return checkPermission();
         }
     }
@@ -80,7 +79,7 @@ public class MainActivity extends Activity {
      */
     public static boolean verifyPermissions(int[] grantResults) {
         // At least one result must be checked.
-        if(grantResults.length < 1){
+        if (grantResults.length < 1) {
             return false;
         }
 
@@ -127,8 +126,7 @@ public class MainActivity extends Activity {
                                         REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
                             }
                         });
-            }
-            else {
+            } else {
                 requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
                         REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
             }
@@ -189,7 +187,7 @@ public class MainActivity extends Activity {
 
             int length = httpConn.getContentLength();
             if (length <= 0) {
-                length = 16*1024;
+                length = 16 * 1024;
             }
             InputStream is = httpConn.getInputStream();
             byte[] data = new byte[length];
@@ -275,7 +273,7 @@ public class MainActivity extends Activity {
         mVersionInfoTextView.setText(Config.VERSION_HINT);
 
         Spinner inputTypeSpinner = (Spinner) findViewById(R.id.spinner_input_type);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, mInputTypeList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mInputTypeList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         inputTypeSpinner.setAdapter(adapter);
         inputTypeSpinner.setOnItemSelectedListener(new SpinnerSelectedListener());

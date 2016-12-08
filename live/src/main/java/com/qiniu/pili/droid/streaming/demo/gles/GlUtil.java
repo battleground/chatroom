@@ -21,7 +21,9 @@ import java.nio.FloatBuffer;
  */
 public class GlUtil {
     private static final String TAG = "GlDemoUtil";
-    /** Identity matrix for general use.  Don't modify or life will get weird. */
+    /**
+     * Identity matrix for general use.  Don't modify or life will get weird.
+     */
 
     public static final int NO_TEXTURE = -1;
 

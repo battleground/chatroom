@@ -14,7 +14,7 @@ import com.qiniu.pili.droid.streaming.demo.R;
  */
 public class PlayActivity extends FragmentActivity {
 
-    public static  final  String PALY_LIVE = "play_live";
+    public static final String PALY_LIVE = "play_live";
 
     public static void launch(Context context, String playLive, String conversationId) {
         Intent intent = new Intent(context, PlayActivity.class);

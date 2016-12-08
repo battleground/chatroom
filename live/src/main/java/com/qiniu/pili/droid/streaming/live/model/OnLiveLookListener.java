@@ -9,6 +9,8 @@ import com.qiniu.pili.droid.streaming.live.bean.RespLookLiveBean;
 
 public interface OnLiveLookListener {
     void lookLiveSuccess(RespLookLiveBean respLookLiveBean);
+
     void lookLiveFailed();
+
     void onComplete();
 }

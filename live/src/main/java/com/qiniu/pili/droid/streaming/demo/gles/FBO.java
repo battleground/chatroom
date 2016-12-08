@@ -18,7 +18,7 @@ public class FBO {
     private int mSurfaceWidth;
     private int mSurfaceHeight;
 
-    private static int[] mCurveArrays = new int[] {
+    private static int[] mCurveArrays = new int[]{
             R.raw.cross_1, R.raw.cross_2, R.raw.cross_3, R.raw.cross_4, R.raw.cross_5,
             R.raw.cross_6, R.raw.cross_7, R.raw.cross_8, R.raw.cross_9, R.raw.cross_10,
             R.raw.cross_11,

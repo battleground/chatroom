@@ -3,6 +3,7 @@ package com.qiniu.pili.droid.streaming.demo.gles;
 /**
  * Created by jerikc on 16/2/23.
  */
+
 import android.opengl.Matrix;
 
 import com.qiniu.pili.droid.streaming.demo.filter.IFilter;
@@ -20,7 +21,7 @@ public class FullFrameRect {
      * Prepares the object.
      *
      * @param program The program to use.  FullFrameRect takes ownership, and will release
-     * the program when no longer needed.
+     *                the program when no longer needed.
      */
     public FullFrameRect(IFilter program) {
         mFilter = program;

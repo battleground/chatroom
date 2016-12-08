@@ -8,6 +8,8 @@ import com.qiniu.pili.droid.streaming.live.bean.RespCreateLiveBean;
 
 public interface OnLiveCreateListener {
     void createLiveSuccess(RespCreateLiveBean respCreateLiveBean);
+
     void createLiveFailed();
+
     void onComplete();
 }
