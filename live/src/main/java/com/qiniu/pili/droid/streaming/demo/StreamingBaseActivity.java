@@ -1,6 +1,5 @@
 package com.qiniu.pili.droid.streaming.demo;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -11,6 +10,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,7 +27,6 @@ import com.qiniu.android.dns.NetworkInfo;
 import com.qiniu.android.dns.http.DnspodFree;
 import com.qiniu.android.dns.local.AndroidDnsServer;
 import com.qiniu.android.dns.local.Resolver;
-import com.qiniu.pili.droid.streaming.AVCodecType;
 import com.qiniu.pili.droid.streaming.AudioSourceCallback;
 import com.qiniu.pili.droid.streaming.CameraStreamingSetting;
 import com.qiniu.pili.droid.streaming.CameraStreamingSetting.CAMERA_FACING_ID;
@@ -59,7 +58,7 @@ import java.util.List;
 /**
  * Created by jerikc on 15/7/6.
  */
-public class StreamingBaseActivity extends Activity implements
+public class StreamingBaseActivity extends AppCompatActivity implements
         View.OnLayoutChangeListener,
         StreamStatusCallback,
         StreamingPreviewCallback,

@@ -16,8 +16,6 @@ public class LiveRoomActivity extends HWCodecCameraStreamingActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override

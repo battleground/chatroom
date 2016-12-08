@@ -80,11 +80,13 @@
     </LinearLayout>
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="#30000000">
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="80dp"
+        android:background="#30000000"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/mute_btn"
@@ -92,6 +94,7 @@
             android:layout_height="wrap_content"
             android:background="@android:drawable/list_selector_background"
             android:contentDescription="@string/cd_btn_mute"
+            android:layout_gravity="right"
             android:padding="12dp"
             android:text="静音"
             android:textColor="@color/pldroid_streaming_white" />
@@ -106,7 +109,7 @@
             android:padding="12dp"
             android:text="美颜"
             android:textColor="@color/pldroid_streaming_white" />
-    </FrameLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -145,10 +148,18 @@
         android:id="@+id/beautyLevel_seekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="70dp"
+        android:layout_marginTop="150dp"
         android:max="100"
         android:progress="100" />
 
+    <fragment
+        android:id="@+id/fragment_chat"
+        android:name="com.leancloud.im.chatroom.fragment.ChatFragment"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="bottom"
+        android:layout_marginRight="80dp"/>
+
     <include layout="@layout/camera_button_holder" />
+
 </FrameLayout>
