@@ -28,7 +28,7 @@ import com.leancloud.im.chatroom.Constants;
 import com.leancloud.im.chatroom.NotificationUtils;
 import com.leancloud.im.chatroom.R;
 import com.leancloud.im.chatroom.activity.AVSingleChatActivity;
-import com.leancloud.im.chatroom.adapter.MultipleItemAdapter;
+import com.leancloud.im.chatroom.adapter.LiveChatAdapter;
 import com.leancloud.im.chatroom.event.ConversationStatusEvent;
 import com.leancloud.im.chatroom.event.ConversationStatusEvent.EventAction;
 import com.leancloud.im.chatroom.event.ImTypeMessageEvent;
@@ -53,7 +53,7 @@ public class ChatFragment extends Fragment implements OnRecyclerItemChildClickLi
 
     protected AVIMConversation mConversation;
 
-    protected MultipleItemAdapter mAdapter;
+    protected LiveChatAdapter mAdapter;
     protected RecyclerView mRecyclerView;
     protected LinearLayoutManager mLayoutManager;
     protected SwipeRefreshLayout mRefreshLayout;
@@ -85,7 +85,7 @@ public class ChatFragment extends Fragment implements OnRecyclerItemChildClickLi
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_chat_rv_chat);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MultipleItemAdapter(getContext());
+        mAdapter = new LiveChatAdapter(getContext());
         mAdapter.setOnRecyclerItemChildClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -188,7 +188,8 @@ public class ChatFragment extends Fragment implements OnRecyclerItemChildClickLi
         AVIMMessage message = mAdapter.getItem(position);
         if (message == null) return;
         int i = clickView.getId();
-        if (i == R.id.chat_left_text_tv_content || i == R.id.chat_left_text_tv_name) {
+//        if (i == R.id.chat_left_text_tv_content || i == R.id.chat_left_text_tv_name) {
+        if (i == R.id.chat_left_text_tv_name) {
             AVSingleChatActivity.launch(getActivity(), message.getFrom());
             // 错误重发
         } else if (i == R.id.chat_right_text_tv_error) {
