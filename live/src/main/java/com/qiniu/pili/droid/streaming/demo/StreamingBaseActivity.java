@@ -76,12 +76,12 @@ public class StreamingBaseActivity extends Activity implements
     private Context mContext;
 
     protected Button mShutterButton;
-    private Button mMuteButton;
+    private TextView mMuteButton;
     private Button mTorchBtn;
-    private Button mCameraSwitchBtn;
-    private Button mCaptureFrameBtn;
-    private Button mEncodingOrientationSwitcherBtn;
-    private Button mFaceBeautyBtn;
+    private TextView mCameraSwitchBtn;
+    private TextView mCaptureFrameBtn;
+    private TextView mEncodingOrientationSwitcherBtn;
+    private TextView mFaceBeautyBtn;
     private RotateLayout mRotateLayout;
 
     protected TextView mSatusTextView;
@@ -563,12 +563,12 @@ public class StreamingBaseActivity extends Activity implements
         mRootView = findViewById(R.id.content);
         mRootView.addOnLayoutChangeListener(this);
 
-        mMuteButton = (Button) findViewById(R.id.mute_btn);
+        mMuteButton = (TextView) findViewById(R.id.mute_btn);
         mShutterButton = (Button) findViewById(R.id.toggleRecording_button);
         mTorchBtn = (Button) findViewById(R.id.torch_btn);
-        mCameraSwitchBtn = (Button) findViewById(R.id.camera_switch_btn);
-        mCaptureFrameBtn = (Button) findViewById(R.id.capture_btn);
-        mFaceBeautyBtn = (Button) findViewById(R.id.fb_btn);
+        mCameraSwitchBtn = (TextView) findViewById(R.id.camera_switch_btn);
+        mCaptureFrameBtn = (TextView) findViewById(R.id.capture_btn);
+        mFaceBeautyBtn = (TextView) findViewById(R.id.fb_btn);
         mSatusTextView = (TextView) findViewById(R.id.streamingStatus);
 
         mLogTextView = (TextView) findViewById(R.id.log_info);
@@ -639,7 +639,7 @@ public class StreamingBaseActivity extends Activity implements
         });
 
 
-        mEncodingOrientationSwitcherBtn = (Button) findViewById(R.id.orientation_btn);
+        mEncodingOrientationSwitcherBtn = (TextView) findViewById(R.id.orientation_btn);
         mEncodingOrientationSwitcherBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
