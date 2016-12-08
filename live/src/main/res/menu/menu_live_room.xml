@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.qiniu.pili.droid.streaming.demo.MainActivity">
+    <item
+        android:id="@+id/action_front_camera"
+        android:orderInCategory="100"
+        android:title="前摄像头"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_capture"
+        android:orderInCategory="100"
+        android:title="截屏"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_quit_room"
+        android:orderInCategory="100"
+        android:title="退出聊天室"
+        app:showAsAction="never" />
+
+</menu>

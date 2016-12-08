@@ -1,5 +1,6 @@
 package com.qiniu.pili.droid.streaming;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,13 +18,12 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.leancloud.im.chatroom.AVIMClientManager;
 import com.leancloud.im.chatroom.ConversationEventHandler;
 import com.leancloud.im.chatroom.R;
-import com.leancloud.im.chatroom.activity.AVBaseActivity;
 
 /**
  * Created by wli on 15/8/13.
  * 登陆页面，暂时未做自动登陆，每次重新进入都要再登陆一次
  */
-public class AVLoginActivity extends AVBaseActivity implements OnClickListener {
+public class AVLoginActivity extends Activity implements OnClickListener {
 
     /**
      * 此处 xml 里限制了长度为 30，汉字算一个
@@ -46,17 +46,15 @@ public class AVLoginActivity extends AVBaseActivity implements OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.activity_login_btn_login) {
-            openClient(userNameView.getText().toString().trim());
+        String uid = userNameView.getText().toString().trim();
+        if (!TextUtils.isEmpty(uid)) {
+            openClient(uid);
+        } else {
+            Toast.show(R.string.login_null_name_tip);
         }
     }
 
     private void openClient(String selfId) {
-        if (TextUtils.isEmpty(selfId)) {
-            showToast(R.string.login_null_name_tip);
-            return;
-        }
-
         loginButton.setEnabled(false);
         userNameView.setEnabled(false);
         AVIMClientManager.getInstance().open(selfId, new AVIMClientCallback() {
@@ -70,7 +68,7 @@ public class AVLoginActivity extends AVBaseActivity implements OnClickListener {
                 }
                 AVIMMessageManager.setConversationEventHandler(new ConversationEventHandler());
 //                ChatRoomsActivity.launch(AVLoginActivity.this);
-                startActivity(MainActivity.class);
+                MainActivity.launch(AVLoginActivity.this);
                 finish();
             }
         });

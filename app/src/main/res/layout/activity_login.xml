@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="15dp"
-        android:text="@string/square_name"
+        android:text="@string/app_name"
         android:textAppearance="@style/TextAppearance.Normal.Gray" />
 
     <EditText
