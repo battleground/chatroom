@@ -1,9 +1,12 @@
 package com.qiniu.pili.droid.streaming.play;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
+import com.leancloud.im.chatroom.Constants;
 import com.qiniu.pili.droid.streaming.demo.R;
 
 /**
@@ -12,6 +15,13 @@ import com.qiniu.pili.droid.streaming.demo.R;
 public class PlayActivity extends FragmentActivity {
 
     public static  final  String PALY_LIVE = "play_live";
+
+    public static void launch(Context context, String playLive, String conversationId) {
+        Intent intent = new Intent(context, PlayActivity.class);
+        intent.putExtra(PlayActivity.PALY_LIVE, playLive);
+        intent.putExtra(Constants.CONVERSATION_ID, conversationId);
+        context.startActivity(intent);
+    }
 
     PlayFragment playFragment;
 

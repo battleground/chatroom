@@ -27,10 +27,6 @@
             android:name=".activity.ChatRoomsActivity"
             android:label="所有会话"/>
 
-        <activity
-            android:name="com.abooc.chatroom.BlankActivity"
-            android:label="空城"/>
-
         <service android:name="com.avos.avoscloud.PushService"/>
 
         <receiver android:name=".NotificationBroadcastReceiver"/>

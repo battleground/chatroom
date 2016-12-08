@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#eee"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <com.leancloud.im.chatroom.AVInputBottomBar
+        android:id="@+id/fragment_chat_inputbottombar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/fragment_chat_srl_pullrefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/fragment_chat_inputbottombar">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fragment_chat_rv_chat"
@@ -18,8 +23,14 @@
             android:layout_height="match_parent"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <com.leancloud.im.chatroom.AVInputBottomBar
-        android:id="@+id/fragment_chat_inputbottombar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/fragment_chat_inputbottombar"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_close"
+        android:background="#8080ffff"
+        android:padding="10dp"/>
+
+</RelativeLayout>

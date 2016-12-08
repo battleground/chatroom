@@ -43,7 +43,8 @@ public class AppApplication extends android.app.Application {
 
     public static void initLeanCloudSDK(Context context) {
         // "直播间聊天系统" 测试key
-        AVOSCloud.initialize(context, LEANCLOUD_APP_ID, LEANCLOUD_APP_KEY);
+        AVOSCloud.initialize(context, "Ly7xoqX3c4P8hn7pYQoDaxXv-gzGzoHsz", "KjaBxRRx7H6udI3VMRGde4tl");
+//        AVOSCloud.initialize(context, LEANCLOUD_APP_ID, LEANCLOUD_APP_KEY);
         AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(context));
     }
 }

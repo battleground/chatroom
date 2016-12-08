@@ -29,7 +29,7 @@ public class LCLKApplication extends Application {
         super.onCreate();
         appContext = getApplicationContext();
         setOkHttp();
-        // init LeanCloud
+        // 初始化IM和debug工具
         AppApplication.initLeanCloudSDK(this);
         Debug.enable(BuildConfig.DEBUG);
         Toast.init(this);

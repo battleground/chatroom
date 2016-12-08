@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
-import com.abooc.chatroom.BlankActivity;
 import com.leancloud.im.chatroom.AVIMClientManager;
 import com.leancloud.im.chatroom.R;
 import com.leancloud.im.chatroom.fragment.ChatRoomListFragment;
@@ -14,7 +16,7 @@ import com.leancloud.im.chatroom.fragment.ChatRoomListFragment;
  * Created by dayu on 2016/12/5.
  */
 
-public class ChatRoomsActivity extends BlankActivity {
+public class ChatRoomsActivity extends AppCompatActivity {
 
     public static void launch(Context ctx) {
         Intent intent = new Intent(ctx, ChatRoomsActivity.class);
@@ -22,12 +24,25 @@ public class ChatRoomsActivity extends BlankActivity {
         ctx.startActivity(intent);
     }
 
+    private Toolbar toolbar;
 //    String memberId;
     ChatRoomListFragment fragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_fragment);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        mToolbar.setNavigationIcon(R.drawable.btn_navigation_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
 //        memberId = getIntent().getStringExtra(Constants.MEMBER_ID);
         String memberId = AVIMClientManager.getInstance().getClientId();

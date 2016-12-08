@@ -125,9 +125,10 @@ public class MainActivity extends AppCompatActivity implements CreateLiveView {
 
     //观看直播
     private void lookLive(RespLookLiveBean respLookLiveBean) {
-        Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-        intent.putExtra(PlayActivity.PALY_LIVE,respLookLiveBean.getData().getRTMP());
-        startActivity(intent);
+//        Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+//        intent.putExtra(PlayActivity.PALY_LIVE,respLookLiveBean.getData().getRTMP());
+//        startActivity(intent);
+        PlayActivity.launch(this, respLookLiveBean.getData().getRTMP(), "58411255128fe1005898c163");
     }
 
     @Override

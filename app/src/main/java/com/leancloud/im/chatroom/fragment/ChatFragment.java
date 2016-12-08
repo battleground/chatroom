@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.abooc.joker.adapter.recyclerview.ViewHolder.OnRecyclerItemChildClickListener;
@@ -23,6 +24,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.leancloud.im.chatroom.AVIMClientManager;
 import com.leancloud.im.chatroom.AVInputBottomBar;
+import com.leancloud.im.chatroom.Constants;
 import com.leancloud.im.chatroom.NotificationUtils;
 import com.leancloud.im.chatroom.R;
 import com.leancloud.im.chatroom.activity.AVSingleChatActivity;
@@ -39,11 +41,13 @@ import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func2;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by wli on 15/8/27.
  * 将聊天相关的封装到此 Fragment 里边，只需要通过 setConversation 传入 Conversation 即可
  */
-public class ChatFragment extends Fragment implements OnRecyclerItemChildClickListener {
+public class ChatFragment extends Fragment implements OnRecyclerItemChildClickListener, IChatFun {
 
     public static final int COUNT_SIZE = 20; // 消息数量
 
@@ -55,11 +59,26 @@ public class ChatFragment extends Fragment implements OnRecyclerItemChildClickLi
     protected SwipeRefreshLayout mRefreshLayout;
     protected AVInputBottomBar mInputBottomBar;
 
+    private ChatPresenter mPresenter;
+    private String mConversationId;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mConversationId = getActivity().getIntent().getStringExtra(Constants.CONVERSATION_ID);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
+        view.findViewById(R.id.close).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.quit();
+            }
+        });
         mInputBottomBar = (AVInputBottomBar) view.findViewById(R.id.fragment_chat_inputbottombar);
         mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragment_chat_srl_pullrefresh);
         mRefreshLayout.setEnabled(false);
@@ -97,6 +116,10 @@ public class ChatFragment extends Fragment implements OnRecyclerItemChildClickLi
                 });
             }
         });
+
+        mPresenter = new ChatPresenter(this);
+        mPresenter.getSquare(mConversationId);
+        mPresenter.queryInSquare(mConversationId);
     }
 
     @Override
@@ -119,6 +142,7 @@ public class ChatFragment extends Fragment implements OnRecyclerItemChildClickLi
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
     public void setConversation(AVIMConversation conversation) {
         if (conversation == null) return;
         mConversation = conversation;
@@ -265,6 +289,13 @@ public class ChatFragment extends Fragment implements OnRecyclerItemChildClickLi
 
     private void scrollToBottom() {
         mLayoutManager.scrollToPositionWithOffset(mAdapter.getItemCount() - 1, 0);
+    }
+
+    @Override
+    public void close(boolean isResult) {
+        if (isResult)
+            getActivity().setResult(RESULT_OK);
+        getActivity().finish();
     }
 
 }
