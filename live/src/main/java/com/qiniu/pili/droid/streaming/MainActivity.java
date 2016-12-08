@@ -10,7 +10,6 @@ import android.view.View;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.leancloud.im.chatroom.AVIMClientManager;
-import com.leancloud.im.chatroom.activity.ChatRoomsActivity;
 import com.qiniu.pili.droid.streaming.commons.utils.ToastUtils;
 import com.qiniu.pili.droid.streaming.demo.Config;
 import com.qiniu.pili.droid.streaming.demo.R;
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements CreateLiveView {
         setContentView(R.layout.activity_main2);
         ButterKnife.bind(this);
         setPermission();
-
     }
 
 

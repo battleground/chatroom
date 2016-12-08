@@ -13,7 +13,7 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/fragment_chat_srl_pullrefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_above="@id/fragment_chat_inputbottombar">
 
@@ -27,10 +27,9 @@
         android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/fragment_chat_inputbottombar"
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_close"
-        android:background="#8080ffff"
+        android:background="#c072d0fb"
         android:padding="10dp"/>
 
 </RelativeLayout>
