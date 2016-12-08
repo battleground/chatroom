@@ -5,8 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.abooc.android.widget.BaseRecyclerAdapter;
-import com.abooc.android.widget.ViewHolder;
+import com.abooc.joker.adapter.recyclerview.BaseRecyclerAdapter;
+import com.abooc.joker.adapter.recyclerview.ViewHolder;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.leancloud.im.chatroom.AVIMClientManager;
 import com.leancloud.im.chatroom.R;

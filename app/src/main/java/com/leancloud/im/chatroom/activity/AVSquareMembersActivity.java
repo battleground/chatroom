@@ -11,7 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 
-import com.abooc.android.widget.ViewHolder.OnRecyclerItemClickListener;
+import com.abooc.joker.adapter.recyclerview.ViewHolder;
 import com.abooc.util.Debug;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -34,7 +34,7 @@ import butterknife.Bind;
  * 在线成员列表
  * 当前版本因为暂态回话不能查询成员而导致此页面的入口被注释掉
  */
-public class AVSquareMembersActivity extends AVBaseActivity implements OnRecyclerItemClickListener {
+public class AVSquareMembersActivity extends AVBaseActivity implements ViewHolder.OnRecyclerItemClickListener {
 
     public static void launch(Context context, String conversationId) {
         Intent intent = new Intent(context, AVSquareMembersActivity.class);

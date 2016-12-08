@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
     <Button
-        android:text="开播"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="61dp"
-        android:id="@+id/button" />
+        android:text="开播"
+        android:textSize="38sp" />
 
     <Button
-        android:text="观看"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button"
-        android:layout_alignRight="@+id/button"
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:layout_alignEnd="@+id/button"
+        android:layout_alignRight="@+id/button"
+        android:layout_below="@+id/button"
         android:layout_marginTop="42dp"
-        android:id="@+id/button2" />
+        android:text="观看"
+        android:textSize="38sp" />
 </RelativeLayout>

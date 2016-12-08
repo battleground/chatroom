@@ -3,7 +3,7 @@ package com.leancloud.im.chatroom.viewholder;
 import android.view.View;
 import android.widget.TextView;
 
-import com.abooc.android.widget.ViewHolder;
+import com.abooc.joker.adapter.recyclerview.ViewHolder;
 import com.leancloud.im.chatroom.R;
 import com.leancloud.im.chatroom.adapter.MembersAdapter.MemberItem;
 
@@ -17,7 +17,7 @@ public class MemberHolder extends ViewHolder {
     @Bind(R.id.member_item_name)
     public TextView name;
 
-    public MemberHolder(View itemLayoutView, OnRecyclerItemClickListener listener) {
+    public MemberHolder(View itemLayoutView, ViewHolder.OnRecyclerItemClickListener listener) {
         super(itemLayoutView, listener);
     }
 

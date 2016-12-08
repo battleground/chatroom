@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.abooc.android.widget.ViewHolder.OnRecyclerItemChildClickListener;
+import com.abooc.joker.adapter.recyclerview.ViewHolder;
 import com.abooc.util.Debug;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -43,7 +43,7 @@ import rx.functions.Func2;
  * Created by wli on 15/8/27.
  * 将聊天相关的封装到此 Fragment 里边，只需要通过 setConversation 传入 Conversation 即可
  */
-public class ChatFragment extends Fragment implements OnRecyclerItemChildClickListener {
+public class ChatFragment extends Fragment implements ViewHolder.OnRecyclerItemChildClickListener {
 
     public static final int COUNT_SIZE = 20; // 消息数量
 

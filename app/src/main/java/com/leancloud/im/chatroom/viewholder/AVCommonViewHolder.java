@@ -2,7 +2,7 @@ package com.leancloud.im.chatroom.viewholder;
 
 import android.view.View;
 
-import com.abooc.android.widget.ViewHolder;
+import com.abooc.joker.adapter.recyclerview.ViewHolder;
 
 
 /**
@@ -14,7 +14,7 @@ import com.abooc.android.widget.ViewHolder;
 
 public abstract class AVCommonViewHolder<T> extends ViewHolder {
 
-    public AVCommonViewHolder(View itemLayoutView, OnRecyclerItemClickListener listener, OnRecyclerItemChildClickListener childListener) {
+    public AVCommonViewHolder(View itemLayoutView, ViewHolder.OnRecyclerItemClickListener listener, OnRecyclerItemChildClickListener childListener) {
         super(itemLayoutView, listener, childListener);
     }
 

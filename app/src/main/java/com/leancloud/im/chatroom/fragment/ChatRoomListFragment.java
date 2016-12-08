@@ -18,7 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.abooc.android.widget.ViewHolder.OnRecyclerItemClickListener;
+import com.abooc.joker.adapter.recyclerview.ViewHolder;
 import com.abooc.test.data.LiveRoom;
 import com.abooc.util.Debug;
 import com.alibaba.fastjson.JSON;
@@ -39,7 +39,7 @@ import com.leancloud.im.chatroom.utils.AssetsUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatRoomListFragment extends Fragment implements OnRecyclerItemClickListener {
+public class ChatRoomListFragment extends Fragment implements ViewHolder.OnRecyclerItemClickListener {
 
 
 //    String memberId;

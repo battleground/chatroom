@@ -3,6 +3,7 @@ package com.leancloud.im.chatroom.viewholder;
 import android.view.View;
 import android.widget.TextView;
 
+import com.abooc.joker.adapter.recyclerview.ViewHolder;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.leancloud.im.chatroom.R;
@@ -20,7 +21,7 @@ public class LeftTextHolder extends AVCommonViewHolder<AVIMMessage>  {
     private TextView name;
     private TextView content;
 
-    public LeftTextHolder(View itemLayoutView, OnRecyclerItemClickListener listener, OnRecyclerItemChildClickListener childListener) {
+    public LeftTextHolder(View itemLayoutView, ViewHolder.OnRecyclerItemClickListener listener, ViewHolder.OnRecyclerItemChildClickListener childListener) {
         super(itemLayoutView, listener, childListener);
     }
 
