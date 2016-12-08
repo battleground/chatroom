@@ -15,8 +15,6 @@ import com.leancloud.im.chatroom.viewholder.ChatStatusHolder;
 import com.leancloud.im.chatroom.viewholder.LeftTextHolder;
 import com.leancloud.im.chatroom.viewholder.RightTextHolder;
 
-import java.util.List;
-
 /**
  * Created by wli on 15/8/13.
  * 聊天的 Adapter，此处还有可优化的地方，稍后考虑一下提取出公共的 adapter
@@ -32,16 +30,6 @@ public class MultipleItemAdapter extends BaseRecyclerAdapter<AVIMMessage> {
 
     public MultipleItemAdapter(Context context) {
         super(context);
-    }
-
-    public void addFirst(List<AVIMMessage> messages) {
-        getCollection().addAll(0, messages);
-        notifyDataSetChanged();
-    }
-
-    public void addMessage(AVIMMessage message) {
-        getCollection().add(message);
-        notifyDataSetChanged();
     }
 
     public AVIMMessage getFirstMessage() {

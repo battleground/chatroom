@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.abooc.joker.adapter.recyclerview.ViewHolder;
+import com.abooc.joker.adapter.recyclerview.ViewHolder.OnRecyclerItemChildClickListener;
 import com.abooc.util.Debug;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -43,7 +43,7 @@ import rx.functions.Func2;
  * Created by wli on 15/8/27.
  * 将聊天相关的封装到此 Fragment 里边，只需要通过 setConversation 传入 Conversation 即可
  */
-public class ChatFragment extends Fragment implements ViewHolder.OnRecyclerItemChildClickListener {
+public class ChatFragment extends Fragment implements OnRecyclerItemChildClickListener {
 
     public static final int COUNT_SIZE = 20; // 消息数量
 
@@ -202,7 +202,7 @@ public class ChatFragment extends Fragment implements ViewHolder.OnRecyclerItemC
         if (!TextUtils.isEmpty(textEvent.sendContent) && mConversation.getConversationId().equals(textEvent.tag)) {
             AVIMTextMessage message = new AVIMTextMessage();
             message.setText(textEvent.sendContent);
-            mAdapter.addMessage(message);
+            mAdapter.add(message);
             scrollToBottom();
             mConversation.sendMessage(message, new AVIMConversationCallback() {
                 @Override
@@ -220,7 +220,7 @@ public class ChatFragment extends Fragment implements ViewHolder.OnRecyclerItemC
     public void onEvent(ImTypeMessageEvent event) {
         if (mConversation == null || event == null) return;
         if (mConversation.getConversationId().equals(event.conversation.getConversationId())) {
-            mAdapter.addMessage(event.message);
+            mAdapter.add(event.message);
             scrollToBottom();
         }
     }
@@ -237,6 +237,7 @@ public class ChatFragment extends Fragment implements ViewHolder.OnRecyclerItemC
             // 过滤自己
             if (members.contains(AVIMClientManager.getInstance().getClientId())) {
                 members.remove(AVIMClientManager.getInstance().getClientId());
+                Debug.out("过滤自己");
             }
             if (members.isEmpty()) return;
             // 合成消息
@@ -258,7 +259,7 @@ public class ChatFragment extends Fragment implements ViewHolder.OnRecyclerItemC
             sb.append(event.action.getValue());
             AVIMMessage message = new AVIMMessage();
             message.setContent(sb.toString());
-            mAdapter.addMessage(message);
+            mAdapter.add(message);
             scrollToBottom();
             getMemberCount();
         } else if (event.action == EventAction.REMOVE) { // 自己被踢出
