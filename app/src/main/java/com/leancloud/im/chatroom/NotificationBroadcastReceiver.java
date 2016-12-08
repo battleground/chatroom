@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.leancloud.im.chatroom.activity.AVLoginActivity;
 import com.leancloud.im.chatroom.activity.AVSingleChatActivity;
 import com.leancloud.im.chatroom.activity.AVSquareActivity;
 
@@ -39,9 +38,9 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
      * @param context
      */
     private void gotoLoginActivity(Context context) {
-        Intent startActivityIntent = new Intent(context, AVLoginActivity.class);
-        startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(startActivityIntent);
+//        Intent startActivityIntent = new Intent(context, AVLoginActivity.class);
+//        startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        context.startActivity(startActivityIntent);
     }
 
     /**

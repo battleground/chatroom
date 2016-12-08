@@ -21,8 +21,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.Bind;
-
 /**
  * Created by wli on 15/8/14.
  * 一对一单聊的页面，需要传入 Constants.MEMBER_ID
@@ -35,7 +33,6 @@ public class AVSingleChatActivity extends AVBaseActivity {
         context.startActivity(intent);
     }
 
-    @Bind(R.id.toolbar)
     protected Toolbar toolbar;
 
     protected ChatFragment chatFragment;
@@ -47,6 +44,7 @@ public class AVSingleChatActivity extends AVBaseActivity {
 
         chatFragment = (ChatFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_chat);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.btn_navigation_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

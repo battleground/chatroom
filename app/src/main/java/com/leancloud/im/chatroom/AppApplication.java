@@ -1,5 +1,7 @@
 package com.leancloud.im.chatroom;
 
+import android.content.Context;
+
 import com.abooc.util.Debug;
 import com.abooc.widget.Toast;
 import com.avos.avoscloud.AVOSCloud;
@@ -9,13 +11,16 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 /**
  * Created by zhangxiaobo on 15/4/15.
  */
-public class Application extends android.app.Application {
+public class AppApplication extends android.app.Application {
+
+    public final static String LEANCLOUD_APP_ID  = "p96jQI9whtwV57DptXlMBEWj-gzGzoHsz";
+    public final static  String LEANCLOUD_APP_KEY = "9hVWh7D8Fxq4vxnuh4zKC9f8";
 
     @Override
     public void onCreate() {
         Debug.enable(BuildConfig.DEBUG);
-        super.onCreate();
         Toast.init(this);
+        super.onCreate();
 
         // 这是使用美国节点的 app 信息，如果不使用美国节点，请 comment 这两行
 //    AVOSCloud.useAVCloudUS();
@@ -34,5 +39,11 @@ public class Application extends android.app.Application {
         // 必须在启动的时候注册 MessageHandler
         // 应用一启动就会重连，服务器会推送离线消息过来，需要 MessageHandler 来处理
         AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(this));
+    }
+
+    public static void initLeanCloudSDK(Context context) {
+        // "直播间聊天系统" 测试key
+        AVOSCloud.initialize(context, LEANCLOUD_APP_ID, LEANCLOUD_APP_KEY);
+        AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(context));
     }
 }

@@ -5,6 +5,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.abooc.util.Debug;
+import com.abooc.widget.Toast;
+import com.leancloud.im.chatroom.BuildConfig;
+import com.leancloud.im.chatroom.AppApplication;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
@@ -25,6 +29,10 @@ public class LCLKApplication extends Application {
         super.onCreate();
         appContext = getApplicationContext();
         setOkHttp();
+        // init LeanCloud
+        AppApplication.initLeanCloudSDK(this);
+        Debug.enable(BuildConfig.DEBUG);
+        Toast.init(this);
     }
 
     /**

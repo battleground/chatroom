@@ -163,16 +163,12 @@ public class ChatFragment extends Fragment implements OnRecyclerItemChildClickLi
     public void onItemChildClick(RecyclerView recyclerView, View itemView, View clickView, int position) {
         AVIMMessage message = mAdapter.getItem(position);
         if (message == null) return;
-        switch (clickView.getId()) {
-            // 单独会话
-            case R.id.chat_left_text_tv_content:
-            case R.id.chat_left_text_tv_name:
-                AVSingleChatActivity.launch(getActivity(), message.getFrom());
-                break;
+        int i = clickView.getId();
+        if (i == R.id.chat_left_text_tv_content || i == R.id.chat_left_text_tv_name) {
+            AVSingleChatActivity.launch(getActivity(), message.getFrom());
             // 错误重发
-            case R.id.chat_right_text_tv_error:
-                resend(message);
-                break;
+        } else if (i == R.id.chat_right_text_tv_error) {
+            resend(message);
         }
     }
 

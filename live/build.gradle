@@ -35,4 +35,5 @@ dependencies {
     compile 'gun0912.ted:tedpermission:1.0.2'
     compile 'com.android.support:appcompat-v7:25.+'
     compile files('libs/pldroid-player-1.3.0.jar')
+    compile project(':app')
 }

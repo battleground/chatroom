@@ -91,14 +91,12 @@ public class AVSquareActivity extends AVBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_square_members:
-                String conversationId = getIntent().getStringExtra(Constants.CONVERSATION_ID);
-                AVSquareMembersActivity.launch(this, conversationId);
-                break;
-            case R.id.menu_square_quit:
-                quit();
-                break;
+        int i = item.getItemId();
+        if (i == R.id.menu_square_members) {
+            String conversationId = getIntent().getStringExtra(Constants.CONVERSATION_ID);
+            AVSquareMembersActivity.launch(this, conversationId);
+        } else if (i == R.id.menu_square_quit) {
+            quit();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.abooc.chatroom.BlankActivity;
-import com.leancloud.im.chatroom.fragment.ChatRoomListFragment;
 import com.leancloud.im.chatroom.AVIMClientManager;
 import com.leancloud.im.chatroom.R;
+import com.leancloud.im.chatroom.fragment.ChatRoomListFragment;
 
 /**
  * Created by dayu on 2016/12/5.
@@ -41,23 +39,6 @@ public class ChatRoomsActivity extends BlankActivity {
 //        bundle.putString(Constants.MEMBER_ID, memberId);
 //        fragment.setArguments(bundle);
         transaction.add(R.id.FrameLayout, fragment).commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_chat_rooms, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_chat_rooms_refresh:
-                fragment.clear();
-                fragment.queryConversations();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

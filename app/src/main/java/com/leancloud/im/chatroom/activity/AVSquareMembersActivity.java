@@ -27,8 +27,6 @@ import com.leancloud.im.chatroom.event.MemberLetterEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-
 /**
  * Created by wli on 15/8/14.
  * 在线成员列表
@@ -42,17 +40,10 @@ public class AVSquareMembersActivity extends AVBaseActivity implements OnRecycle
         context.startActivity(intent);
     }
 
-    @Bind(R.id.toolbar)
     protected Toolbar mToolbar;
-
-    @Bind(R.id.activity_square_members_srl_list)
     protected SwipeRefreshLayout mRefreshLayout;
-
-    @Bind(R.id.activity_square_members_letterview)
-    protected LetterView mLetterView;
-
-    @Bind(R.id.activity_square_members_rv_list)
     protected RecyclerView mRecyclerView;
+    protected LetterView mLetterView;
 
     private SearchView mSearchView;
 
@@ -70,6 +61,10 @@ public class AVSquareMembersActivity extends AVBaseActivity implements OnRecycle
         mConversationId = getIntent().getStringExtra(Constants.CONVERSATION_ID);
 
         setContentView(R.layout.activity_square_members);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_square_members_srl_list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.activity_square_members_rv_list);
+        mLetterView = (LetterView) findViewById(R.id.activity_square_members_letterview);
 
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.btn_navigation_back);

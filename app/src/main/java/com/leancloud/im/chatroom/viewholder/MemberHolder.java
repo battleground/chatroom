@@ -7,14 +7,11 @@ import com.abooc.joker.adapter.recyclerview.ViewHolder;
 import com.leancloud.im.chatroom.R;
 import com.leancloud.im.chatroom.adapter.MembersAdapter.MemberItem;
 
-import butterknife.Bind;
-
 /**
  * Created by wli on 15/8/14.
  */
 public class MemberHolder extends ViewHolder {
 
-    @Bind(R.id.member_item_name)
     public TextView name;
 
     public MemberHolder(View itemLayoutView, ViewHolder.OnRecyclerItemClickListener listener) {
