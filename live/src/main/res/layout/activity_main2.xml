@@ -11,14 +11,16 @@
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginTop="12dp">
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/ic_main_bg">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="#777" />
+            android:src="#00000777" />
 
         <TextView
             android:layout_width="match_parent"
@@ -30,21 +32,23 @@
             android:shadowDy="4"
             android:text="我要直播"
             android:textColor="#FFF"
-            android:textSize="38sp"
+            android:textSize="22sp"
             android:id="@+id/textView"/>
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginTop="12dp">
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/ic_main_bg">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="#777" />
+            android:src="#00000777" />
 
         <TextView
             android:id="@+id/button2"
@@ -55,23 +59,30 @@
             android:shadowColor="#000"
             android:shadowDx="4"
             android:shadowDy="4"
-            android:text="进入观看"
+            android:text="观看直播"
             android:textColor="#FFF"
-            android:textSize="38sp" />
+            android:textSize="22sp" />
     </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/ic_main_bg">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="#777" />
+            android:src="#00000777" />
 
         <TextView
             android:id="@+id/button3"
@@ -82,8 +93,8 @@
             android:shadowColor="#000"
             android:shadowDx="4"
             android:shadowDy="4"
-            android:text="直聊"
+            android:text="直接聊天"
             android:textColor="#FFF"
-            android:textSize="38sp" />
+            android:textSize="22sp" />
     </FrameLayout>
 </LinearLayout>
