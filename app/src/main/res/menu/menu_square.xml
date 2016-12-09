@@ -8,9 +8,9 @@
         android:title="members"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/menu_square_quit"
-        android:orderInCategory="100"
-        android:title="退出聊天室"
-        app:showAsAction="never" />
+    <!--<item-->
+        <!--android:id="@+id/menu_square_quit"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="退出聊天室"-->
+        <!--app:showAsAction="never" />-->
 </menu>
