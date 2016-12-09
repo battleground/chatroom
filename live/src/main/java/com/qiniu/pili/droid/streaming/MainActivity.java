@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.abooc.util.Debug;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements CreateLiveView {
 
     private LivePresenter mLivePresenter = new LivePresenter(this);
     private boolean isPermissionOK;
-
+    private Toolbar mToolbar;
 
     public static void launch(Context ctx) {
         Intent intent = new Intent(ctx, MainActivity.class);
@@ -50,10 +51,12 @@ public class MainActivity extends AppCompatActivity implements CreateLiveView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
 
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         setTitle(getTitle() + " - " + AVIMClientManager.getInstance().getClientId());
 
-        setContentView(R.layout.activity_main2);
         ButterKnife.bind(this);
         setPermission();
     }

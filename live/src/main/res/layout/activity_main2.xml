@@ -5,17 +5,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/tool_bar" />
+
     <FrameLayout
         android:id="@+id/button"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_marginTop="12dp">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_publish_01" />
+            android:src="#555" />
 
         <TextView
             android:layout_width="match_parent"
@@ -27,19 +30,21 @@
             android:shadowDy="4"
             android:text="我要直播"
             android:textColor="#FFF"
-            android:textSize="38sp" />
+            android:textSize="38sp"
+            android:id="@+id/textView"/>
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_marginTop="12dp">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_publish_02" />
+            android:src="#555" />
 
         <TextView
             android:id="@+id/button2"
@@ -57,14 +62,16 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="12dp">
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_play_02" />
+            android:scaleType="centerCrop"
+            android:src="#555" />
 
         <TextView
             android:id="@+id/button3"
