@@ -27,8 +27,7 @@
         android:id="@+id/log_info"
         android:layout_width="match_parent"
         android:layout_height="140dp"
-        android:contentDescription="@string/cd_tv_log_info"
-        android:background="#40000000"/>
+        android:contentDescription="@string/cd_tv_log_info"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,6 +35,22 @@
         android:background="#30000000"
         android:gravity="right"
         android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/torch_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/cd_btn_torch"
+            android:background="@android:drawable/list_selector_background"
+            android:padding="12dp"
+            android:text="ON"
+            android:textColor="@color/pldroid_streaming_white"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#40CCCCCC" />
 
         <TextView
             android:id="@+id/camera_switch_btn"
@@ -79,44 +94,12 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="80dp"
-        android:background="#30000000"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/mute_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/list_selector_background"
-            android:contentDescription="@string/cd_btn_mute"
-            android:layout_gravity="right"
-            android:padding="12dp"
-            android:text="静音"
-            android:textColor="@color/pldroid_streaming_white" />
-
-        <TextView
-            android:id="@+id/fb_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@android:drawable/list_selector_background"
-            android:contentDescription="@string/cd_btn_fb"
-            android:padding="12dp"
-            android:text="美颜"
-            android:textColor="@color/pldroid_streaming_white" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_gravity="right"
         android:layout_marginTop="50dp"
-        android:orientation="horizontal"
-        android:background="#20EE0000">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/stream_status"
@@ -129,17 +112,42 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/pldroid_streaming_white" />
 
-        <Button
-            android:id="@+id/torch_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/pldroid_streaming_item_padding"
-            android:layout_marginTop="@dimen/pldroid_streaming_item_padding"
-            android:contentDescription="@string/cd_btn_torch"
-            android:text="@string/flash_light_on"
-            android:textColor="@color/pldroid_streaming_white"
-            android:visibility="gone" />
+    </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="80dp"
+        android:background="#30000000"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mute_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/list_selector_background"
+            android:contentDescription="@string/cd_btn_mute"
+            android:layout_gravity="right"
+            android:padding="12dp"
+            android:text="静音"
+            android:textColor="@color/pldroid_streaming_white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#40CCCCCC"/>
+        <TextView
+            android:id="@+id/fb_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="@android:drawable/list_selector_background"
+            android:contentDescription="@string/cd_btn_fb"
+            android:padding="12dp"
+            android:text="美颜"
+            android:textColor="@color/pldroid_streaming_white" />
     </LinearLayout>
 
     <include layout="@layout/status" />
@@ -148,7 +156,7 @@
         android:id="@+id/beautyLevel_seekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="40dp"
         android:max="100"
         android:progress="100" />
 
@@ -156,9 +164,9 @@
         android:id="@+id/fragment_chat"
         android:name="com.leancloud.im.chatroom.fragment.ChatFragment"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="270dp"
         android:layout_gravity="bottom"
-        android:layout_marginRight="80dp"/>
+        android:layout_marginRight="70dp"/>
 
     <include layout="@layout/camera_button_holder" />
 

@@ -76,7 +76,7 @@ public class StreamingBaseActivity extends AppCompatActivity implements
 
     protected Button mShutterButton;
     private TextView mMuteButton;
-    private Button mTorchBtn;
+    private TextView mTorchBtn;
     private TextView mCameraSwitchBtn;
     private TextView mCaptureFrameBtn;
     private TextView mEncodingOrientationSwitcherBtn;
@@ -564,7 +564,7 @@ public class StreamingBaseActivity extends AppCompatActivity implements
 
         mMuteButton = (TextView) findViewById(R.id.mute_btn);
         mShutterButton = (Button) findViewById(R.id.toggleRecording_button);
-        mTorchBtn = (Button) findViewById(R.id.torch_btn);
+        mTorchBtn = (TextView) findViewById(R.id.torch_btn);
         mCameraSwitchBtn = (TextView) findViewById(R.id.camera_switch_btn);
         mCaptureFrameBtn = (TextView) findViewById(R.id.capture_btn);
         mFaceBeautyBtn = (TextView) findViewById(R.id.fb_btn);

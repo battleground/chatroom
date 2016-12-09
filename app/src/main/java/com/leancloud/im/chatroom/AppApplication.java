@@ -1,5 +1,6 @@
 package com.leancloud.im.chatroom;
 
+import android.app.Application;
 import android.content.Context;
 
 import com.abooc.util.Debug;
@@ -11,10 +12,16 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 /**
  * Created by zhangxiaobo on 15/4/15.
  */
-public class AppApplication extends android.app.Application {
+public class AppApplication extends Application {
 
-    public final static String LEANCLOUD_APP_ID  = "p96jQI9whtwV57DptXlMBEWj-gzGzoHsz";
-    public final static  String LEANCLOUD_APP_KEY = "9hVWh7D8Fxq4vxnuh4zKC9f8";
+    // "直播间聊天系统" 测试key
+    public final static String LEANCLOUD_APP_ID  = "Ly7xoqX3c4P8hn7pYQoDaxXv-gzGzoHsz";
+    public final static  String LEANCLOUD_APP_KEY = "KjaBxRRx7H6udI3VMRGde4tl";
+    public final static String CONVERSATION_ID = "58411255128fe1005898c163"; // 普通会话
+    // test
+//    public final static String LEANCLOUD_APP_ID  = "p96jQI9whtwV57DptXlMBEWj-gzGzoHsz";
+//    public final static  String LEANCLOUD_APP_KEY = "9hVWh7D8Fxq4vxnuh4zKC9f8";
+//    public final static String CONVERSATION_ID = "";
 
     @Override
     public void onCreate() {
@@ -22,29 +29,14 @@ public class AppApplication extends android.app.Application {
         Toast.init(this);
         super.onCreate();
 
-        // 这是使用美国节点的 app 信息，如果不使用美国节点，请 comment 这两行
-//    AVOSCloud.useAVCloudUS();
-//    AVOSCloud.initialize(this, "l8j5lm8c9f9d2l90213i00wsdhhljbrwrn6g0apptblu7l90",
-//            "b3uyj9cmk84s5t9n6z1rqs9pvf2azofgacy9bfigmiehhheg");
-
-        // 这是使用中国节点的 app 信息，如果使用中国节点，请 uncomment 这两行
-        // 这是用于 SimpleChat 的 app id 和 app key，如果更改将不能进入 demo 中相应的聊天室
-//    AVOSCloud.initialize(this, "m7baukzusy3l5coew0b3em5uf4df5i2krky0ypbmee358yon",
-//        "2e46velw0mqrq3hl2a047yjtpxn32frm0m253k258xo63ft9");
-
-        // "直播间聊天系统" 测试key
-        AVOSCloud.initialize(this, "Ly7xoqX3c4P8hn7pYQoDaxXv-gzGzoHsz", "KjaBxRRx7H6udI3VMRGde4tl");
-
-
-        // 必须在启动的时候注册 MessageHandler
-        // 应用一启动就会重连，服务器会推送离线消息过来，需要 MessageHandler 来处理
-        AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(this));
+        // 这是使用美国节点
+//        AVOSCloud.useAVCloudUS();
+        initLeanCloudSDK(this);
     }
 
     public static void initLeanCloudSDK(Context context) {
         // "直播间聊天系统" 测试key
-        AVOSCloud.initialize(context, "Ly7xoqX3c4P8hn7pYQoDaxXv-gzGzoHsz", "KjaBxRRx7H6udI3VMRGde4tl");
-//        AVOSCloud.initialize(context, LEANCLOUD_APP_ID, LEANCLOUD_APP_KEY);
+        AVOSCloud.initialize(context, LEANCLOUD_APP_ID, LEANCLOUD_APP_KEY);
         AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(context));
     }
 }

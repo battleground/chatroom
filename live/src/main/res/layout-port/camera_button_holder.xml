@@ -19,6 +19,7 @@
         android:background="@drawable/shutter_button"
 
         android:layout_marginBottom="@dimen/pldroid_streaming_item_padding"
+        android:layout_marginRight="5dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"/>
 
