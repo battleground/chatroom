@@ -1,27 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-
-    <Button
+    <FrameLayout
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="我要直播"
-        android:textSize="38sp" />
+        android:layout_marginTop="12dp">
 
-    <Button
-        android:id="@+id/button2"
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_publish_01" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/default_item_selector"
+            android:gravity="center"
+            android:shadowColor="#000"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:text="我要直播"
+            android:textColor="#FFF"
+            android:textSize="38sp" />
+    </FrameLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_alignEnd="@+id/button"
-        android:layout_alignRight="@+id/button"
-        android:layout_below="@+id/button"
-        android:layout_marginTop="42dp"
-        android:text="进入观看"
-        android:textSize="38sp" />
-</RelativeLayout>
+        android:layout_marginTop="12dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_publish_02" />
+
+        <TextView
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/default_item_selector"
+            android:gravity="center"
+            android:shadowColor="#000"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:text="进入观看"
+            android:textColor="#FFF"
+            android:textSize="38sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="12dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_play_02" />
+
+        <TextView
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/default_item_selector"
+            android:gravity="center"
+            android:shadowColor="#000"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:text="直聊"
+            android:textColor="#FFF"
+            android:textSize="38sp" />
+    </FrameLayout>
+</LinearLayout>

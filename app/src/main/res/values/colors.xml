@@ -14,7 +14,7 @@
     <!-- 默认可点击，可选择 -->
     <drawable name="default_selected_background_checked">#F7F7F7</drawable>
     <drawable name="default_selected_background_selected">#30ffffff</drawable>
-    <drawable name="default_selected_background_press">#30666666</drawable>
+    <drawable name="default_selected_background_press">#30333333</drawable>
     <drawable name="default_selected_background_normal">#00000000</drawable>
 
     <!-- 默认可点击，可选择 -->

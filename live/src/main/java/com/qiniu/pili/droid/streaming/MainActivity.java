@@ -13,6 +13,7 @@ import com.gun0912.tedpermission.TedPermission;
 import com.leancloud.im.chatroom.AVIMClientManager;
 import com.leancloud.im.chatroom.AppApplication;
 import com.leancloud.im.chatroom.Constants;
+import com.leancloud.im.chatroom.activity.ChatRoomsActivity;
 import com.qiniu.pili.droid.streaming.commons.utils.ToastUtils;
 import com.qiniu.pili.droid.streaming.demo.Config;
 import com.qiniu.pili.droid.streaming.demo.R;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements CreateLiveView {
                 .check();
     }
 
-    @OnClick({R.id.button, R.id.button2})
+    @OnClick({R.id.button, R.id.button2, R.id.button3})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button:
@@ -86,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements CreateLiveView {
                 break;
             case R.id.button2:
                 mLivePresenter.lookLive();
+                break;
+            case R.id.button3:
+                ChatRoomsActivity.launch(this);
                 break;
         }
     }
