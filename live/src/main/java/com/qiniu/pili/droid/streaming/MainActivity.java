@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.abooc.util.Debug;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.leancloud.im.chatroom.AVIMClientManager;
+import com.leancloud.im.chatroom.AppApplication;
 import com.leancloud.im.chatroom.Constants;
 import com.qiniu.pili.droid.streaming.commons.utils.ToastUtils;
 import com.qiniu.pili.droid.streaming.demo.Config;
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements CreateLiveView {
         else
             reqLiveBean.setMethod("fm.live.get");
         reqLiveBean.setSys_version("V1.0.23");
-        reqLiveBean.setStreamKey("10001live");
+        reqLiveBean.setStreamKey("testxin");
         return reqLiveBean;
     }
 
@@ -110,33 +112,25 @@ public class MainActivity extends AppCompatActivity implements CreateLiveView {
 
     }
 
+    // 进入直播
     @Override
     public void toLCLKRecordActivity(final RespCreateLiveBean respCreateLiveBean) {
-
-        createLive(respCreateLiveBean);
-
-    }
-
-    @Override
-    public void toLCLKPlayActivity(RespLookLiveBean respLookLiveBean) {
-
-        lookLive(respLookLiveBean);
-
-    }
-
-    // 进入直播
-    private void createLive(final RespCreateLiveBean respCreateLiveBean) {
         Intent intent = new Intent(MainActivity.this, LiveRoomActivity.class);
-        startStreamingActivity(respCreateLiveBean.getData().getPublishurl(), intent, "58411255128fe1005898c163");
-
+        String publishurl = respCreateLiveBean.getData().getPublishurl();
+        Debug.error(publishurl);
+        startStreamingActivity(publishurl, intent, AppApplication.CONVERSATION_ID);
     }
 
     //观看直播
-    private void lookLive(RespLookLiveBean respLookLiveBean) {
+    @Override
+    public void toLCLKPlayActivity(RespLookLiveBean respLookLiveBean) {
 //        Intent intent = new Intent(MainActivity.this, PlayActivity.class);
 //        intent.putExtra(PlayActivity.PALY_LIVE,respLookLiveBean.getData().getRTMP());
 //        startActivity(intent);
-        PlayActivity.launch(this, respLookLiveBean.getData().getRTMP(), "58411255128fe1005898c163");
+        String rtmp = respLookLiveBean.getData().getRTMP();
+        Debug.error(rtmp);
+        PlayActivity.launch(this, rtmp, AppApplication.CONVERSATION_ID);
+
     }
 
     @Override

@@ -76,8 +76,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
-            android:name="com.qiniu.pili.droid.streaming.play.PlayActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:name="com.qiniu.pili.droid.streaming.play.PlayActivity" />
 
         <activity android:name="com.qiniu.pili.droid.streaming.play.LiveRoomActivity"
             android:configChanges="orientation|screenSize"

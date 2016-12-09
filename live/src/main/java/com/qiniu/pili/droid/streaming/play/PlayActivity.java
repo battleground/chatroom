@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.leancloud.im.chatroom.Constants;
 import com.qiniu.pili.droid.streaming.demo.R;
@@ -12,7 +13,7 @@ import com.qiniu.pili.droid.streaming.demo.R;
 /**
  * Created by wli on 16/8/5.
  */
-public class PlayActivity extends FragmentActivity {
+public class PlayActivity extends AppCompatActivity {
 
     public static final String PALY_LIVE = "play_live";
 

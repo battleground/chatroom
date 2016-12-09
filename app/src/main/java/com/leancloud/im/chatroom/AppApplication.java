@@ -15,13 +15,13 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 public class AppApplication extends Application {
 
     // "直播间聊天系统" 测试key
-    public final static String LEANCLOUD_APP_ID  = "Ly7xoqX3c4P8hn7pYQoDaxXv-gzGzoHsz";
-    public final static  String LEANCLOUD_APP_KEY = "KjaBxRRx7H6udI3VMRGde4tl";
-    public final static String CONVERSATION_ID = "58411255128fe1005898c163"; // 普通会话
+//    public final static String LEANCLOUD_APP_ID  = "Ly7xoqX3c4P8hn7pYQoDaxXv-gzGzoHsz";
+//    public final static  String LEANCLOUD_APP_KEY = "KjaBxRRx7H6udI3VMRGde4tl";
+//    public final static String CONVERSATION_ID = "58411255128fe1005898c163"; // 普通会话
     // test
-//    public final static String LEANCLOUD_APP_ID  = "p96jQI9whtwV57DptXlMBEWj-gzGzoHsz";
-//    public final static  String LEANCLOUD_APP_KEY = "9hVWh7D8Fxq4vxnuh4zKC9f8";
-//    public final static String CONVERSATION_ID = "";
+    public final static String LEANCLOUD_APP_ID  = "p96jQI9whtwV57DptXlMBEWj-gzGzoHsz";
+    public final static  String LEANCLOUD_APP_KEY = "9hVWh7D8Fxq4vxnuh4zKC9f8";
+    public final static String CONVERSATION_ID = "5849193eac502e006c584813";
 
     @Override
     public void onCreate() {

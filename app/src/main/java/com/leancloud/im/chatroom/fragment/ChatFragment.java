@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -163,7 +164,10 @@ public class ChatFragment extends Fragment implements OnRecyclerItemChildClickLi
                 if (Debug.printStackTrace(e)) return;
                 Debug.error("conversation got " + count + " members");
                 AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
-                appCompatActivity.getSupportActionBar().setSubtitle("在线成员：" + count);
+                ActionBar actionBar = appCompatActivity.getSupportActionBar();
+                if (actionBar != null) {
+                    actionBar.setSubtitle("在线成员：" + count);
+                }
             }
         });
     }
