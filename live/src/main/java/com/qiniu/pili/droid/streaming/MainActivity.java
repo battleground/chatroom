@@ -10,6 +10,7 @@ import android.view.View;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.leancloud.im.chatroom.AVIMClientManager;
+import com.leancloud.im.chatroom.AppApplication;
 import com.leancloud.im.chatroom.Constants;
 import com.qiniu.pili.droid.streaming.commons.utils.ToastUtils;
 import com.qiniu.pili.droid.streaming.demo.Config;
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements CreateLiveView {
     // 进入直播
     private void createLive(final RespCreateLiveBean respCreateLiveBean) {
         Intent intent = new Intent(MainActivity.this, LiveRoomActivity.class);
-        startStreamingActivity(respCreateLiveBean.getData().getPublishurl(), intent, "58411255128fe1005898c163");
+        startStreamingActivity(respCreateLiveBean.getData().getPublishurl(), intent, AppApplication.CONVERSATION_ID);
 
     }
 
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements CreateLiveView {
 //        Intent intent = new Intent(MainActivity.this, PlayActivity.class);
 //        intent.putExtra(PlayActivity.PALY_LIVE,respLookLiveBean.getData().getRTMP());
 //        startActivity(intent);
-        PlayActivity.launch(this, respLookLiveBean.getData().getRTMP(), "58411255128fe1005898c163");
+        PlayActivity.launch(this, respLookLiveBean.getData().getRTMP(), AppApplication.CONVERSATION_ID);
     }
 
     @Override

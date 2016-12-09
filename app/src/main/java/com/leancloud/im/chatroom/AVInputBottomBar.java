@@ -8,12 +8,13 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.leancloud.im.chatroom.event.InputBottomBarEvent;
 import com.leancloud.im.chatroom.event.InputBottomBarTextEvent;
+import com.leancloud.im.chatroom.utils.InputTools;
 
 import de.greenrobot.event.EventBus;
 
@@ -33,7 +34,7 @@ public class AVInputBottomBar extends LinearLayout {
     /**
      * 发送文本的Button
      */
-    private ImageButton sendTextBtn;
+    private ImageView sendTextBtn;
     private EditText contentView;
 
     public AVInputBottomBar(Context context) {
@@ -49,7 +50,7 @@ public class AVInputBottomBar extends LinearLayout {
     private void initView(final Context context) {
         View.inflate(context, R.layout.input_bottom_bar, this);
 
-        sendTextBtn = (ImageButton) findViewById(R.id.input_bottom_bar_btn_send);
+        sendTextBtn = (ImageView) findViewById(R.id.input_bottom_bar_btn_send);
         contentView = (EditText) findViewById(R.id.input_bottom_bar_et_content);
 
         setEditTextChangeListener();
@@ -62,7 +63,7 @@ public class AVInputBottomBar extends LinearLayout {
                     Toast.makeText(getContext(), R.string.message_is_null, Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                InputTools.hideInputMethod(getContext(), contentView);
                 contentView.setText("");
                 new Handler().postDelayed(new Runnable() {
                     @Override
