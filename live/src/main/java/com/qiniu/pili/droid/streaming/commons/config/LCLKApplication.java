@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.abooc.plugin.about.About;
 import com.abooc.util.Debug;
 import com.abooc.widget.Toast;
 import com.leancloud.im.chatroom.BuildConfig;
@@ -33,6 +34,7 @@ public class LCLKApplication extends Application {
         AppApplication.initLeanCloudSDK(this);
         Debug.enable(BuildConfig.DEBUG);
         Toast.init(this);
+        About.defaultAbout(this);
     }
 
     /**

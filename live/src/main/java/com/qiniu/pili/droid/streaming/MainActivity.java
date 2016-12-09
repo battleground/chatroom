@@ -6,14 +6,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
+import com.abooc.plugin.about.AboutActivity;
 import com.abooc.util.Debug;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.leancloud.im.chatroom.AVIMClientManager;
 import com.leancloud.im.chatroom.AppApplication;
 import com.leancloud.im.chatroom.Constants;
+import com.leancloud.im.chatroom.activity.AVSquareMembersActivity;
 import com.leancloud.im.chatroom.activity.ChatRoomsActivity;
 import com.qiniu.pili.droid.streaming.commons.utils.ToastUtils;
 import com.qiniu.pili.droid.streaming.demo.Config;
@@ -80,6 +84,21 @@ public class MainActivity extends AppCompatActivity implements CreateLiveView {
         }).setDeniedMessage("")
                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .check();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_live_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int i = item.getItemId();
+        if (i == R.id.action_live_about) {
+            AboutActivity.launch(this);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @OnClick({R.id.button, R.id.button2, R.id.button3})
