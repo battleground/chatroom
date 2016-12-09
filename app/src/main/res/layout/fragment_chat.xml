@@ -23,14 +23,15 @@
             android:layout_height="match_parent"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <ImageView
-        android:id="@+id/close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_above="@id/fragment_chat_inputbottombar"
-        android:src="@drawable/ic_close"
-        android:background="#c072d0fb"
-        android:padding="10dp"/>
+    <!--<ImageView-->
+        <!--android:id="@+id/close"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_above="@id/fragment_chat_inputbottombar"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:src="@drawable/ic_close"-->
+        <!--android:background="#c072d0fb"-->
+        <!--android:padding="10dp"/>-->
 
 </RelativeLayout>
