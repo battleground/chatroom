@@ -35,7 +35,9 @@ import com.leancloud.im.chatroom.event.ConversationStatusEvent.EventAction;
 import com.leancloud.im.chatroom.event.ImTypeMessageEvent;
 import com.leancloud.im.chatroom.event.InputBottomBarTextEvent;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import rx.Observable;
@@ -227,6 +229,9 @@ public class ChatFragment extends Fragment implements OnRecyclerItemChildClickLi
         if (!TextUtils.isEmpty(textEvent.sendContent) && mConversation.getConversationId().equals(textEvent.tag)) {
             AVIMTextMessage message = new AVIMTextMessage();
             message.setText(textEvent.sendContent);
+            Map<String, Object> attr = new HashMap<String, Object>();
+            attr.put("username", AVIMClientManager.getInstance().getClientId());
+            message.setAttrs(attr);
             mAdapter.add(message);
             scrollToBottom();
             mConversation.sendMessage(message, new AVIMConversationCallback() {

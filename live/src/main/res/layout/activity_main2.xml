@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="#555" />
+            android:src="#777" />
 
         <TextView
             android:layout_width="match_parent"
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="#555" />
+            android:src="#777" />
 
         <TextView
             android:id="@+id/button2"
@@ -70,8 +70,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="#555" />
+            android:scaleType="fitXY"
+            android:src="#777" />
 
         <TextView
             android:id="@+id/button3"
