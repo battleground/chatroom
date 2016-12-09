@@ -21,7 +21,7 @@ public class AppApplication extends Application {
     // test
 //    public final static String LEANCLOUD_APP_ID  = "p96jQI9whtwV57DptXlMBEWj-gzGzoHsz";
 //    public final static  String LEANCLOUD_APP_KEY = "9hVWh7D8Fxq4vxnuh4zKC9f8";
-//    public final static String CONVERSATION_ID = "";
+//    public final static String CONVERSATION_ID = "5849193eac502e006c584813";
 
     @Override
     public void onCreate() {
