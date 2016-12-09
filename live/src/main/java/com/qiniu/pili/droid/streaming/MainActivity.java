@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements CreateLiveView {
         else
             reqLiveBean.setMethod("fm.live.get");
         reqLiveBean.setSys_version("V1.0.23");
-        reqLiveBean.setStreamKey("testxin");
+        reqLiveBean.setStreamKey("10001live");
         return reqLiveBean;
     }
 
