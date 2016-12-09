@@ -164,7 +164,7 @@
         android:id="@+id/fragment_chat"
         android:name="com.leancloud.im.chatroom.fragment.ChatFragment"
         android:layout_width="match_parent"
-        android:layout_height="270dp"
+        android:layout_height="290dp"
         android:layout_gravity="bottom"
         android:layout_marginRight="70dp"/>
 

@@ -81,7 +81,8 @@
 
         <activity android:name="com.qiniu.pili.droid.streaming.play.LiveRoomActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:theme="@style/Theme.Fullscreen"/>
 
     </application>
 
