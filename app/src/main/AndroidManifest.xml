@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.leancloud.im.chatroom"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.leancloud.im.chatroom">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
+        android:name="com.abooc.im.AppApplication"
         android:allowBackup="true"
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".activity.AVSquareActivity"
+            android:name="com.abooc.im.LoginActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.abooc.im.MultiUserChatActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
 
@@ -21,20 +31,22 @@
         <activity
             android:name=".activity.AVSingleChatActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
 
         <activity
-            android:name=".activity.ChatRoomsActivity"
-            android:label="所有会话"/>
+            android:name="com.abooc.im.MainActivity"
+            android:label="所有会话" />
 
-        <service android:name="com.avos.avoscloud.PushService"/>
+        <service android:name="com.avos.avoscloud.PushService" />
 
-        <receiver android:name=".NotificationBroadcastReceiver"/>
+        <receiver android:name=".NotificationBroadcastReceiver" />
 
+
+        <service android:name="com.avos.avoscloud.PushService" />
         <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
     </application>

@@ -1,4 +1,4 @@
-package com.leancloud.im.chatroom.activity;
+package com.abooc.im;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.view.View;
 import com.abooc.util.Debug;
 import com.leancloud.im.chatroom.Constants;
 import com.leancloud.im.chatroom.R;
+import com.leancloud.im.chatroom.activity.AVBaseActivity;
+import com.leancloud.im.chatroom.activity.AVSquareMembersActivity;
 
 /**
  * Created by wli on 15/8/13.
@@ -20,12 +22,12 @@ import com.leancloud.im.chatroom.R;
  * 2、根据 mConversationId 获得 AVIMConversation 实例
  * 3、必须要加入 conversation 后才能拉取消息
  */
-public class AVSquareActivity extends AVBaseActivity {
+public class MultiUserChatActivity extends AVBaseActivity {
 
     private Toolbar toolbar;
 
     public static void launch(Activity activity, String conversationId, String name) {
-        Intent intent = new Intent(activity, AVSquareActivity.class);
+        Intent intent = new Intent(activity, MultiUserChatActivity.class);
         intent.putExtra(Constants.CONVERSATION_ID, conversationId);
         intent.putExtra(Constants.ACTIVITY_TITLE, name);
         activity.startActivityForResult(intent, 0);
@@ -45,7 +47,6 @@ public class AVSquareActivity extends AVBaseActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        mToolbar.setNavigationIcon(R.drawable.btn_navigation_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

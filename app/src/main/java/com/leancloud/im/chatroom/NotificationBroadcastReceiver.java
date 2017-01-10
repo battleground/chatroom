@@ -5,8 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.abooc.im.AppApplication;
 import com.leancloud.im.chatroom.activity.AVSingleChatActivity;
-import com.leancloud.im.chatroom.activity.AVSquareActivity;
+import com.abooc.im.MultiUserChatActivity;
 
 /**
  * Created by wli on 15/9/8.
@@ -38,7 +39,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
      * @param context
      */
     private void gotoLoginActivity(Context context) {
-//        Intent startActivityIntent = new Intent(context, AVLoginActivity.class);
+//        Intent startActivityIntent = new Intent(context, LoginActivity.class);
 //        startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        context.startActivity(startActivityIntent);
     }
@@ -50,7 +51,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
      * @param intent
      */
     private void gotoSquareActivity(Context context, Intent intent) {
-        Intent startActivityIntent = new Intent(context, AVSquareActivity.class);
+        Intent startActivityIntent = new Intent(context, MultiUserChatActivity.class);
         startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivityIntent.putExtra(Constants.CONVERSATION_ID, intent.getStringExtra(Constants.CONVERSATION_ID));
         context.startActivity(startActivityIntent);

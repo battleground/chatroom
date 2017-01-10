@@ -15,7 +15,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.leancloud.im.chatroom.AVIMClientManager;
 import com.leancloud.im.chatroom.Constants;
 import com.leancloud.im.chatroom.R;
-import com.leancloud.im.chatroom.fragment.ChatFragment;
+import com.abooc.im.ChatFragment;
 
 import java.util.Arrays;
 import java.util.HashMap;

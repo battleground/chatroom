@@ -1,4 +1,4 @@
-package com.abooc.chatroom;
+package com.abooc.im;
 
 /**
  * Created by dayu on 2016/12/2.

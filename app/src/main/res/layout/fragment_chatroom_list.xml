@@ -18,46 +18,4 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/line_h_gray" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_weight="1"
-            android:text="已加入会话：" />
-
-        <ImageButton
-            android:id="@+id/Refresh"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="12dp"
-            android:background="@android:drawable/list_selector_background"
-            android:src="@drawable/ic_action_refresh" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/Empty"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="暂无会话！"
-        android:textColor="#CCC"
-        android:textSize="18sp" />
-
-    <ListView
-        android:id="@+id/ListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
 </LinearLayout>

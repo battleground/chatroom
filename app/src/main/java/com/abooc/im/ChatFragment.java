@@ -1,4 +1,4 @@
-package com.leancloud.im.chatroom.fragment;
+package com.abooc.im;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,6 +34,8 @@ import com.leancloud.im.chatroom.event.ConversationStatusEvent;
 import com.leancloud.im.chatroom.event.ConversationStatusEvent.EventAction;
 import com.leancloud.im.chatroom.event.ImTypeMessageEvent;
 import com.leancloud.im.chatroom.event.InputBottomBarTextEvent;
+import com.leancloud.im.chatroom.fragment.ChatPresenter;
+import com.leancloud.im.chatroom.fragment.IChatFun;
 
 import java.util.HashMap;
 import java.util.List;
@@ -128,15 +130,15 @@ public class ChatFragment extends Fragment implements OnRecyclerItemChildClickLi
     @Override
     public void onResume() {
         super.onResume();
-        if (null != mConversation) {
-            NotificationUtils.addTag(mConversation.getConversationId());
-        }
+//        if (null != mConversation) {
+//            NotificationUtils.addTag(mConversation.getConversationId());
+//        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        NotificationUtils.removeTag(mConversation.getConversationId());
+//        NotificationUtils.removeTag(mConversation.getConversationId());
     }
 
     @Override
