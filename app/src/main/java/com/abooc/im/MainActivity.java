@@ -16,7 +16,8 @@ import com.leancloud.im.chatroom.AVIMClientManager;
 import com.leancloud.im.chatroom.R;
 
 import static com.abooc.im.MainActivity.NAMES.ACCOUNT;
-import static com.abooc.im.MainActivity.NAMES.HOME;
+import static com.abooc.im.MainActivity.NAMES.ALL;
+import static com.abooc.im.MainActivity.NAMES.CURRENT;
 
 /**
  * Created by dayu on 2016/12/5.
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_fragment);
+        setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -54,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
         iTabManager = new TabManager(this, getSupportFragmentManager(), R.id.TabContent);
         iTabManager.setOnSwitchListener(onSwitchListener);
         iTabManager
-                .add(iTabManager.build(HOME.name, HOME.cls))
+                .add(iTabManager.build(CURRENT.name, CURRENT.cls))
+                .add(iTabManager.build(ALL.name, ALL.cls))
                 .add(iTabManager.build(ACCOUNT.name, ACCOUNT.cls));
 
         Fragment fragment = iTabManager.instance(iTabManager.getTabs().get(0));
@@ -67,13 +69,13 @@ public class MainActivity extends AppCompatActivity {
         public void onSwitched(Fragment from, Fragment to) {
 //            NAMES name = NAMES.valueOf(to.getTag());
 //            switch (name) {
-//                case HOME:
+//                case CURRENT:
 //                    setTitle(name.name);
 //                    break;
 //                case SEARCH:
 //                    setTitle(name.name);
 //                    break;
-//                case ACCOUNT:
+//                case ALL:
 //                    setTitle(name.name);
 //                    break;
 //            }
@@ -82,8 +84,9 @@ public class MainActivity extends AppCompatActivity {
     };
 
     enum NAMES {
-        HOME("首页", ChatRoomListFragment.class),
-        ACCOUNT("个人", ChatJoinedFragment.class);
+        CURRENT("当前会话", CurrentChatsFragment.class),
+        ALL("所有会话", AllChatsFragment.class),
+        ACCOUNT("个人", AccountFragment.class);
 
         String name;
         Class<? extends Fragment> cls;
@@ -106,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
                 fragment = iTabManager.instance(tab);
                 iTabManager.switchTo(iTabManager.content, fragment);
                 break;
+            case R.id.menu_account:
+                Tab tab2 = iTabManager.getTabs().get(2);
+                fragment = iTabManager.instance(tab2);
+                iTabManager.switchTo(iTabManager.content, fragment);
+                break;
         }
     }
 
@@ -113,9 +121,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK) {
-//            fragment.queryConversations();
-//        }
     }
 
     @Override

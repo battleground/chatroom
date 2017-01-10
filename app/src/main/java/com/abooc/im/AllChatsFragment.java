@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * 所有会话列表页（群组会话、系统会话、暂态会话）
  */
-public class ChatRoomListFragment extends Fragment implements OnRecyclerItemClickListener {
+public class AllChatsFragment extends Fragment implements OnRecyclerItemClickListener {
 
 
     //    String memberId;
@@ -38,7 +38,7 @@ public class ChatRoomListFragment extends Fragment implements OnRecyclerItemClic
     private RecyclerView mRoomList;
     private LiveRoomAdapter mAdapter;
 
-    public ChatRoomListFragment() {
+    public AllChatsFragment() {
     }
 
     @Override

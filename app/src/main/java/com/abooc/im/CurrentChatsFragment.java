@@ -33,13 +33,13 @@ import java.util.List;
 /**
  * 所有会话列表页（群组会话、系统会话、暂态会话）
  */
-public class ChatJoinedFragment extends Fragment {
+public class CurrentChatsFragment extends Fragment {
 
     TextView mEmptyView;
     ListView mListView;
     ListAdapter mListAdapter = new ListAdapter();
 
-    public ChatJoinedFragment() {
+    public CurrentChatsFragment() {
     }
 
     @Override
