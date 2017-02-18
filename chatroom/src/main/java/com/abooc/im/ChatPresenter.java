@@ -33,38 +33,16 @@ public class ChatPresenter {
 
 
     void doReceive() {
-//        AVIMMessageManager.registerAVIMMessageType(FLIMSystemMessage.class);
-//        AVIMMessageManager.registerMessageHandler(FLIMSystemMessage.class, new FLIMSystemMessageHandler());
-//
-//        AVIMMessageManager.registerMessageHandler(FLIMSystemMessage.class, new AVIMMessageHandler() {
-//
-//            public void onMessage(AVIMMessage message, AVIMConversation conversation, AVIMClient client) {
-//                Debug.anchor(message);
-//                mHomeViewer.showMessage(message);
-//            }
-//
-//            public void onMessageReceipt(AVIMMessage message, AVIMConversation conversation, AVIMClient client) {
-//                Debug.error(message);
-//            }
-//        });
+        AVIMMessageManager.registerAVIMMessageType(FLIMSystemMessage.class);
+        AVIMMessageManager.registerMessageHandler(FLIMSystemMessage.class, iFLIMSystemMessageHandler);
 
-        AVIMMessageManager.registerMessageHandler(AVIMTextMessage.class, iAVIMMessageHandler);
-
-//        AVIMMessageManager.registerDefaultMessageHandler(new AVIMMessageHandler() {
-//
-//            public void onMessage(AVIMMessage message, AVIMConversation conversation, AVIMClient client) {
-//                Debug.anchor(message);
-//                mHomeViewer.showMessage(message);
-//            }
-//
-//            public void onMessageReceipt(AVIMMessage message, AVIMConversation conversation, AVIMClient client) {
-//                Debug.error(message);
-//            }
-//        });
+//      或  AVIMMessageManager.registerMessageHandler(AVIMTextMessage.class, iAVIMMessageHandler);
+        AVIMMessageManager.registerDefaultMessageHandler(iAVIMMessageHandler);
     }
 
     void cancelReceive() {
         AVIMMessageManager.unregisterMessageHandler(AVIMTextMessage.class, iAVIMMessageHandler);
+        AVIMMessageManager.unregisterMessageHandler(AVIMTextMessage.class, iFLIMSystemMessageHandler);
     }
 
     AVIMMessageHandler iAVIMMessageHandler = new AVIMMessageHandler() {
@@ -78,6 +56,8 @@ public class ChatPresenter {
             Debug.error(message);
         }
     };
+
+    FLIMSystemMessageHandler iFLIMSystemMessageHandler = new FLIMSystemMessageHandler();
 
     class FLIMSystemMessageHandler extends AVIMTypedMessageHandler<FLIMSystemMessage> {
         @Override

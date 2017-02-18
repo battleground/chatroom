@@ -1,7 +1,7 @@
 package com.abooc.im;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 import java.util.Date;
 import java.util.List;
 
-public class LeanCloudIMActivity extends Activity implements MVP.HomeViewer {
+public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeViewer {
 
 
     TextView mMessateView;
@@ -35,19 +35,55 @@ public class LeanCloudIMActivity extends Activity implements MVP.HomeViewer {
     }
 
     public void onLogin(View view) {
-        mChatPresenter.login();
+        TextView textView = (TextView) view;
+        if (view.getTag() == null) {
+            view.setTag(true);
+
+            mChatPresenter.login();
+
+            textView.setText("退出");
+        } else {
+            view.setTag(null);
+
+            mChatPresenter.close();
+
+            textView.setText("登录");
+        }
     }
 
     public void onJoinConversation(View view) {
-        mChatPresenter.join();
-    }
+        TextView textView = (TextView) view;
+        if (view.getTag() == null) {
+            view.setTag(true);
 
-    public void onQuitConversation(View view) {
-        mChatPresenter.quit();
+            mChatPresenter.join();
+            textView.setText("退出会话");
+        } else {
+            view.setTag(null);
+            mChatPresenter.quit();
+
+            textView.setText("加入会话");
+        }
+
     }
 
     public void onLoadHistory(View view) {
         mChatPresenter.history();
+    }
+
+    public void onStartReceived(View view) {
+        TextView textView = (TextView) view;
+        if (view.getTag() == null) {
+            view.setTag(true);
+
+            mChatPresenter.doReceive();
+            textView.setText("停止接收消息");
+        } else {
+            view.setTag(null);
+            mChatPresenter.cancelReceive();
+
+            textView.setText("接收新消息");
+        }
     }
 
     public void onSendDefaultMessage(View view) {
@@ -57,7 +93,7 @@ public class LeanCloudIMActivity extends Activity implements MVP.HomeViewer {
         mChatPresenter.send(textMessage);
     }
 
-    public void onSend(View view) {
+    public void onSendCustomMessage(View view) {
         FMTextMessage textMessage = new FMTextMessage();
         textMessage.setUid("uid:tom-01");
         textMessage.setUsername("Tom");
@@ -78,6 +114,7 @@ public class LeanCloudIMActivity extends Activity implements MVP.HomeViewer {
 
     @Override
     public void showList(List<AVIMMessage> list) {
+        if (list == null || list.size() == 0) return;
         AVIMMessage message = list.get(list.size() - 1);
 
         String toJson = mGson.toJson(message);
@@ -89,14 +126,6 @@ public class LeanCloudIMActivity extends Activity implements MVP.HomeViewer {
         String toJson = mGson.toJson(message);
         mMessateView.setText(toJson);
 
-    }
-
-    public void onStartReceived(View view) {
-        mChatPresenter.doReceive();
-    }
-
-    public void onStopReceived(View view) {
-        mChatPresenter.cancelReceive();
     }
 
     @Override
