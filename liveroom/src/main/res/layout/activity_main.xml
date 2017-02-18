@@ -10,7 +10,7 @@
     <com.qiniu.pili.droid.streaming.widget.AspectFrameLayout
         android:id="@+id/cameraPreview_afl"
         android:layout_width="match_parent"
-        android:layout_height="300dp" >
+        android:layout_height="300dp">
 
         <com.abooc.liveroom.CameraPreviewFrameView
             android:id="@+id/cameraPreview_surfaceView"
@@ -21,8 +21,11 @@
     </com.qiniu.pili.droid.streaming.widget.AspectFrameLayout>
 
     <TextView
+        android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:onClick="onStartEvent"
+        android:padding="12dp"
+        android:text="状态" />
 
 </LinearLayout>

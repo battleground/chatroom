@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFF"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+
+        <TextView
+            android:id="@+id/uid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#EEE"
+            android:padding="12dp"
+            android:text="message" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/default_item_selector"
+            android:clickable="true"
+            android:onClick="onLogin"
+            android:padding="12dp"
+            android:text="登录" />
+
+
+        <include layout="@layout/joker_item_blank" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Android："
+            android:textSize="10sp" />
+
+        <include layout="@layout/joker_line_h_gray" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/default_item_selector"
+            android:clickable="true"
+            android:onClick="onSubscribeDev"
+            android:padding="12dp"
+            android:text="订阅【开发者频道】" />
+
+        <include layout="@layout/joker_line_h_gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/default_item_selector"
+            android:clickable="true"
+            android:onClick="onSubscribePublic"
+            android:padding="12dp"
+            android:text="订阅【公开频道】" />
+
+        <include layout="@layout/joker_line_h_gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/default_item_selector"
+            android:clickable="true"
+            android:onClick="onSubscribeAll"
+            android:padding="12dp"
+            android:text="订阅【所有频道】" />
+
+        <include layout="@layout/joker_item_blank" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/default_item_selector"
+            android:clickable="true"
+            android:onClick="onCustomReceiver"
+            android:padding="12dp"
+            android:text="开启【自定义Receiver】" />
+
+        <include layout="@layout/joker_item_blank" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="接收："
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#EEE"
+            android:padding="12dp"
+            android:text="message" />
+
+
+        <include layout="@layout/joker_item_blank" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/default_item_selector"
+            android:clickable="true"
+            android:onClick="onAbout"
+            android:padding="12dp"
+            android:text="关于" />
+
+        <include layout="@layout/joker_item_blank" />
+
+    </LinearLayout>
+</ScrollView>

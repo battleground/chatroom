@@ -13,7 +13,6 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
 /**
- * Created by wli on 15/8/13.
  * 基类，封装了一些常用方法以及 ButterKnife
  */
 public class AVBaseActivity extends AppCompatActivity {

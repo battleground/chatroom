@@ -5,10 +5,18 @@ import com.abooc.test.data.UserLoader;
 import com.abooc.util.Debug;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
+import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
+import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -31,6 +39,12 @@ public class ExampleUnitTest {
                 Debug.out(toJSON);
             }
         });
+
+    }
+
+
+    @Test
+    public void test_lc(){
 
     }
 
