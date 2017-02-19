@@ -20,15 +20,6 @@
             android:padding="12dp"
             android:text="message" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/default_item_selector"
-            android:clickable="true"
-            android:onClick="onLogin"
-            android:padding="12dp"
-            android:text="登录" />
-
 
         <include layout="@layout/joker_item_blank" />
 
@@ -61,17 +52,6 @@
             android:onClick="onSubscribePublic"
             android:padding="12dp"
             android:text="订阅【公开频道】" />
-
-        <include layout="@layout/joker_line_h_gray" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/default_item_selector"
-            android:clickable="true"
-            android:onClick="onSubscribeAll"
-            android:padding="12dp"
-            android:text="订阅【所有频道】" />
 
         <include layout="@layout/joker_item_blank" />
 

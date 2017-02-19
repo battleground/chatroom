@@ -9,8 +9,6 @@ import com.abooc.widget.Toast;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
 
-import im.fir.sdk.FIR;
-
 /**
  */
 public class AppApplication extends Application {
@@ -23,15 +21,16 @@ public class AppApplication extends Application {
 //    public final static String LEANCLOUD_APP_ID  = "p96jQI9whtwV57DptXlMBEWj-gzGzoHsz";
 //    public final static  String LEANCLOUD_APP_KEY = "9hVWh7D8Fxq4vxnuh4zKC9f8";
 //    public final static String CONVERSATION_ID = "58719e47128fe100581fb7e3";
+//    public final static String CONVERSATION_ID = "589aab5861ff4b0058dc30d3"; // 大胃王密子君会话
 
     @Override
     public void onCreate() {
-        Debug.enable(BuildConfig.DEBUG);
-        Toast.init(this);
         super.onCreate();
 
+        Debug.enable(BuildConfig.DEBUG);
+        Toast.init(this);
+
         About.defaultAbout(this);
-        FIR.init(this);
 
         // 这是使用美国节点
 //        AVOSCloud.useAVCloudUS();

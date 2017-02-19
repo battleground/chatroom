@@ -44,6 +44,4 @@ dependencies {
     compile 'com.abooc.joker:adapter-4recyclerview:1.1.6(25.1.1)'
     compile 'com.abooc.plugin:plugin-about:2.0.2.200170218'
 
-
-    compile 'im.fir:fir-sdk:latest.integration@aar'
 }

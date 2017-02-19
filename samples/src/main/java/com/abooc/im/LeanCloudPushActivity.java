@@ -9,7 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.abooc.plugin.about.About;
 import com.abooc.plugin.about.AboutActivity;
+import com.abooc.plugin.about.UpdateActivity;
+import com.abooc.plugin.about.Updater;
+import com.abooc.util.Debug;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.LogUtil;
@@ -30,13 +34,21 @@ public class LeanCloudPushActivity extends AppCompatActivity {
 
         mMessateView = (TextView) findViewById(R.id.message);
 
-//        PushService.setDefaultPushCallback(this, LeanCloudPushActivity.class);
+        PushService.setDefaultPushCallback(this, NotifyActivity.class);
+        PushService.subscribe(this, "update", UpdateActivity.class);
+        About about = About.getAbout();
+        Updater.setBackEnable(true);
+        about.setUpdateUrl("http://fir.im/fmpd");
 
         TextView uid = (TextView) findViewById(R.id.uid);
 
-
+        String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
         // 显示的设备的 installationId，用于推送的设备标示
-        uid.setText("这个设备的 id: " + AVInstallation.getCurrentInstallation().getInstallationId());
+        uid.setText("这个设备的 id: " + installationId);
+        String toString = uid.getText().toString();
+        uid.setText(toString + "\n已开启升级新版本通知！");
+
+        AVInstallation.getCurrentInstallation().put("uid", "LeanCloud Samples-" + installationId);
         // 保存 installation 到服务器
         AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
             @Override
@@ -45,7 +57,7 @@ public class LeanCloudPushActivity extends AppCompatActivity {
             }
         });
 
-        Update.checkForUpdate(this);
+//        Update.checkForUpdate(this);
     }
 
     String time() {
@@ -56,8 +68,15 @@ public class LeanCloudPushActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        Debug.anchor();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        Debug.anchor();
     }
 
     boolean hasSubDev = false;
@@ -73,7 +92,7 @@ public class LeanCloudPushActivity extends AppCompatActivity {
         } else {
             hasSubDev = true;
             // 订阅频道，当该频道消息到来的时候，打开对应的 Activity
-            PushService.subscribe(this, "dev", Callback1.class);
+            PushService.subscribe(this, "dev", NotifyActivity.class);
             AVInstallation.getCurrentInstallation().saveInBackground();
 
             textView.setText("取消订阅【开发者频道】");
@@ -89,21 +108,15 @@ public class LeanCloudPushActivity extends AppCompatActivity {
             PushService.unsubscribe(this, "public");
             AVInstallation.getCurrentInstallation().saveInBackground();
 
-            textView.setText("订阅【公共频道】");
+            textView.setText("订阅【公开频道】");
         } else {
             hasSubPublic = true;
             // 订阅频道，当该频道消息到来的时候，打开对应的 Activity
-            PushService.subscribe(this, "public", Callback2.class);
+            PushService.subscribe(this, "public", NotifyActivity.class);
             AVInstallation.getCurrentInstallation().saveInBackground();
 
-            textView.setText("取消订阅【公共频道】");
+            textView.setText("取消订阅【公开频道】");
         }
-    }
-
-    public void onSubscribeAll(View view) {
-        // 订阅频道，当该频道消息到来的时候，打开对应的 Activity
-        PushService.subscribe(this, "all", Callback1.class);
-        AVInstallation.getCurrentInstallation().saveInBackground();
     }
 
     boolean hasRegisterReceiver = false;
