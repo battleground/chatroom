@@ -19,6 +19,13 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void test_String_format() throws Exception {
+        String string = String.format("加入会话(%s)", "aaa");
+        out(String.format("加入会话(%s)", "aaa"));
+        out(string);
+    }
+
+    @Test
     public void addition_isCorrect() throws Exception {
         String time = time();
         out(time);

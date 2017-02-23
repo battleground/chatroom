@@ -1,9 +1,6 @@
-package com.abooc.im;
+package com.abooc.im.message;
 
 import com.avos.avoscloud.im.v2.AVIMMessageType;
-import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
-
-import java.util.HashMap;
 
 /**
  * Created by dayu on 2017/1/15.
@@ -12,10 +9,11 @@ import java.util.HashMap;
 @AVIMMessageType(
         type = -1
 )
-public class FMTextMessage extends AVIMTextMessage {
+public class FMTextMessage extends FMMessage {
 
     public FMTextMessage() {
-        setAttrs(new HashMap<String, Object>());
+        super();
+        setType("101");
     }
 
     public String getUsername() {

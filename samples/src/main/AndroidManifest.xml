@@ -20,24 +20,24 @@
 
         <activity
             android:name=".LeanCloudIMActivity"
-            android:label="LeanCloud实时通信">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
+            android:label="LC实时通信">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
 
         <activity
             android:name=".LeanCloudPushActivity"
             android:screenOrientation="portrait"
-            android:label="LeanCloud消息推送">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:label="LC消息推送">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
 

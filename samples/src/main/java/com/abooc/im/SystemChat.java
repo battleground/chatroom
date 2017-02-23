@@ -1,17 +1,19 @@
 package com.abooc.im;
 
+import com.abooc.im.message.FMIMSystemMessage;
+
 /**
  * Created by dayu on 2017/1/10.
  */
 
 public class SystemChat {
 
-    ChatPresenter chatPresenter = new ChatPresenter();
+    Chat chat = new Chat();
     void a() {
 
-        FLIMSystemMessage systemMessage = new FLIMSystemMessage();
+        FMIMSystemMessage systemMessage = new FMIMSystemMessage();
         systemMessage.setText("来自系统消息！");
 
-        chatPresenter.send(systemMessage);
+        chat.send(systemMessage);
     }
 }

@@ -45,6 +45,8 @@
             android:padding="12dp"
             android:text="获取历史消息" />
 
+        <include layout="@layout/joker_line_h_gray" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,6 +90,30 @@
             android:text="发送 【系统消息】" />
 
         <include layout="@layout/joker_item_blank" />
+
+        <TextView
+            android:id="@+id/gifts_01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/list_selector_background"
+            android:clickable="true"
+            android:onClick="onSendGiftsMessage"
+            android:padding="12dp"
+            android:text="发送 【礼物1】" />
+
+        <include layout="@layout/joker_line_h_gray" />
+
+        <TextView
+            android:id="@+id/gifts_02"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/list_selector_background"
+            android:clickable="true"
+            android:onClick="onSendGiftsMessage"
+            android:padding="12dp"
+            android:text="发送 【礼物2】" />
+
+        <include layout="@layout/joker_line_h_gray" />
 
         <TextView
             android:layout_width="wrap_content"

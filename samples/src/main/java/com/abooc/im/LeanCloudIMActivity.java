@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.abooc.im.message.FMIMSystemMessage;
+import com.abooc.im.message.FMTextMessage;
+import com.abooc.im.message.GiftMessage;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.google.gson.Gson;
@@ -16,7 +19,7 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
 
 
     TextView mMessateView;
-    ChatPresenter mChatPresenter = new ChatPresenter();
+    Chat mChat = new Chat();
 
 
     @Override
@@ -25,7 +28,7 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
         setContentView(R.layout.activity_leancloud_im);
 
         mMessateView = (TextView) findViewById(R.id.message);
-        mChatPresenter.setViewer(this);
+        mChat.setViewer(this);
     }
 
     String time() {
@@ -35,40 +38,42 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
     }
 
     public void onLogin(View view) {
+        String clientID = "Tom";
         TextView textView = (TextView) view;
         if (view.getTag() == null) {
             view.setTag(true);
 
-            mChatPresenter.login();
+            mChat.login(clientID);
 
-            textView.setText("退出");
+            textView.setText(String.format("退出，【%s已登录】", clientID));
         } else {
             view.setTag(null);
 
-            mChatPresenter.close();
+            mChat.close();
 
             textView.setText("登录");
         }
     }
 
     public void onJoinConversation(View view) {
+        String conversationId = AppApplication.CONVERSATION_ID;
         TextView textView = (TextView) view;
         if (view.getTag() == null) {
             view.setTag(true);
-
-            mChatPresenter.join();
-            textView.setText("退出会话");
+            mChat.join(conversationId);
+            String text = String.format("退出会话，【已加入%s】", conversationId);
+            textView.setText(text);
         } else {
             view.setTag(null);
-            mChatPresenter.quit();
+            mChat.quit();
 
-            textView.setText("加入会话");
+            textView.setText(String.format("加入会话【%s】", conversationId));
         }
 
     }
 
     public void onLoadHistory(View view) {
-        mChatPresenter.history();
+        mChat.history();
     }
 
     public void onStartReceived(View view) {
@@ -76,11 +81,11 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
         if (view.getTag() == null) {
             view.setTag(true);
 
-            mChatPresenter.doReceive();
+            mChat.doReceive();
             textView.setText("停止接收消息");
         } else {
             view.setTag(null);
-            mChatPresenter.cancelReceive();
+            mChat.cancelReceive();
 
             textView.setText("接收新消息");
         }
@@ -90,7 +95,7 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
         AVIMTextMessage textMessage = new AVIMTextMessage();
         textMessage.setText("来自【Tom】的默认消息" + time());
 
-        mChatPresenter.send(textMessage);
+        mChat.send(textMessage);
     }
 
     public void onSendCustomMessage(View view) {
@@ -100,14 +105,49 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
         textMessage.setText("来自【Tom】的消息" + time());
         textMessage.setAvatar("http://www.avatar.com/01.png");
 
-        mChatPresenter.send(textMessage);
+        mChat.send(textMessage);
     }
 
     public void onSendSystemMessage(View view) {
-        FLIMSystemMessage systemMessage = new FLIMSystemMessage();
+        FMIMSystemMessage systemMessage = new FMIMSystemMessage();
         systemMessage.setAction(11);
         systemMessage.setText("来自【系统】的消息" + time());
-        mChatPresenter.send(systemMessage);
+        mChat.send(systemMessage);
+    }
+
+    public void onSendGiftsMessage(View view) {
+        switch (view.getId()) {
+            case R.id.gifts_01:
+                Gift gift1 = new Gift();
+                gift1.code = "101";
+                gift1.name = "鲜花";
+                sendGiftsMessage(gift1);
+                break;
+            case R.id.gifts_02:
+                Gift gift2 = new Gift();
+                gift2.code = "102";
+                gift2.name = "掌声";
+                sendGiftsMessage(gift2);
+                break;
+        }
+    }
+
+    private void sendGiftsMessage(Gift gift) {
+        GiftMessage textMessage = new GiftMessage();
+        textMessage.setUid("uid:tom-01");
+        textMessage.setUsername("Tom");
+        textMessage.setText("来自【Tom】的消息" + time());
+        textMessage.setAvatar("http://www.avatar.com/01.png");
+
+        textMessage.setCode(gift.code);
+        textMessage.setName(gift.name);
+
+        mChat.send(textMessage);
+    }
+
+    class Gift {
+        String code;
+        String name;
     }
 
     Gson mGson = new Gson();
@@ -131,7 +171,7 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mChatPresenter.close();
+        mChat.close();
     }
 
 }

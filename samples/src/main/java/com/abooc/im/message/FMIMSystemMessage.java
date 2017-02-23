@@ -1,4 +1,4 @@
-package com.abooc.im;
+package com.abooc.im.message;
 
 import com.avos.avoscloud.im.v2.AVIMMessageCreator;
 import com.avos.avoscloud.im.v2.AVIMMessageField;
@@ -14,7 +14,7 @@ import java.util.Map;
 @AVIMMessageType(
         type = 1
 )
-public class FLIMSystemMessage extends AVIMTypedMessage {
+public class FMIMSystemMessage extends AVIMTypedMessage {
     @AVIMMessageField(
             name = "_text"
     )
@@ -27,9 +27,9 @@ public class FLIMSystemMessage extends AVIMTypedMessage {
             name = "_attrs"
     )
     Map<String, Object> attrs;
-    public static final Creator<FLIMSystemMessage> CREATOR = new AVIMMessageCreator(FLIMSystemMessage.class);
+    public static final Creator<FMIMSystemMessage> CREATOR = new AVIMMessageCreator(FMIMSystemMessage.class);
 
-    public FLIMSystemMessage() {
+    public FMIMSystemMessage() {
     }
 
     public String getText() {
