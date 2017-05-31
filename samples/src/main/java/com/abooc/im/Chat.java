@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Chat {
 
-    AVIMClient mClient;
+    AVIMClient mClient = AVIMClient.getInstance("Tom");
 
     MVP.HomeViewer mHomeViewer;
 
@@ -50,7 +50,7 @@ public class Chat {
     AVIMMessageHandler iAVIMMessageHandler = new AVIMMessageHandler() {
 
         public void onMessage(AVIMMessage message, AVIMConversation conversation, AVIMClient client) {
-            Debug.anchor(message);
+            Debug.anchor(message.getContent());
             mHomeViewer.showMessage(message);
         }
 
@@ -107,7 +107,8 @@ public class Chat {
         });
     }
 
-    void quit() {
+    void quit(String conversationID) {
+        mConversation = mClient.getConversation(conversationID);
         mConversation.quit(new AVIMConversationCallback() {
             @Override
             public void done(AVIMException e) {

@@ -8,6 +8,10 @@ import android.widget.TextView;
 import com.abooc.im.message.FMIMSystemMessage;
 import com.abooc.im.message.FMTextMessage;
 import com.abooc.im.message.GiftMessage;
+import com.abooc.util.Debug;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVInstallation;
+import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.google.gson.Gson;
@@ -18,7 +22,7 @@ import java.util.List;
 public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeViewer {
 
 
-    TextView mMessateView;
+    TextView mMessageView;
     Chat mChat = new Chat();
 
 
@@ -27,7 +31,7 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leancloud_im);
 
-        mMessateView = (TextView) findViewById(R.id.message);
+        mMessageView = (TextView) findViewById(R.id.message);
         mChat.setViewer(this);
     }
 
@@ -46,13 +50,41 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
             mChat.login(clientID);
 
             textView.setText(String.format("退出，【%s已登录】", clientID));
+
+
+            final String installationId = clientID;
+            AVInstallation.getCurrentInstallation().put("uid", installationId);
+            AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    if (e == null) {
+                        Debug.anchor("OK, " + installationId);
+                    } else {
+                        Debug.error("ERROR, " + installationId + ", " + e);
+                    }
+                }
+            });
         } else {
             view.setTag(null);
 
             mChat.close();
 
             textView.setText("登录");
+
+            final String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
+            AVInstallation.getCurrentInstallation().put("uid", installationId);
+            AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    if (e == null) {
+                        Debug.anchor("OK, " + installationId);
+                    } else {
+                        Debug.error("ERROR, " + installationId + ", " + e);
+                    }
+                }
+            });
         }
+
     }
 
     public void onJoinConversation(View view) {
@@ -65,12 +97,28 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
             textView.setText(text);
         } else {
             view.setTag(null);
-            mChat.quit();
+            mChat.quit(conversationId);
 
             textView.setText(String.format("加入会话【%s】", conversationId));
         }
-
     }
+
+    public void onJoinConversation2(View view) {
+        String conversationId = AppApplication.CONVERSATION_ID_2;
+        TextView textView = (TextView) view;
+        if (view.getTag() == null) {
+            view.setTag(true);
+            mChat.join(conversationId);
+            String text = String.format("退出会话 2，【已加入%s】", conversationId);
+            textView.setText(text);
+        } else {
+            view.setTag(null);
+            mChat.quit(conversationId);
+
+            textView.setText(String.format("加入会话 2【%s】", conversationId));
+        }
+    }
+
 
     public void onLoadHistory(View view) {
         mChat.history();
@@ -158,13 +206,13 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
         AVIMMessage message = list.get(list.size() - 1);
 
         String toJson = mGson.toJson(message);
-        mMessateView.setText(toJson);
+        mMessageView.setText(toJson);
     }
 
     @Override
     public void showMessage(AVIMMessage message) {
         String toJson = mGson.toJson(message);
-        mMessateView.setText(toJson);
+        mMessageView.setText(toJson);
 
     }
 
