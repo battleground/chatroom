@@ -8,7 +8,7 @@ public class NotifyMessage {
     public boolean silent;
     public Payload payload;
 
-    class Payload {
+    public class Payload {
         public String type;
         public JsonObject model;
     }

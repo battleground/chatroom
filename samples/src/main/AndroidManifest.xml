@@ -19,7 +19,7 @@
         tools:replace="android:label">
 
         <activity
-            android:name=".LeanCloudIMActivity"
+            android:name=".activity.LeanCloudIMActivity"
             android:label="LC实时通信">
             <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,7 @@
 
 
         <activity
-            android:name=".LeanCloudPushActivity"
+            android:name=".push.LeanCloudPushActivity"
             android:screenOrientation="portrait"
             android:label="LC消息推送">
             <!--<intent-filter>-->
@@ -42,13 +42,13 @@
 
 
         <activity
-            android:name=".NotifyActivity" />
+            android:name=".push.NotifyActivity" />
 
         <activity
-            android:name=".Callback1"
+            android:name=".push.Callback1"
             android:label="Callback1" />
         <activity
-            android:name=".Callback2"
+            android:name=".push.Callback2"
             android:label="Callback2" />
 
 

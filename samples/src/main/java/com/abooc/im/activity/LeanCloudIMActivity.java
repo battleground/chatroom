@@ -1,10 +1,14 @@
-package com.abooc.im;
+package com.abooc.im.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.abooc.im.AppApplication;
+import com.abooc.im.Chat;
+import com.abooc.im.MVP;
+import com.abooc.im.R;
 import com.abooc.im.message.FMIMSystemMessage;
 import com.abooc.im.message.FMTextMessage;
 import com.abooc.im.message.GiftMessage;

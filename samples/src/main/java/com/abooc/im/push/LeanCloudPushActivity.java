@@ -1,4 +1,4 @@
-package com.abooc.im;
+package com.abooc.im.push;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.abooc.im.R;
+import com.abooc.im.push.NotifyActivity;
 import com.abooc.plugin.about.About;
 import com.abooc.plugin.about.AboutActivity;
 import com.abooc.plugin.about.UpdateActivity;
@@ -22,17 +24,20 @@ import com.avos.avoscloud.SaveCallback;
 
 import java.util.Date;
 
+/**
+ * 推送通知
+ */
 public class LeanCloudPushActivity extends AppCompatActivity {
 
 
-    TextView mMessateView;
+    TextView mMessageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leancloud_push);
 
-        mMessateView = (TextView) findViewById(R.id.message);
+        mMessageView = (TextView) findViewById(R.id.message);
 
         PushService.setDefaultPushCallback(this, NotifyActivity.class);
         PushService.subscribe(this, "update", UpdateActivity.class);
@@ -159,7 +164,7 @@ public class LeanCloudPushActivity extends AppCompatActivity {
             String channel = intent.getExtras().getString("com.avos.avoscloud.Channel");
             //获取消息内容
             String data = intent.getExtras().getString("com.avos.avoscloud.Data");
-            mMessateView.setText("action:" + action + "\nchannel:" + channel + "\ndata:" + data);
+            mMessageView.setText("action:" + action + "\nchannel:" + channel + "\ndata:" + data);
         }
     }
 

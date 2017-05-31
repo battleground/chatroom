@@ -1,10 +1,12 @@
-package com.abooc.im;
+package com.abooc.im.push;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.abooc.im.NotifyMessage;
+import com.abooc.im.activity.LeanCloudIMActivity;
 import com.abooc.util.Debug;
 import com.google.gson.Gson;
 

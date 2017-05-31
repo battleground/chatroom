@@ -36,7 +36,7 @@
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
 
         <activity
-            android:name="com.abooc.im.LeanCloudIMActivity"
+            android:name="com.abooc.im.activity.LeanCloudIMActivity"
             android:label="所有会话" />
 
         <receiver android:name=".NotificationBroadcastReceiver" />

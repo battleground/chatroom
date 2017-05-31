@@ -1,17 +1,19 @@
-package com.abooc.im;
+package com.abooc.im.push;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.abooc.im.R;
+
 /**
  */
-public class Callback2 extends AppCompatActivity {
+public class Callback1 extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_callback2);
+        setContentView(R.layout.activity_callback1);
 
         TextView textView = (TextView) findViewById(R.id.uid);
 
@@ -25,8 +27,9 @@ public class Callback2 extends AppCompatActivity {
         StringBuffer buffer = new StringBuffer();
         buffer.append("action:").append(action).append("\n")
                 .append("channel:").append(channel).append("\n")
-                .append("data:").append(dataJson);
+                .append("data:").append("\n").append(dataJson);
 
         textView.setText(buffer.toString());
     }
+
 }

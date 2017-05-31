@@ -28,12 +28,12 @@ public class Chat {
 
     MVP.HomeViewer mHomeViewer;
 
-    void setViewer(MVP.HomeViewer viewer) {
+    public void setViewer(MVP.HomeViewer viewer) {
         mHomeViewer = viewer;
     }
 
 
-    void doReceive() {
+    public void doReceive() {
 
 //      或  AVIMMessageManager.registerMessageHandler(AVIMTextMessage.class, iAVIMMessageHandler);
         AVIMMessageManager.registerDefaultMessageHandler(iAVIMMessageHandler);
@@ -42,7 +42,7 @@ public class Chat {
         AVIMMessageManager.registerMessageHandler(FMIMSystemMessage.class, iFLIMSystemMessageHandler);
     }
 
-    void cancelReceive() {
+    public void cancelReceive() {
         AVIMMessageManager.unregisterMessageHandler(AVIMTextMessage.class, iAVIMMessageHandler);
         AVIMMessageManager.unregisterMessageHandler(AVIMTextMessage.class, iFLIMSystemMessageHandler);
     }
@@ -61,7 +61,7 @@ public class Chat {
 
     FLIMSystemMessageHandler iFLIMSystemMessageHandler = new FLIMSystemMessageHandler();
 
-    class FLIMSystemMessageHandler extends AVIMTypedMessageHandler<FMIMSystemMessage> {
+    public class FLIMSystemMessageHandler extends AVIMTypedMessageHandler<FMIMSystemMessage> {
         @Override
         public void onMessage(FMIMSystemMessage message, AVIMConversation avimConversation, AVIMClient avimClient) {
             Debug.anchor("Action:" + message.getAction() + ", " + message);
@@ -77,7 +77,7 @@ public class Chat {
     }
 
 
-    void login(String clientId) {
+    public void login(String clientId) {
         mClient = AVIMClient.getInstance(clientId);
         mClient.open(new AVIMClientCallback() {
             @Override
@@ -93,7 +93,7 @@ public class Chat {
 
     AVIMConversation mConversation;
 
-    void join(String conversationID) {
+    public void join(String conversationID) {
         mConversation = mClient.getConversation(conversationID);
         mConversation.join(new AVIMConversationCallback() {
             @Override
@@ -107,7 +107,7 @@ public class Chat {
         });
     }
 
-    void quit(String conversationID) {
+    public void quit(String conversationID) {
         mConversation = mClient.getConversation(conversationID);
         mConversation.quit(new AVIMConversationCallback() {
             @Override
@@ -120,7 +120,7 @@ public class Chat {
         });
     }
 
-    void send(AVIMMessage message) {
+    public void send(AVIMMessage message) {
         mConversation.sendMessage(message, new AVIMConversationCallback() {
             @Override
             public void done(AVIMException e) {
@@ -133,7 +133,7 @@ public class Chat {
         });
     }
 
-    void history() {
+    public void history() {
         mConversation.queryMessages(new AVIMMessagesQueryCallback() {
             @Override
             public void done(List<AVIMMessage> list, AVIMException e) {
@@ -151,7 +151,7 @@ public class Chat {
         });
     }
 
-    void close() {
+    public void close() {
         mClient.close(new AVIMClientCallback() {
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
