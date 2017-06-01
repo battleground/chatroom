@@ -44,7 +44,7 @@ dependencies {
     compile 'com.abooc.debug:debug-core:latest.integration'
 //    compile 'com.abooc.joker:joker-resources:latest.integration'
     compile 'com.abooc.joker:joker-resources:1.0.3(25.1.1)'
-    compile 'com.abooc.joker:adapter-4recyclerview:1.1.6(25.1.1)'
+    compile 'com.abooc.joker:adapter-4recyclerview:latest.integration'
     compile 'com.abooc.plugin:plugin-about:2.0.2.200170218'
 
 }

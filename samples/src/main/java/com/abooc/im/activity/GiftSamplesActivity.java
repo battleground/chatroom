@@ -1,7 +1,11 @@
 package com.abooc.im.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,6 +13,7 @@ import com.abooc.im.AppApplication;
 import com.abooc.im.MessageIdentifier;
 import com.abooc.im.R;
 import com.abooc.im.message.GiftMessage;
+import com.abooc.plugin.about.AboutActivity;
 import com.abooc.util.Debug;
 import com.abooc.widget.Toast;
 import com.avos.avoscloud.im.v2.AVIMClient;
@@ -30,12 +35,22 @@ public class GiftSamplesActivity extends AppCompatActivity {
 
     MessageIdentifier iMessageIdentifier = new MessageIdentifier();
 
+    boolean login = true;
+
+    public static void launch(Context context) {
+        Intent intent = new Intent(context, GiftSamplesActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gift_samples);
-        setTitle(AppApplication.LC_CLIENT);
+        setTitle(AppApplication.LC_CLIENT + " - 在线");
+
+        AVIMMessageManager.registerAVIMMessageType(GiftMessage.class);
+        AVIMMessageManager.registerMessageHandler(GiftMessage.class, iCustomMessageHandler);
 
         mMessageText = (TextView) findViewById(R.id.message);
 
@@ -67,6 +82,25 @@ public class GiftSamplesActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.about:
+                AboutActivity.launch(this);
+                return true;
+            case R.id.logout:
+                logout(false);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void onStopTimer(View view) {
         iMessageIdentifier.cancel();
     }
@@ -75,39 +109,13 @@ public class GiftSamplesActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        AVIMMessageManager.unregisterMessageHandler(GiftMessage.class, iCustomMessageHandler);
-        mClient.close(new AVIMClientCallback() {
-            @Override
-            public void done(AVIMClient avimClient, AVIMException e) {
-                if (e == null) {
-                } else {
-                    Debug.error(AppApplication.LC_CLIENT + " 退出失败！" + e);
-                }
-            }
-        });
+        if (login) {
+            logout(true);
+        }
     }
 
     CustomMessageHandler iCustomMessageHandler = new CustomMessageHandler();
     AVIMClient mClient;
-
-    public void onLogin(final View view) {
-        mClient.open(new AVIMClientCallback() {
-            @Override
-            public void done(AVIMClient avimClient, AVIMException e) {
-                TextView textView = (TextView) view;
-                if (e == null) {
-                    textView.setText(AppApplication.LC_CLIENT + " 【已登录】");
-                    AVIMMessageManager.registerAVIMMessageType(GiftMessage.class);
-//                    AVIMMessageManager.registerDefaultMessageHandler(iCustomMessageHandler);
-                    AVIMMessageManager.registerMessageHandler(GiftMessage.class, iCustomMessageHandler);
-                } else {
-
-                    textView.setText(AppApplication.LC_CLIENT + " 【登录失败】");
-                    Debug.error(AppApplication.LC_CLIENT + " 登录失败！" + e);
-                }
-            }
-        });
-    }
 
     public void onSendGift(View view) {
         AVIMConversation conversation = mClient.getConversation("592fbc5c1b69e6005ca9c156");
@@ -131,12 +139,33 @@ public class GiftSamplesActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 注销账号
+     */
+    private void logout(final boolean fromDestroy) {
+        AVIMMessageManager.unregisterMessageHandler(GiftMessage.class, iCustomMessageHandler);
+        mClient.close(new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                if (e == null) {
+                    login = false;
+                    if (!fromDestroy) {
+                        LoginActivity.launch(getBaseContext());
+                        finish();
+                    }
+                } else {
+                    Toast.show(" 退出失败！");
+                    Debug.error(AppApplication.LC_CLIENT + " 退出失败！" + e);
+                }
+            }
+        });
+    }
+
 
     public class CustomMessageHandler extends AVIMMessageHandler {
         //接收到消息后的处理逻辑
         @Override
         public void onMessage(AVIMMessage message, AVIMConversation conversation, AVIMClient client) {
-            Debug.anchor();
             if (message instanceof GiftMessage) {
                 GiftMessage giftMessage = (GiftMessage) message;
 
@@ -157,6 +186,8 @@ public class GiftSamplesActivity extends AppCompatActivity {
                 }
 
                 Debug.anchor("Tom & Jerry : " + messageString);
+            } else {
+                Debug.anchor(mGson.toJson(message));
             }
         }
 

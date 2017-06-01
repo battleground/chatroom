@@ -3,6 +3,7 @@ package com.abooc.im;
 import android.app.Application;
 import android.content.Context;
 
+import com.abooc.im.activity.LoginActivity;
 import com.abooc.plugin.about.About;
 import com.abooc.util.Debug;
 import com.abooc.widget.Toast;
@@ -26,8 +27,7 @@ public class AppApplication extends Application {
 //    public final static String CONVERSATION_ID_2 = "58aad415570c35006b5517b4"; // 电影纵贯线
 //    public final static String CONVERSATION_ID_2 = "589aab5861ff4b0058dc30d3"; // 大胃王密子君会话
 
-    public static final String LC_CLIENT = "Jerry";
-//    public static final String LC_CLIENT = "Tom";
+    public static String LC_CLIENT = LoginActivity.LEANCOUND_CLIENT_TOM;
 
     @Override
     public void onCreate() {
