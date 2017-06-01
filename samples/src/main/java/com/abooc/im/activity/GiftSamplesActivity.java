@@ -152,6 +152,7 @@ public class GiftSamplesActivity extends AppCompatActivity {
                     if (!fromDestroy) {
                         LoginActivity.launch(getBaseContext());
                         finish();
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
                 } else {
                     Toast.show(" 退出失败！");

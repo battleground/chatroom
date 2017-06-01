@@ -71,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
             public void done(AVIMClient avimClient, AVIMException e) {
                 if (e == null) {
                     mMessageText.setText("登录成功");
+                    mMessageText.setVisibility(View.VISIBLE);
 
                     new Handler() {
                         @Override
@@ -82,7 +83,16 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     view.setEnabled(true);
                     mMessageText.setText("登录失败");
+                    mMessageText.setVisibility(View.VISIBLE);
                     Debug.error(AppApplication.LC_CLIENT + " 登录失败！" + e);
+
+                    new Handler() {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            logining = false;
+                            mMessageText.setVisibility(View.INVISIBLE);
+                        }
+                    }.sendEmptyMessageDelayed(0, 2000);
                 }
             }
         });
