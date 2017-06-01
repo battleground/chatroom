@@ -20,6 +20,7 @@
 
         <activity
             android:name=".activity.LeanCloudIMActivity"
+            android:screenOrientation="portrait"
             android:label="LC实时通信">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
@@ -30,6 +31,7 @@
 
         <activity
             android:name=".activity.GiftSamplesActivity"
+            android:screenOrientation="portrait"
             android:label="礼物测试">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,13 +54,16 @@
 
 
         <activity
-            android:name=".push.NotifyActivity" />
+            android:name=".push.NotifyActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".push.Callback1"
+            android:screenOrientation="portrait"
             android:label="Callback1" />
         <activity
             android:name=".push.Callback2"
+            android:screenOrientation="portrait"
             android:label="Callback2" />
 
 
@@ -72,7 +77,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".notifications.NotificationsActivity">
+        <activity android:name=".notifications.NotificationsActivity"
+            android:screenOrientation="portrait">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN" />-->
 

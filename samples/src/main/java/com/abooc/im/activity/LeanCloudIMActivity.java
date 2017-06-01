@@ -46,7 +46,7 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
     }
 
     public void onLogin(View view) {
-        String clientID = "Tom";
+        String clientID = AppApplication.LC_CLIENT;
         TextView textView = (TextView) view;
         if (view.getTag() == null) {
             view.setTag(true);

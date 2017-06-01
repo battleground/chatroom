@@ -26,6 +26,9 @@ public class AppApplication extends Application {
 //    public final static String CONVERSATION_ID_2 = "58aad415570c35006b5517b4"; // 电影纵贯线
 //    public final static String CONVERSATION_ID_2 = "589aab5861ff4b0058dc30d3"; // 大胃王密子君会话
 
+    public static final String LC_CLIENT = "Jerry";
+//    public static final String LC_CLIENT = "Tom";
+
     @Override
     public void onCreate() {
         super.onCreate();

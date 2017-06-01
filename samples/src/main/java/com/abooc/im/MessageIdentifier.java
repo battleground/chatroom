@@ -70,13 +70,13 @@ public class MessageIdentifier {
         }
     }
 
-    CountDownTimer timer = new CountDownTimer(timerTotal * 1000, 1000) {
+    CountDownTimer timer = new CountDownTimer(timerTotal * 1000, 990) {
         @Override
         public void onTick(long millisUntilFinished) {
             if (iOnTimer != null) {
                 iOnTimer.onTick(millisUntilFinished);
             }
-            Debug.anchor(millisUntilFinished / 1000);
+            Debug.anchor(millisUntilFinished + ", " + millisUntilFinished / 1000);
         }
 
         @Override
