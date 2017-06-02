@@ -38,12 +38,13 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.+'
     compile 'com.android.support:support-v4:25.+'
 
-    compile('cn.leancloud.android:avoscloud-push:v3.13.+@aar') { transitive = true }
-    compile 'cn.leancloud.android:avoscloud-sdk:v3.13.+'
+    compile ('cn.leancloud.android:avoscloud-push:v4.1.0@aar') { transitive = true }
+    compile 'cn.leancloud.android:avoscloud-sdk:v4.1.0'
 
+    compile 'com.abooc.joker:joker-tab:latest.integration'
     compile 'com.abooc.debug:debug-core:latest.integration'
-    compile 'com.abooc.joker:joker-resources:1.0.3(25.1.1)'
-    compile 'com.abooc.joker:adapter-4recyclerview:1.1.6(25.1.1)'
+    compile 'com.abooc.joker:joker-resources:latest.integration'
+    compile 'com.abooc.joker:adapter-4recyclerview:latest.integration'
 
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.jakewharton:butterknife:7.0.1'

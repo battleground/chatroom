@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String LEANCOUND_CLIENT_JERRY = "Jerry";
 
 
-    public static void launch(Context context){
+    public static void launch(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void handleMessage(Message msg) {
                             GiftSamplesActivity.launch(getBaseContext());
                             finish();
+                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         }
                     }.sendEmptyMessageDelayed(0, 1000);
                 } else {

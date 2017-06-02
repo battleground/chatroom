@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="#FFF"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/list_selector_background"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="onAnim"
+        android:padding="18dp"
+        android:text="Anim" />
+
+    <include layout="@layout/joker_line_h_gray" />
+
+    <TextView
+        android:id="@+id/X"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="12dp"
+        android:shadowColor="#ffffff99"
+        android:shadowDx="6"
+        android:shadowDy="6"
+        android:shadowRadius="6"
+        android:text="X 3"
+        android:textSize="120sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

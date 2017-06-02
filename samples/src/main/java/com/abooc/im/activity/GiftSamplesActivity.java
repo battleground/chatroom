@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.abooc.im.AppApplication;
@@ -26,12 +28,16 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 import com.google.gson.Gson;
 
+import java.util.Locale;
+
 public class GiftSamplesActivity extends AppCompatActivity {
 
 
     Gson mGson = new Gson();
     TextView mTimerText;
     TextView mMessageText;
+    TextView mXText;
+    Animation mAnimationX;
 
     MessageIdentifier iMessageIdentifier = new MessageIdentifier();
 
@@ -53,6 +59,9 @@ public class GiftSamplesActivity extends AppCompatActivity {
         AVIMMessageManager.registerMessageHandler(GiftMessage.class, iCustomMessageHandler);
 
         mMessageText = (TextView) findViewById(R.id.message);
+        mXText = (TextView) findViewById(R.id.X);
+        mXText.setVisibility(View.INVISIBLE);
+        mAnimationX = AnimationUtils.loadAnimation(getBaseContext(), android.R.anim.fade_out);
 
         mClient = AVIMClient.getInstance(AppApplication.LC_CLIENT);
 
@@ -181,8 +190,13 @@ public class GiftSamplesActivity extends AppCompatActivity {
 
 
                 if (giftMessage.getGiftIndex() > 1) {
-                    Toast.show("收到礼物：X " + giftMessage.getGiftIndex());
+                    Debug.anchor();
+                    mXText.startAnimation(mAnimationX);
+                    mXText.setVisibility(View.INVISIBLE);
+                    mXText.setText("X " + giftMessage.getGiftIndex());
+//                    Toast.show("收到礼物：X " + giftMessage.getGiftIndex());
                 } else {
+                    mXText.setText(null);
                     Toast.show("收到一个礼物：" + giftMessage.getCode());
                 }
 
@@ -197,7 +211,7 @@ public class GiftSamplesActivity extends AppCompatActivity {
         }
 
         String toTime(long time) {
-            java.text.DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            java.text.DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
             return format1.format(time);
         }
     }
