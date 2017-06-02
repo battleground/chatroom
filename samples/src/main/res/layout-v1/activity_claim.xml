@@ -1,0 +1,42 @@
+<!-- 显示金币领取画面 -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#50111111">
+
+    <ImageView
+        android:id="@+id/ClaimBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_claim_light"
+        android:layout_gravity="center"/>
+
+    <ImageView
+        android:id="@+id/Claim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_claim_go"
+        android:layout_gravity="center"/>
+
+    <ImageView
+        android:id="@+id/Bright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_claim_bright"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="-38dp"
+        android:layout_marginLeft="-30dp"
+        android:layout_gravity="center"/>
+
+    <ImageView
+        android:id="@+id/Bright2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_claim_bright"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="-18dp"
+        android:layout_marginLeft="40dp"
+        android:layout_gravity="center"/>
+
+</FrameLayout>

@@ -66,7 +66,7 @@ public class GiftSamplesActivity extends AppCompatActivity {
         mClient = AVIMClient.getInstance(AppApplication.LC_CLIENT);
 
         mTimerText = (TextView) findViewById(R.id.timer);
-        iMessageIdentifier.setTimerListener(new MessageIdentifier.OnSamplesTimer() {
+        iMessageIdentifier.setTimerListener(new MessageIdentifier.SimpleOnTimer() {
             @Override
             public void onStart() {
                 mTimerText.setText("倒计时");
@@ -127,16 +127,32 @@ public class GiftSamplesActivity extends AppCompatActivity {
     AVIMClient mClient;
 
     public void onSendGift(View view) {
-        AVIMConversation conversation = mClient.getConversation("592fbc5c1b69e6005ca9c156");
         GiftMessage giftMessage = new GiftMessage();
         giftMessage.setText("发送一个礼物！");
-        giftMessage.setName("礼物");
+        giftMessage.setName("【普通礼物】");
         giftMessage.setCode("GF-01-333");
+        giftMessage.setMoney(100);
         giftMessage.setUid(AppApplication.LC_CLIENT);
 
-        giftMessage = iMessageIdentifier.eat(giftMessage);
+        doSend(giftMessage);
+    }
 
-        conversation.sendMessage(giftMessage, new AVIMConversationCallback() {
+    public void onSendBigGift(View view) {
+        GiftMessage giftMessage = new GiftMessage();
+        giftMessage.setText("发送一个礼物！");
+        giftMessage.setName("【豪华礼物】");
+        giftMessage.setCode("GF-10-0001");
+        giftMessage.setMoney(1000);
+        giftMessage.setUid(AppApplication.LC_CLIENT);
+
+        doSend(giftMessage);
+    }
+
+    void doSend(GiftMessage message) {
+        AVIMConversation conversation = mClient.getConversation("592fbc5c1b69e6005ca9c156");
+        message = iMessageIdentifier.eat(message);
+
+        conversation.sendMessage(message, new AVIMConversationCallback() {
             @Override
             public void done(AVIMException e) {
                 if (e == null) {
@@ -179,25 +195,16 @@ public class GiftSamplesActivity extends AppCompatActivity {
             if (message instanceof GiftMessage) {
                 GiftMessage giftMessage = (GiftMessage) message;
 
-                int index = giftMessage.getGiftIndex();
-                String giftIndex = index > 1 ? " X " + index : "";
+                addToContainer(giftMessage);
 
-                String messageString = "【" + giftMessage.getUid() + "】：" + giftMessage.getName() + giftIndex;
-
-                CharSequence text = mMessageText.getText();
-                String time = toTime(giftMessage.getTimestamp());
-                mMessageText.setText(text + "\n" + time + messageString);
-
-
-                if (giftMessage.getGiftIndex() > 1) {
-                    mXText.startAnimation(mAnimationX);
-                    mXText.setVisibility(View.INVISIBLE);
-                    mXText.setText("X " + giftMessage.getGiftIndex());
-                } else {
-                    mXText.setText(null);
+                switch (giftMessage.getMoney()) {
+                    case 100:
+                        doGift(giftMessage);
+                        break;
+                    case 1000:
+                        doBigGift(giftMessage);
+                        break;
                 }
-
-                Debug.anchor("Tom & Jerry : " + messageString);
             } else {
                 Debug.anchor(mGson.toJson(message));
             }
@@ -205,6 +212,28 @@ public class GiftSamplesActivity extends AppCompatActivity {
 
         public void onMessageReceipt(AVIMMessage message, AVIMConversation conversation, AVIMClient client) {
             Debug.error();
+        }
+
+        void addToContainer(GiftMessage giftMessage) {
+            int index = giftMessage.getGiftIndex();
+            String giftIndex = index > 1 ? " X " + index : "";
+            String messageString = "【" + giftMessage.getUid() + "】：" + giftMessage.getName() + giftIndex;
+            CharSequence text = mMessageText.getText();
+            String time = toTime(giftMessage.getTimestamp());
+            mMessageText.setText(text + "\n" + time + messageString);
+        }
+
+        void doGift(GiftMessage giftMessage) {
+            if (giftMessage.getGiftIndex() > 1) {
+                mXText.startAnimation(mAnimationX);
+                mXText.setText("X " + giftMessage.getGiftIndex());
+            } else {
+                mXText.setText(null);
+            }
+        }
+
+        void doBigGift(GiftMessage giftMessage) {
+            Claim.show(GiftSamplesActivity.this);
         }
 
         String toTime(long time) {

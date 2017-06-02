@@ -13,27 +13,24 @@ public class MessageIdentifier {
 
     private String identifier;
     private int index = 0;
-    public int timerTotal = 5;
+    private int timerTotal = 5;
 
-    public boolean isRunning = false;
+    private boolean isRunning = false;
 
     public GiftMessage eat(GiftMessage message) {
         identifier = identifier == null ? createIdentifier() : identifier;
         message.setGiftId(identifier);
-        message.setGiftIndex(++index);
+        if(message.getMoney() < 1000){
+            message.setGiftIndex(++index);
+        }
 
         start();
         return message;
     }
 
     String createIdentifier() {
-        return String.valueOf(System.currentTimeMillis());
+        return "GIFT-ID:" + String.valueOf(System.currentTimeMillis());
     }
-
-    public void setTimerTotal(int seconds) {
-        timerTotal = seconds;
-    }
-
 
     private OnTimer iOnTimer;
 
@@ -102,7 +99,7 @@ public class MessageIdentifier {
         void onCancelled();
     }
 
-    public static class OnSamplesTimer implements OnTimer {
+    public static class SimpleOnTimer implements OnTimer {
         @Override
         public void onStart() {
 

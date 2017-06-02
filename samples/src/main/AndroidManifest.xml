@@ -40,7 +40,7 @@
 
         <activity
             android:name=".unittest.TestAnimActivity"
-            android:label="TestAnimActivity"
+            android:label="动效测试"
             android:parentActivityName=".unittest.DebugListActivity"
             android:screenOrientation="portrait" >
         </activity>
@@ -65,6 +65,12 @@
             android:label="LC消息推送">
         </activity>
 
+        <activity
+            android:name=".activity.Claim"
+            android:label="领取金币"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
 
         <activity
             android:name=".push.NotifyActivity"

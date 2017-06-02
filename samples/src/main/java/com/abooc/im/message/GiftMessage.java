@@ -26,17 +26,7 @@ public class GiftMessage extends FMTextMessage {
 
     public int getGiftIndex() {
         Object obj = this.getAttrs().get("gift_index");
-        if (obj instanceof Integer) {
-            return (int) obj;
-        }
-        try {
-            String index = (String) this.getAttrs().get("gift_index");
-            Integer integer = Integer.valueOf(index);
-            return integer;
-        } catch (Exception e) {
-
-        }
-        return 1;
+        return safeToInt(obj, 1);
     }
 
     public void setGiftIndex(int giftIndex) {
@@ -57,6 +47,29 @@ public class GiftMessage extends FMTextMessage {
 
     public void setCode(String giftID) {
         this.getAttrs().put("gift_code", giftID);
+    }
+
+    public int getMoney() {
+        Object obj = this.getAttrs().get("gift_money");
+        return safeToInt(obj, 0);
+    }
+
+    public void setMoney(int money) {
+        this.getAttrs().put("gift_money", money);
+    }
+
+    int safeToInt(Object obj, int defValue) {
+        if (obj instanceof Integer) {
+            return (int) obj;
+        }
+        try {
+            String index = (String) this.getAttrs().get("gift_index");
+            Integer integer = Integer.valueOf(index);
+            return integer;
+        } catch (Exception e) {
+
+        }
+        return defValue;
     }
 
 }
