@@ -19,30 +19,8 @@
         tools:replace="android:label">
 
         <activity
-            android:name=".activity.LeanCloudIMActivity"
-            android:screenOrientation="portrait"
-            android:label="LC实时通信">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-
-        <activity
-            android:name=".activity.GiftSamplesActivity"
-            android:screenOrientation="portrait"
-            android:label="礼物测试">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-
-
-        <activity
             android:name=".activity.LoginActivity"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -53,14 +31,31 @@
         </activity>
 
         <activity
+            android:name=".unittest.DebugListActivity"
+            android:label="开发者模式"
+            android:launchMode="singleTask"
+            android:parentActivityName=".activity.LoginActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <activity
             android:name=".unittest.TestAnimActivity"
             android:label="TestAnimActivity"
+            android:parentActivityName=".unittest.DebugListActivity"
             android:screenOrientation="portrait" >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+        </activity>
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+        <activity
+            android:name=".activity.LeanCloudIMActivity"
+            android:parentActivityName=".unittest.DebugListActivity"
+            android:screenOrientation="portrait"
+            android:label="LC实时通信">
+        </activity>
+
+        <activity
+            android:name=".activity.GiftSamplesActivity"
+            android:screenOrientation="portrait"
+            android:label="收发礼物">
         </activity>
 
 
@@ -68,11 +63,6 @@
             android:name=".push.LeanCloudPushActivity"
             android:screenOrientation="portrait"
             android:label="LC消息推送">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
 
 
@@ -102,11 +92,6 @@
 
         <activity android:name=".notifications.NotificationsActivity"
             android:screenOrientation="portrait">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
     </application>
 

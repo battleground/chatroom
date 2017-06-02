@@ -61,7 +61,7 @@ public class GiftSamplesActivity extends AppCompatActivity {
         mMessageText = (TextView) findViewById(R.id.message);
         mXText = (TextView) findViewById(R.id.X);
         mXText.setVisibility(View.INVISIBLE);
-        mAnimationX = AnimationUtils.loadAnimation(getBaseContext(), android.R.anim.fade_out);
+        mAnimationX = AnimationUtils.loadAnimation(getBaseContext(), R.anim.fade_out);
 
         mClient = AVIMClient.getInstance(AppApplication.LC_CLIENT);
 
@@ -180,24 +180,21 @@ public class GiftSamplesActivity extends AppCompatActivity {
                 GiftMessage giftMessage = (GiftMessage) message;
 
                 int index = giftMessage.getGiftIndex();
-                String giftIndex = index > 1 ? "X " + index : "";
+                String giftIndex = index > 1 ? " X " + index : "";
 
-                String messageString = "【" + giftMessage.getUid() + "】：收到" + giftMessage.getName() + "！" + giftIndex;
+                String messageString = "【" + giftMessage.getUid() + "】：" + giftMessage.getName() + giftIndex;
 
                 CharSequence text = mMessageText.getText();
                 String time = toTime(giftMessage.getTimestamp());
-                mMessageText.setText(time + " " + messageString + "\n" + text);
+                mMessageText.setText(text + "\n" + time + messageString);
 
 
                 if (giftMessage.getGiftIndex() > 1) {
-                    Debug.anchor();
                     mXText.startAnimation(mAnimationX);
                     mXText.setVisibility(View.INVISIBLE);
                     mXText.setText("X " + giftMessage.getGiftIndex());
-//                    Toast.show("收到礼物：X " + giftMessage.getGiftIndex());
                 } else {
                     mXText.setText(null);
-                    Toast.show("收到一个礼物：" + giftMessage.getCode());
                 }
 
                 Debug.anchor("Tom & Jerry : " + messageString);

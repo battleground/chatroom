@@ -1,5 +1,7 @@
 package com.abooc.im.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -25,6 +27,12 @@ import java.util.List;
 
 public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeViewer {
 
+
+    public static void launch(Context context) {
+        Intent intent = new Intent(context, LeanCloudIMActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 
     TextView mMessageView;
     Chat mChat = new Chat();

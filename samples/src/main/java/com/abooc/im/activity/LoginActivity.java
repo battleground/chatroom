@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.abooc.im.AppApplication;
 import com.abooc.im.R;
+import com.abooc.im.unittest.DebugListActivity;
 import com.abooc.util.Debug;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -111,5 +112,8 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void onOpenDebug(View view) {
+        DebugListActivity.launch(this);
+    }
 
 }
