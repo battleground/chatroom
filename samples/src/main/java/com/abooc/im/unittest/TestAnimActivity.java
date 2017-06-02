@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.abooc.im.R;
@@ -62,6 +63,28 @@ public class TestAnimActivity extends AppCompatActivity {
         playSound();
     }
 
+    int mGoldTotal = 4000;
+
+    public void onChargeGold(View view) {
+        if (mGoldTotal > 0) {
+            mGoldTotal -= ((int) (Math.random() * 10) * 100);
+
+            String money = String.valueOf(mGoldTotal);
+
+            TextView textView = (TextView) view;
+            textView.setText(money);
+            textView.startAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+        } else {
+            view.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
+        }
+    }
+
+    void to(){
+//        String money = String.valueOf(mGoldTotal);
+//        money.length()> 3? money.replace();
+//        money.indexOf(money.length()-3);
+    }
+
     private void playSound() {
         Debug.anchor("mVolume:" + mVolume);
         mSoundPool.play(
@@ -78,10 +101,82 @@ public class TestAnimActivity extends AppCompatActivity {
         Claim.show(this);
     }
 
+    public void onGoAndOn(View view) {
+        goOnLayoutAddView();
+    }
+
+    void goOnLayoutAddView() {
+        final LinearLayout goAndOnLayout = (LinearLayout) findViewById(R.id.goAndOnLayout);
+        final View inflate = getLayoutInflater().inflate(R.layout.test_anim_gift_item, null);
+
+        if (goAndOnLayout.getChildCount() == 2) {
+            final View view = goAndOnLayout.getChildAt(1);
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_out_to_right);
+            animation.setAnimationListener(new SimpleAnimationListener() {
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    goAndOnLayout.removeView(view);
+                    goAndOnLayout.addView(inflate, 0);
+                    inflate.startAnimation(AnimationUtils.loadAnimation(getBaseContext(), R.anim.slide_in_from_left));
+                }
+            });
+            view.startAnimation(animation);
+        } else {
+            goAndOnLayout.addView(inflate, 0);
+            inflate.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_from_left));
+        }
+    }
+
+    public void onGoAndDown(View view) {
+        goOnLayoutRemoveView();
+    }
+
+    void goOnLayoutRemoveView() {
+        final LinearLayout goAndOnLayout = (LinearLayout) findViewById(R.id.goAndOnLayout);
+
+        if (goAndOnLayout.getChildCount() > 0) {
+            final View view = goAndOnLayout.getChildAt(goAndOnLayout.getChildCount() - 1);
+            goAndOnLayout.removeView(view);
+        }
+    }
+
+    public void onGoAndAuto(View v) {
+        final LinearLayout autoGoonLayout = (LinearLayout) findViewById(R.id.autoGoonLayout);
+        final View inflate = getLayoutInflater().inflate(R.layout.test_anim_gift_item, null);
+
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_in_from_left_out_to_right);
+        animation.setAnimationListener(new SimpleAnimationListener() {
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                autoGoonLayout.removeView(inflate);
+            }
+        });
+        autoGoonLayout.addView(inflate, 0);
+        inflate.startAnimation(animation);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mSoundPool.release();
     }
 
+
+    class SimpleAnimationListener implements Animation.AnimationListener {
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    }
 }

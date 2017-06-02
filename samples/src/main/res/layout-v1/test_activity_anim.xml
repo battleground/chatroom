@@ -8,14 +8,21 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/default_item_selector"
+        android:layout_gravity="right"
         android:clickable="true"
         android:gravity="center"
-        android:onClick="onAnim"
-        android:padding="18dp"
-        android:text="GIFT" />
+        android:onClick="onChargeGold"
+        android:padding="12dp"
+        android:shadowColor="#EEDD33"
+        android:shadowDx="4"
+        android:shadowDy="4"
+        android:shadowRadius="4"
+        android:text="4,000"
+        android:textColor="#FFBB33"
+        android:textSize="50sp"
+        android:textStyle="bold" />
 
     <include layout="@layout/joker_line_h_gray" />
 
@@ -33,7 +40,7 @@
             android:gravity="center"
             android:onClick="onSendVipGift"
             android:padding="12dp"
-            android:text="VIP GIFT" />
+            android:text="VIP Anim" />
 
         <include layout="@layout/joker_line_v_gray" />
 
@@ -61,6 +68,74 @@
     </LinearLayout>
 
     <include layout="@layout/joker_line_h_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/default_item_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="onAnim"
+            android:padding="12dp"
+            android:text="X Anim" />
+
+        <include layout="@layout/joker_line_v_gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/default_item_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="onGoAndOn"
+            android:padding="12dp"
+            android:text="In +" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/default_item_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="onGoAndDown"
+            android:padding="12dp"
+            android:text="Out -" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/default_item_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="onGoAndAuto"
+            android:padding="12dp"
+            android:text="Auto" />
+    </LinearLayout>
+
+    <include layout="@layout/joker_line_h_gray" />
+
+    <LinearLayout
+        android:id="@+id/goAndOnLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:id="@+id/autoGoonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical" />
 
     <TextView
         android:id="@+id/X"

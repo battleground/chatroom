@@ -33,6 +33,9 @@ import java.util.Locale;
 public class GiftSamplesActivity extends AppCompatActivity {
 
 
+    int mGoldTotal = 4000;
+    TextView mGoldText;
+
     Gson mGson = new Gson();
     TextView mTimerText;
     TextView mMessageText;
@@ -58,7 +61,9 @@ public class GiftSamplesActivity extends AppCompatActivity {
         AVIMMessageManager.registerAVIMMessageType(GiftMessage.class);
         AVIMMessageManager.registerMessageHandler(GiftMessage.class, iCustomMessageHandler);
 
+        mGoldText = (TextView) findViewById(R.id.gold);
         mMessageText = (TextView) findViewById(R.id.message);
+
         mXText = (TextView) findViewById(R.id.X);
         mXText.setVisibility(View.INVISIBLE);
         mAnimationX = AnimationUtils.loadAnimation(getBaseContext(), R.anim.fade_out);
@@ -123,6 +128,12 @@ public class GiftSamplesActivity extends AppCompatActivity {
         }
     }
 
+    void charge(GiftMessage message) {
+        mGoldTotal += message.getMoney();
+        mGoldText.setText(String.valueOf(mGoldTotal));
+        mGoldText.startAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
+    }
+
     CustomMessageHandler iCustomMessageHandler = new CustomMessageHandler();
     AVIMClient mClient;
 
@@ -134,7 +145,14 @@ public class GiftSamplesActivity extends AppCompatActivity {
         giftMessage.setMoney(100);
         giftMessage.setUid(AppApplication.LC_CLIENT);
 
+        if (!check(giftMessage.getMoney())) {
+            mGoldText.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
+            return;
+        }
+
         doSend(giftMessage);
+        giftMessage.setMoney(0 - giftMessage.getMoney());
+        charge(giftMessage);
     }
 
     public void onSendBigGift(View view) {
@@ -145,7 +163,21 @@ public class GiftSamplesActivity extends AppCompatActivity {
         giftMessage.setMoney(1000);
         giftMessage.setUid(AppApplication.LC_CLIENT);
 
+        if (!check(giftMessage.getMoney())) {
+            mGoldText.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
+            return;
+        }
+
         doSend(giftMessage);
+        giftMessage.setMoney(0 - giftMessage.getMoney());
+        charge(giftMessage);
+    }
+
+    boolean check(int i) {
+        if (mGoldTotal < i) {
+            return false;
+        }
+        return true;
     }
 
     void doSend(GiftMessage message) {
@@ -196,6 +228,7 @@ public class GiftSamplesActivity extends AppCompatActivity {
                 GiftMessage giftMessage = (GiftMessage) message;
 
                 addToContainer(giftMessage);
+                charge(giftMessage);
 
                 switch (giftMessage.getMoney()) {
                     case 100:

@@ -72,6 +72,22 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/gold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:gravity="center"
+        android:padding="12dp"
+        android:shadowColor="#EEDD33"
+        android:shadowDx="4"
+        android:shadowDy="4"
+        android:shadowRadius="4"
+        android:text="4000"
+        android:textColor="#FFBB33"
+        android:textSize="60sp"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/X"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,9 +95,9 @@
         android:gravity="center"
         android:padding="12dp"
         android:shadowColor="@color/BLACK"
-        android:shadowDx="6"
-        android:shadowDy="6"
-        android:shadowRadius="6"
+        android:shadowDx="4"
+        android:shadowDy="4"
+        android:shadowRadius="4"
         android:text="X 3"
         android:textColor="#333"
         android:textSize="80sp"
