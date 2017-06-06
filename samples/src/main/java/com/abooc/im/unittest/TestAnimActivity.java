@@ -69,7 +69,7 @@ public class TestAnimActivity extends AppCompatActivity {
         if (mGoldTotal > 0) {
             mGoldTotal -= ((int) (Math.random() * 10) * 100);
 
-            String money = String.valueOf(mGoldTotal);
+            String money = toFormat(mGoldTotal);
 
             TextView textView = (TextView) view;
             textView.setText(money);
@@ -79,10 +79,15 @@ public class TestAnimActivity extends AppCompatActivity {
         }
     }
 
-    void to(){
-//        String money = String.valueOf(mGoldTotal);
-//        money.length()> 3? money.replace();
-//        money.indexOf(money.length()-3);
+    static String toFormat(int number) {
+        String value = String.valueOf(number);
+        int length = value.length();
+
+        StringBuffer buffer = new StringBuffer(value);
+        for (int i = 1; i <= ((length - 1) / 3); i++) {
+            buffer.insert((length - i * 3), ',');
+        }
+        return buffer.toString();
     }
 
     private void playSound() {

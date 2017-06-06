@@ -105,10 +105,10 @@ public class GiftSamplesActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.about:
+            case R.id.menu_about:
                 AboutActivity.launch(this);
                 return true;
-            case R.id.logout:
+            case R.id.menu_logout:
                 logout(false);
                 return true;
         }
@@ -189,6 +189,7 @@ public class GiftSamplesActivity extends AppCompatActivity {
             public void done(AVIMException e) {
                 if (e == null) {
                     Toast.show("礼物已发送！");
+                    iMessageIdentifier.start();
                 } else {
                     Debug.error("礼物发送失败！" + e);
                 }

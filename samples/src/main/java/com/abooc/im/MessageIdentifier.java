@@ -20,11 +20,9 @@ public class MessageIdentifier {
     public GiftMessage eat(GiftMessage message) {
         identifier = identifier == null ? createIdentifier() : identifier;
         message.setGiftId(identifier);
-        if(message.getMoney() < 1000){
+        if (message.getMoney() < 1000) {
             message.setGiftIndex(++index);
         }
-
-        start();
         return message;
     }
 
@@ -38,6 +36,9 @@ public class MessageIdentifier {
         iOnTimer = timerListener;
     }
 
+    /**
+     * 计时开始
+     */
     public void start() {
         if (isRunning()) {
             cancel();
@@ -50,6 +51,11 @@ public class MessageIdentifier {
         }
     }
 
+    /**
+     * 计时状态
+     *
+     * @return true 计时中，false 没有计时任务
+     */
     public boolean isRunning() {
         return isRunning;
     }
