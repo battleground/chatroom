@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.abooc.im.AppApplication;
 import com.abooc.im.Chat;
+import com.abooc.im.LeanCloud;
 import com.abooc.im.MVP;
 import com.abooc.im.R;
 import com.abooc.im.message.FMIMSystemMessage;
@@ -54,17 +54,17 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
     }
 
     public void onLogin(View view) {
-        String clientID = AppApplication.LC_CLIENT;
+        String clientId = LeanCloud.getInstance().getClientId();
         TextView textView = (TextView) view;
         if (view.getTag() == null) {
             view.setTag(true);
 
-            mChat.login(clientID);
+            mChat.login(clientId);
 
-            textView.setText(String.format("退出，【%s已登录】", clientID));
+            textView.setText(String.format("退出，【%s已登录】", clientId));
 
 
-            final String installationId = clientID;
+            final String installationId = clientId;
             AVInstallation.getCurrentInstallation().put("uid", installationId);
             AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
                 @Override
@@ -100,7 +100,7 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
     }
 
     public void onJoinConversation(View view) {
-        String conversationId = AppApplication.CONVERSATION_ID;
+        String conversationId = LeanCloud.CONVERSATION_ID;
         TextView textView = (TextView) view;
         if (view.getTag() == null) {
             view.setTag(true);
@@ -116,7 +116,7 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
     }
 
     public void onJoinConversation2(View view) {
-        String conversationId = AppApplication.CONVERSATION_ID_2;
+        String conversationId = LeanCloud.CONVERSATION_ID_2;
         TextView textView = (TextView) view;
         if (view.getTag() == null) {
             view.setTag(true);

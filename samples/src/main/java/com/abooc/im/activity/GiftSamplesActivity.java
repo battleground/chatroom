@@ -1,6 +1,7 @@
 package com.abooc.im.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,14 +12,16 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.abooc.im.AppApplication;
+import com.abooc.im.LeanCloud;
 import com.abooc.im.MessageIdentifier;
 import com.abooc.im.R;
+import com.abooc.im.message.FMIMSystemMessage;
 import com.abooc.im.message.GiftMessage;
 import com.abooc.plugin.about.AboutActivity;
 import com.abooc.util.Debug;
 import com.abooc.widget.Toast;
 import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMClientEventHandler;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
@@ -56,10 +59,14 @@ public class GiftSamplesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gift_samples);
-        setTitle(AppApplication.LC_CLIENT + " - 在线");
+        String clientId = LeanCloud.getInstance().getClientId();
+        setTitle(clientId + " - 在线");
+        getSupportActionBar().setSubtitle("平台：" + LeanCloud.PLATFORM);
 
         AVIMMessageManager.registerAVIMMessageType(GiftMessage.class);
         AVIMMessageManager.registerMessageHandler(GiftMessage.class, iCustomMessageHandler);
+        AVIMMessageManager.registerAVIMMessageType(FMIMSystemMessage.class);
+        AVIMMessageManager.registerMessageHandler(FMIMSystemMessage.class, iNotificationMessageHandler);
 
         mGoldText = (TextView) findViewById(R.id.gold);
         mMessageText = (TextView) findViewById(R.id.message);
@@ -68,14 +75,13 @@ public class GiftSamplesActivity extends AppCompatActivity {
         mXText.setVisibility(View.INVISIBLE);
         mAnimationX = AnimationUtils.loadAnimation(getBaseContext(), R.anim.fade_out);
 
-        mClient = AVIMClient.getInstance(AppApplication.LC_CLIENT);
+        mClient = AVIMClient.getInstance(clientId);
 
         mTimerText = (TextView) findViewById(R.id.timer);
         iMessageIdentifier.setTimerListener(new MessageIdentifier.SimpleOnTimer() {
             @Override
             public void onStart() {
                 mTimerText.setText("倒计时");
-
             }
 
             @Override
@@ -94,7 +100,34 @@ public class GiftSamplesActivity extends AppCompatActivity {
                 mTimerText.setText("停止计时");
             }
         });
+
+        LeanCloud.getInstance().addAVIMClientEventHandler(iAVIMClientEventHandler);
     }
+
+    private AVIMClientEventHandler iAVIMClientEventHandler = new AVIMClientEventHandler() {
+        @Override
+        public void onConnectionPaused(AVIMClient avimClient) {
+            setTitle(avimClient.getClientId() + " - 离线");
+        }
+
+        @Override
+        public void onConnectionResume(AVIMClient avimClient) {
+            setTitle(avimClient.getClientId() + " - 在线");
+        }
+
+        @Override
+        public void onClientOffline(AVIMClient avimClient, int i) {
+
+            LeanCloud.getInstance().online(false);
+
+            LeanCloud.alert(GiftSamplesActivity.this, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    logout(false);
+                }
+            }).show();
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,13 +136,28 @@ public class GiftSamplesActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean online = LeanCloud.getInstance().isOnline();
+        MenuItem item = menu.findItem(R.id.online);
+        item.setTitle(online ? "离线" : "上线");
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_about:
-                AboutActivity.launch(this);
+            case R.id.online:
+                LeanCloud leanCloud = LeanCloud.getInstance();
+                leanCloud.online(!leanCloud.isOnline());
+
+                String clientId = LeanCloud.getInstance().getClientId();
+                setTitle(clientId + (!leanCloud.isOnline() ? " - 在线" : " - 离线"));
                 return true;
             case R.id.menu_logout:
                 logout(false);
+                return true;
+            case R.id.menu_about:
+                AboutActivity.launch(this);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -126,6 +174,8 @@ public class GiftSamplesActivity extends AppCompatActivity {
         if (login) {
             logout(true);
         }
+
+        LeanCloud.getInstance().removeAVIMClientEventHandler(iAVIMClientEventHandler);
     }
 
     void charge(GiftMessage message) {
@@ -135,15 +185,17 @@ public class GiftSamplesActivity extends AppCompatActivity {
     }
 
     CustomMessageHandler iCustomMessageHandler = new CustomMessageHandler();
+    NotificationMessageHandler iNotificationMessageHandler = new NotificationMessageHandler();
     AVIMClient mClient;
 
     public void onSendGift(View view) {
+        String clientId = LeanCloud.getInstance().getClientId();
         GiftMessage giftMessage = new GiftMessage();
         giftMessage.setText("发送一个礼物！");
         giftMessage.setName("【普通礼物】");
         giftMessage.setCode("GF-01-333");
         giftMessage.setMoney(100);
-        giftMessage.setUid(AppApplication.LC_CLIENT);
+        giftMessage.setUid(clientId);
 
         if (!check(giftMessage.getMoney())) {
             mGoldText.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
@@ -156,12 +208,13 @@ public class GiftSamplesActivity extends AppCompatActivity {
     }
 
     public void onSendBigGift(View view) {
+        String clientId = LeanCloud.getInstance().getClientId();
         GiftMessage giftMessage = new GiftMessage();
         giftMessage.setText("发送一个礼物！");
         giftMessage.setName("【豪华礼物】");
         giftMessage.setCode("GF-10-0001");
         giftMessage.setMoney(1000);
-        giftMessage.setUid(AppApplication.LC_CLIENT);
+        giftMessage.setUid(clientId);
 
         if (!check(giftMessage.getMoney())) {
             mGoldText.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
@@ -181,7 +234,7 @@ public class GiftSamplesActivity extends AppCompatActivity {
     }
 
     void doSend(GiftMessage message) {
-        AVIMConversation conversation = mClient.getConversation("592fbc5c1b69e6005ca9c156");
+        AVIMConversation conversation = mClient.getConversation(LeanCloud.CONVERSATION_ID_TOM_JERRY);
         message = iMessageIdentifier.eat(message);
 
         conversation.sendMessage(message, new AVIMConversationCallback() {
@@ -201,23 +254,47 @@ public class GiftSamplesActivity extends AppCompatActivity {
      * 注销账号
      */
     private void logout(final boolean fromDestroy) {
+        LeanCloud.getInstance().online(false);
+
+        AVIMMessageManager.unregisterMessageHandler(FMIMSystemMessage.class, iNotificationMessageHandler);
         AVIMMessageManager.unregisterMessageHandler(GiftMessage.class, iCustomMessageHandler);
         mClient.close(new AVIMClientCallback() {
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
                 if (e == null) {
                     login = false;
-                    if (!fromDestroy) {
-                        LoginActivity.launch(getBaseContext());
-                        finish();
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    }
                 } else {
-                    Toast.show(" 退出失败！");
-                    Debug.error(AppApplication.LC_CLIENT + " 退出失败！" + e);
+                    String clientId = mClient.getClientId();
+                    Debug.error(clientId + " 退出失败！" + e);
+                }
+                if (!fromDestroy) {
+                    exitPage();
                 }
             }
         });
+    }
+
+    private void exitPage() {
+        LoginActivity.launch(getBaseContext());
+        finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+    }
+
+    public class NotificationMessageHandler extends AVIMMessageHandler {
+        //接收到消息后的处理逻辑
+        @Override
+        public void onMessage(AVIMMessage message, AVIMConversation conversation, AVIMClient client) {
+            if (message instanceof FMIMSystemMessage) {
+                FMIMSystemMessage systemMessage = (FMIMSystemMessage) message;
+                Toast.show(systemMessage.getText());
+
+                logout(false);
+
+            } else {
+                Debug.anchor(mGson.toJson(message));
+            }
+        }
     }
 
 

@@ -12,20 +12,23 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.abooc.im.AppApplication;
+import com.abooc.im.LeanCloud;
 import com.abooc.im.R;
 import com.abooc.im.unittest.DebugListActivity;
 import com.abooc.util.Debug;
 import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMClientOpenOption;
+import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 
 public class LoginActivity extends AppCompatActivity {
 
 
     private TextView mMessageText;
-    private AVIMClient mClient;
     private boolean logining;
+    private String clientId;
 
 
     public static final String LEANCOUND_CLIENT_TOM = "Tom";
@@ -52,11 +55,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 View checkedView = group.findViewById(checkedId);
                 if (group.indexOfChild(checkedView) == 0) {
-                    AppApplication.LC_CLIENT = LEANCOUND_CLIENT_TOM;
-                    mClient = AVIMClient.getInstance(LEANCOUND_CLIENT_TOM);
+                    clientId = LEANCOUND_CLIENT_TOM;
                 } else {
-                    AppApplication.LC_CLIENT = LEANCOUND_CLIENT_JERRY;
-                    mClient = AVIMClient.getInstance(LEANCOUND_CLIENT_JERRY);
+                    clientId = LEANCOUND_CLIENT_JERRY;
                 }
             }
         });
@@ -65,14 +66,47 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLogin(final View view) {
+        mMessageText.setText("loading...");
+        mMessageText.setVisibility(View.VISIBLE);
         logining = true;
         view.setEnabled(false);
-        mClient.open(new AVIMClientCallback() {
+        AVIMClient avimClient = LeanCloud.getInstance().createClient(clientId);
+        AVIMClientOpenOption openOption = new AVIMClientOpenOption();
+        openOption.setForceSingleLogin(true);
+        avimClient.open(openOption, new AVIMClientCallback() {
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
                 if (e == null) {
+                    Debug.anchor(clientId + "【登录】成功");
                     mMessageText.setText("登录成功");
                     mMessageText.setVisibility(View.VISIBLE);
+
+                    LeanCloud.getInstance().online(true);
+
+                    AVIMConversation conversation = avimClient.getConversation(LeanCloud.CONVERSATION_ID_TOM_JERRY);
+                    conversation.join(new AVIMConversationCallback() {
+                        @Override
+                        public void done(AVIMException e) {
+                            if (e == null) {
+                                Debug.anchor("加入 【Tom & Jerry】 会话，成功！");
+                            } else {
+                                Debug.error("加入【Tom & Jerry】 会话，失败：" + e);
+                            }
+                        }
+                    });
+
+                    final AVIMConversation c = avimClient.getConversation(LeanCloud.CONVERSATION_ID_TOM_JERRY_SYSTEM);
+                    c.join(new AVIMConversationCallback() {
+                        @Override
+                        public void done(AVIMException e) {
+                            if (e == null) {
+                                Debug.anchor("加入 【Tom系统】 会话，成功！");
+                            } else {
+                                Debug.error("加入【Tom系统】 会话，失败：" + e);
+                            }
+                        }
+                    });
+
 
                     new Handler() {
                         @Override
@@ -83,10 +117,10 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }.sendEmptyMessageDelayed(0, 1000);
                 } else {
+                    Debug.error(clientId + "【登录】失败, " + e);
                     view.setEnabled(true);
                     mMessageText.setText("登录失败");
                     mMessageText.setVisibility(View.VISIBLE);
-                    Debug.error(AppApplication.LC_CLIENT + " 登录失败！" + e);
 
                     new Handler() {
                         @Override

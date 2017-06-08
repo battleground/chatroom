@@ -3,6 +3,7 @@ package com.abooc.im.unittest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,7 +11,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
+import com.abooc.im.LeanCloud;
 import com.abooc.im.R;
 import com.abooc.im.activity.LeanCloudIMActivity;
 import com.abooc.plugin.about.AboutActivity;
@@ -29,6 +33,21 @@ public class DebugListActivity extends AppCompatActivity implements AdapterView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_activity_debug);
+
+        RadioGroup iRadioGroup = (RadioGroup) findViewById(R.id.RadioGroup);
+        iRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                View checkedView = group.findViewById(checkedId);
+                if (group.indexOfChild(checkedView) == 0) {
+                    LeanCloud.PLATFORM = LeanCloud.PLATFORM_MOBILE;
+                } else {
+                    LeanCloud.PLATFORM = LeanCloud.PLATFORM_TV;
+                }
+            }
+        });
+        RadioButton radioButton = (RadioButton) iRadioGroup.getChildAt(LeanCloud.PLATFORM == LeanCloud.PLATFORM_MOBILE ? 0 : 1);
+        radioButton.toggle();
 
         mListView = (ListView) findViewById(R.id.ListView);
         mListView.setOnItemClickListener(this);
