@@ -5,11 +5,13 @@ import android.media.AudioManager
 import android.media.SoundPool
 import com.abooc.im.LeanCloud
 import com.abooc.im.R
+import com.abooc.im.Saver
 import com.abooc.im.activity.LoginActivity
 import com.abooc.im.message.GiftMessage
 import com.abooc.util.Debug
 import com.abooc.widget.Toast
 import com.avos.avoscloud.AVInstallation
+import com.avos.avoscloud.AVMixpushManager
 import com.avos.avoscloud.AVPush
 import com.avos.avoscloud.im.v2.AVIMClient
 import com.avos.avoscloud.im.v2.AVIMConversation
@@ -55,6 +57,8 @@ class CallOutPresenter(val viewer: Viewer) {
                 override fun done(avimClient: AVIMClient, e: AVIMException?) {
                     if (e == null) {
                         Debug.error("已退出账号：$clientId")
+                        Saver.remove(viewer.baseContext)
+                        AVMixpushManager.unRegisterMixPush()
                         callOutViewer.finish()
                         LoginActivity.launch(viewer.baseContext)
                     } else {

@@ -18,4 +18,10 @@ public class Saver {
         SharedPreferences preferences = context.getSharedPreferences("facetime", Context.MODE_APPEND);
         return preferences.getString("uid", null);
     }
+
+    public static void remove(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("facetime", Context.MODE_APPEND);
+        preferences.edit().remove("uid").apply();
+    }
+
 }

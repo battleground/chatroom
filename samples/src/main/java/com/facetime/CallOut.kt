@@ -19,6 +19,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback
 import com.facetime.mvp.CallOutPresenter
 import com.facetime.mvp.Viewer
 import kotlinx.android.synthetic.main.activity_face_time_call_out.*
+import kotlinx.android.synthetic.main.logs_view.*
 
 
 /**
