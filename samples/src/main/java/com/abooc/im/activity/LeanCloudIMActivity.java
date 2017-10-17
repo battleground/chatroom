@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.abooc.im.Chat;
+import com.abooc.im.LcConfig;
 import com.abooc.im.LeanCloud;
 import com.abooc.im.MVP;
 import com.abooc.im.R;
@@ -100,7 +101,7 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
     }
 
     public void onJoinConversation(View view) {
-        String conversationId = LeanCloud.CONVERSATION_ID;
+        String conversationId = LcConfig.CONVERSATION_ID;
         TextView textView = (TextView) view;
         if (view.getTag() == null) {
             view.setTag(true);
@@ -116,7 +117,7 @@ public class LeanCloudIMActivity extends AppCompatActivity implements MVP.HomeVi
     }
 
     public void onJoinConversation2(View view) {
-        String conversationId = LeanCloud.CONVERSATION_ID_2;
+        String conversationId = LcConfig.CONVERSATION_ID_2;
         TextView textView = (TextView) view;
         if (view.getTag() == null) {
             view.setTag(true);

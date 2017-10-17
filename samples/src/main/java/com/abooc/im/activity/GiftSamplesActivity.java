@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.abooc.im.LcConfig;
 import com.abooc.im.LeanCloud;
 import com.abooc.im.MessageIdentifier;
 import com.abooc.im.R;
@@ -29,17 +30,18 @@ import com.avos.avoscloud.im.v2.AVIMMessageHandler;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
 import com.google.gson.Gson;
 
+import java.util.List;
 import java.util.Locale;
 
 public class GiftSamplesActivity extends AppCompatActivity {
 
 
-    int mGoldTotal = 4000;
+    int mGoldTotal = 9000;
     TextView mGoldText;
 
-    Gson mGson = new Gson();
     TextView mTimerText;
     TextView mMessageText;
     TextView mXText;
@@ -63,8 +65,6 @@ public class GiftSamplesActivity extends AppCompatActivity {
         setTitle(clientId + " - 在线");
         getSupportActionBar().setSubtitle("平台：" + LeanCloud.PLATFORM);
 
-        AVIMMessageManager.registerAVIMMessageType(GiftMessage.class);
-        AVIMMessageManager.registerMessageHandler(GiftMessage.class, iCustomMessageHandler);
         AVIMMessageManager.registerAVIMMessageType(FMIMSystemMessage.class);
         AVIMMessageManager.registerMessageHandler(FMIMSystemMessage.class, iNotificationMessageHandler);
 
@@ -102,6 +102,20 @@ public class GiftSamplesActivity extends AppCompatActivity {
         });
 
         LeanCloud.getInstance().addAVIMClientEventHandler(iAVIMClientEventHandler);
+
+
+        final AVIMConversation conversation = mClient.getConversation(LcConfig.CONVERSATION_ID_TEMP);
+        conversation.queryMessages(20, new AVIMMessagesQueryCallback() {
+            @Override
+            public void done(List<AVIMMessage> list, AVIMException e) {
+                if (e == null) {
+                    Debug.anchor("【拉取会话历史】 成功！，未读消息数：" + conversation.getUnreadMessagesCount());
+                } else {
+                    Debug.error("【拉取会话历史】失败：" + e);
+                }
+            }
+        });
+
     }
 
     private AVIMClientEventHandler iAVIMClientEventHandler = new AVIMClientEventHandler() {
@@ -117,15 +131,6 @@ public class GiftSamplesActivity extends AppCompatActivity {
 
         @Override
         public void onClientOffline(AVIMClient avimClient, int i) {
-
-            LeanCloud.getInstance().online(false);
-
-            LeanCloud.alert(GiftSamplesActivity.this, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    logout(false);
-                }
-            }).show();
         }
     };
 
@@ -170,11 +175,6 @@ public class GiftSamplesActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if (login) {
-            logout(true);
-        }
-
         LeanCloud.getInstance().removeAVIMClientEventHandler(iAVIMClientEventHandler);
     }
 
@@ -184,7 +184,6 @@ public class GiftSamplesActivity extends AppCompatActivity {
         mGoldText.startAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
     }
 
-    CustomMessageHandler iCustomMessageHandler = new CustomMessageHandler();
     NotificationMessageHandler iNotificationMessageHandler = new NotificationMessageHandler();
     AVIMClient mClient;
 
@@ -234,7 +233,7 @@ public class GiftSamplesActivity extends AppCompatActivity {
     }
 
     void doSend(GiftMessage message) {
-        AVIMConversation conversation = mClient.getConversation(LeanCloud.CONVERSATION_ID_TOM_JERRY);
+        AVIMConversation conversation = mClient.getConversation(LcConfig.CONVERSATION_ID_TEMP);
         message = iMessageIdentifier.eat(message);
 
         conversation.sendMessage(message, new AVIMConversationCallback() {
@@ -257,7 +256,7 @@ public class GiftSamplesActivity extends AppCompatActivity {
         LeanCloud.getInstance().online(false);
 
         AVIMMessageManager.unregisterMessageHandler(FMIMSystemMessage.class, iNotificationMessageHandler);
-        AVIMMessageManager.unregisterMessageHandler(GiftMessage.class, iCustomMessageHandler);
+//        AVIMMessageManager.unregisterMessageHandler(GiftMessage.class, iCustomMessageHandler);
         mClient.close(new AVIMClientCallback() {
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
@@ -281,6 +280,7 @@ public class GiftSamplesActivity extends AppCompatActivity {
 
     }
 
+    Gson mGson = new Gson();
     public class NotificationMessageHandler extends AVIMMessageHandler {
         //接收到消息后的处理逻辑
         @Override
@@ -294,62 +294,6 @@ public class GiftSamplesActivity extends AppCompatActivity {
             } else {
                 Debug.anchor(mGson.toJson(message));
             }
-        }
-    }
-
-
-    public class CustomMessageHandler extends AVIMMessageHandler {
-        //接收到消息后的处理逻辑
-        @Override
-        public void onMessage(AVIMMessage message, AVIMConversation conversation, AVIMClient client) {
-            if (message instanceof GiftMessage) {
-                GiftMessage giftMessage = (GiftMessage) message;
-
-                addToContainer(giftMessage);
-                charge(giftMessage);
-
-                switch (giftMessage.getMoney()) {
-                    case 100:
-                        doGift(giftMessage);
-                        break;
-                    case 1000:
-                        doBigGift(giftMessage);
-                        break;
-                }
-            } else {
-                Debug.anchor(mGson.toJson(message));
-            }
-        }
-
-        public void onMessageReceipt(AVIMMessage message, AVIMConversation conversation, AVIMClient client) {
-            Debug.error();
-        }
-
-        void addToContainer(GiftMessage giftMessage) {
-            int index = giftMessage.getGiftIndex();
-            String giftIndex = index > 1 ? " X " + index : "";
-            String messageString = "【" + giftMessage.getUid() + "】：" + giftMessage.getName() + giftIndex;
-            CharSequence text = mMessageText.getText();
-            String time = toTime(giftMessage.getTimestamp());
-            mMessageText.setText(text + "\n" + time + messageString);
-        }
-
-        void doGift(GiftMessage giftMessage) {
-            if (giftMessage.getGiftIndex() > 1) {
-                mXText.startAnimation(mAnimationX);
-                mXText.setText("X " + giftMessage.getGiftIndex());
-            } else {
-                mXText.setText(null);
-            }
-        }
-
-        void doBigGift(GiftMessage giftMessage) {
-            Claim.show(GiftSamplesActivity.this);
-        }
-
-        String toTime(long time) {
-            java.text.DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
-            return format1.format(time);
         }
     }
 

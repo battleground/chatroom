@@ -1,22 +1,33 @@
 package com.abooc.im;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.v7.app.AlertDialog;
 
-import com.abooc.im.activity.LoginActivity;
+import com.abooc.im.activity.OfflineAlert;
 import com.abooc.util.Debug;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.DeleteCallback;
+import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMClientEventHandler;
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMConversationEventHandler;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.AVIMMessageManager;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.facetime.CallIn;
+import com.facetime.CallOut;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,28 +36,10 @@ import java.util.List;
 
 public class LeanCloud {
 
-
-    // "直播间聊天系统" 测试key
-    public final static String LEANCLOUD_APP_ID = "Ly7xoqX3c4P8hn7pYQoDaxXv-gzGzoHsz";
-    public final static String LEANCLOUD_APP_KEY = "KjaBxRRx7H6udI3VMRGde4tl";
-    public final static String CONVERSATION_ID = "58411255128fe1005898c163"; // 005
-    public final static String CONVERSATION_ID_2 = "583ff241ac502e006cbc626f"; // 006
-
-    public final static String CONVERSATION_ID_TOM_JERRY = "592fbc5c1b69e6005ca9c156"; // 聊天会话
-    public final static String CONVERSATION_ID_TOM_JERRY_SYSTEM = "5874e1212f301e006be81720"; // 通知会话
-
-    // test
-//    public final static String LEANCLOUD_APP_ID  = "p96jQI9whtwV57DptXlMBEWj-gzGzoHsz";
-//    public final static  String LEANCLOUD_APP_KEY = "9hVWh7D8Fxq4vxnuh4zKC9f8";
-//    public final static String CONVERSATION_ID = "58aad41761ff4b006b59dce0";
-//    public final static String CONVERSATION_ID_2 = "58aad415570c35006b5517b4"; // 电影纵贯线
-//    public final static String CONVERSATION_ID_2 = "589aab5861ff4b0058dc30d3"; // 大胃王密子君会话
-
     public static final String PLATFORM_TV = "TV";
-    public static final String PLATFORM_MOBILE = "Mobile";
+    public static final String PLATFORM_MOBILE = "mobile";
     public static String PLATFORM = PLATFORM_MOBILE;
 
-    private String LC_CLIENT = LoginActivity.LEANCOUND_CLIENT_TOM;
     private boolean mOnline = false;
     private AVIMClient mAVIMClient;
 
@@ -80,9 +73,49 @@ public class LeanCloud {
             @Override
             public void onClientOffline(AVIMClient avimClient, int i) {
                 Debug.error(avimClient.getClientId() + ", code:" + i + ", 您的账号正在另一台设备登录");
+                LeanCloud.getInstance().online(false);
                 mOnline = false;
                 for (AVIMClientEventHandler handler : mAVIMClientEventHandlers) {
                     handler.onClientOffline(avimClient, i);
+                }
+                OfflineAlert.show(AppApplication.getContext());
+            }
+        });
+    }
+
+    public AVIMClient createClient(String clientId) {
+        AVIMMessageManager.setConversationEventHandler(new CustomConversationEventHandler());
+
+        mAVIMClient = AVIMClient.getInstance("86 " + clientId, PLATFORM);
+        return mAVIMClient;
+    }
+
+    public void addLogoutListener(OnLogoutListener l) {
+        mOnLogoutListener = l;
+    }
+
+    public void removeLogoutListener(OnLogoutListener l) {
+        mOnLogoutListener = l;
+    }
+
+    OnLogoutListener mOnLogoutListener;
+
+    public interface OnLogoutListener {
+        void onLogout();
+    }
+
+    /**
+     * 注销账号
+     */
+    public void logout() {
+        mAVIMClient.close(new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                if (e == null) {
+                    if (mOnLogoutListener != null) mOnLogoutListener.onLogout();
+                } else {
+                    String clientId = mAVIMClient.getClientId();
+                    Debug.error(clientId + " 退出失败！" + e);
                 }
             }
         });
@@ -100,38 +133,64 @@ public class LeanCloud {
             mAVIMClientEventHandlers.remove(handler);
     }
 
-    public AVIMClient createClient(String clientId) {
-        LC_CLIENT = clientId;
+    public class CustomConversationEventHandler extends AVIMConversationEventHandler {
 
-        mAVIMClient = AVIMClient.getInstance(clientId, PLATFORM);
-        return mAVIMClient;
+        @Override
+        public void onMemberLeft(AVIMClient client, AVIMConversation conversation, List<String> members,
+                                 String kickedBy) {
+            // 有其他成员离开时，执行此处逻辑
+            Debug.anchor(members + ", " + conversation.getConversationId() + "；操作者为： " + kickedBy);
+        }
+
+        @Override
+        public void onMemberJoined(AVIMClient client, AVIMConversation conversation,
+                                   List<String> members, String invitedBy) {
+            Debug.anchor(members + "加入到" + conversation.getConversationId() + "；操作者为： " + invitedBy);
+
+        }
+
+        @Override
+        public void onKicked(AVIMClient client, AVIMConversation conversation, String kickedBy) {
+            // 当前 ClientId(Bob) 被踢出对话，执行此处逻辑
+            Debug.anchor(client.getClientId() + ", " + conversation.getConversationId() + "；操作者为： " + kickedBy);
+        }
+
+        @Override
+        public void onInvited(AVIMClient client, AVIMConversation conversation, String invitedBy) {
+            // 当前 ClientId(Bob) 被邀请到对话，执行此处逻辑
+            Debug.anchor(client.getClientId() + ", " + conversation.getConversationId() + "；操作者为： " + invitedBy);
+        }
+
+        @Override
+        public void onUnreadMessagesCountUpdated(AVIMClient client, AVIMConversation conversation) {
+            Debug.anchor(client.getClientId() + ", " + conversation.getConversationId() + ", 未读消息数：" + conversation.getUnreadMessagesCount());
+        }
     }
 
     public String getClientId() {
-        return LC_CLIENT;
+        return mAVIMClient.getClientId();
     }
 
     public boolean isOnline() {
         return mOnline;
     }
 
-
-    public static AlertDialog alert(Activity activity, DialogInterface.OnClickListener l) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("异地登录")
-                .setMessage("您的账号正在另一台设备登录")
-                .setCancelable(false)
-                .setPositiveButton("确定退出", l);
-        return builder.create();
+    public static void initLeanCloudSDK(Context context) {
+        AVOSCloud.setDebugLogEnabled(true);
+        AVOSCloud.initialize(context, LcConfig.LEANCLOUD_APP_ID, LcConfig.LEANCLOUD_APP_KEY);
+        LcConfig.xPush(context);
+        AVIMClient.setOfflineMessagePush(true);
+        AVIMClient.setAutoOpen(true);
     }
 
-
-    public static void initLeanCloudSDK(Context context) {
-        AVOSCloud.initialize(context, LEANCLOUD_APP_ID, LEANCLOUD_APP_KEY);
+    public static void installAppAttributes(Context context) {
         AVInstallation avInstallation = AVInstallation.getCurrentInstallation();
 //        avInstallation.put("platform", PLATFORM);
         avInstallation.put("model", Build.BRAND + " " + Build.MODEL);
         avInstallation.put("packageName", context.getPackageName());
+
+        subscribePush(context);
+
         avInstallation.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
@@ -160,10 +219,48 @@ public class LeanCloud {
         });
     }
 
+
+    public static String[] getChannels() {
+        AVInstallation avInstallation = AVInstallation.getCurrentInstallation();
+        JSONArray jsonArray = avInstallation.getJSONArray("channels");
+        if (jsonArray != null && jsonArray.length() > 0) {
+            String[] channels = new String[jsonArray.length()];
+            for (int i = 0; i < jsonArray.length(); i++) {
+                try {
+                    channels[i] = jsonArray.getString(i);
+                } catch (JSONException e) {
+                    Debug.error(e);
+                }
+            }
+            return channels;
+        }
+        return new String[0];
+    }
+
+    /**
+     * 订阅LeanCloud实时推送
+     *
+     * @param context
+     */
+    public static void subscribePush(Context context) {
+        // 显示的设备的 installationId，用于推送的设备标示
+
+        String[] channels = getChannels();
+        AVInstallation.getCurrentInstallation().removeAll("channels", Arrays.asList(channels));
+
+        context = context.getApplicationContext();
+        String versionName = getVersionName(context);
+
+        PushService.setDefaultPushCallback(context, CallIn.class);
+        PushService.subscribe(context, "version-" + versionName, CallOut.class);
+        PushService.subscribe(context, BuildConfig.DEBUG ? "dev" : "release", CallOut.class);
+        PushService.subscribe(context, "update", CallOut.class);
+    }
+
     public void online(final boolean online) {
         AVInstallation avInstallation = AVInstallation.getCurrentInstallation();
         avInstallation.put("platform", PLATFORM);
-        avInstallation.put("uid", LC_CLIENT);
+        avInstallation.put("uid", getClientId());
         avInstallation.put("online", online ? "online" : "offline");
         avInstallation.saveInBackground(new SaveCallback() {
             @Override
@@ -177,4 +274,17 @@ public class LeanCloud {
             }
         });
     }
+
+    public static String getVersionName(Context context) {
+        PackageManager packagemanager = context.getPackageManager();
+        String packName = context.getPackageName();
+        try {
+            PackageInfo packageinfo = packagemanager.getPackageInfo(packName, 0);
+            return packageinfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

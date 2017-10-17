@@ -79,7 +79,6 @@ public class MessageIdentifier {
             if (iOnTimer != null) {
                 iOnTimer.onTick(millisUntilFinished);
             }
-            Debug.anchor(millisUntilFinished + ", " + millisUntilFinished / 1000);
         }
 
         @Override

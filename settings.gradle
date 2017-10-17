@@ -1,3 +1,6 @@
-include ':app', ':samples'
+//include ':app'
+include ':samples'
+//include ':call-push-samples'
+//include ':call'
 //include ':live'
 //include ':liveroom'

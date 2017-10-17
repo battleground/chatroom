@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.abooc.im.AppApplication;
 import com.abooc.im.LeanCloud;
 import com.abooc.im.R;
 import com.abooc.im.activity.LeanCloudIMActivity;
@@ -51,7 +52,7 @@ public class DebugListActivity extends AppCompatActivity implements AdapterView.
 
         mListView = (ListView) findViewById(R.id.ListView);
         mListView.setOnItemClickListener(this);
-        mListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"LC实时消息", "礼物动画"}));
+        mListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"LC实时消息", "礼物动画", "对话框"}));
     }
 
     @Override
@@ -83,6 +84,11 @@ public class DebugListActivity extends AppCompatActivity implements AdapterView.
                 break;
             case 1:
                 TestAnimActivity.launch(this);
+                break;
+            case 2:
+//                Intent intent = new Intent(getBaseContext(), CoreService.class);
+//                startService(intent);
+                AppApplication.alert(getBaseContext(), null).show();
                 break;
         }
     }

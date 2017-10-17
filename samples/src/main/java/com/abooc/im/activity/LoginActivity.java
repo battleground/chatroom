@@ -7,32 +7,36 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.abooc.im.LeanCloud;
 import com.abooc.im.R;
+import com.abooc.im.Saver;
 import com.abooc.im.unittest.DebugListActivity;
 import com.abooc.util.Debug;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMClientOpenOption;
-import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
+import com.facetime.CallOut;
+import com.facetime.Keyboard;
 
 public class LoginActivity extends AppCompatActivity {
 
 
     private TextView mMessageText;
+    private EditText mEditText;
     private boolean logining;
     private String clientId;
 
 
-    public static final String LEANCOUND_CLIENT_TOM = "Tom";
-    public static final String LEANCOUND_CLIENT_JERRY = "Jerry";
+    public static final String LEANCLOUND_CLIENT_TOM = "Tom";
+    public static final String LEANCLOUND_CLIENT_JERRY = "Jerry";
 
 
     public static void launch(Context context) {
@@ -47,22 +51,45 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mMessageText = (TextView) findViewById(R.id.log);
+        mEditText = (EditText) findViewById(R.id.uid);
 
-        RadioGroup iRadioGroup = (RadioGroup) findViewById(R.id.RadioGroup);
+        final RadioGroup iRadioGroup = (RadioGroup) findViewById(R.id.RadioGroup);
         RadioButton radioButton = (RadioButton) iRadioGroup.getChildAt(0);
         iRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 View checkedView = group.findViewById(checkedId);
-                if (group.indexOfChild(checkedView) == 0) {
-                    clientId = LEANCOUND_CLIENT_TOM;
-                } else {
-                    clientId = LEANCOUND_CLIENT_JERRY;
+
+                switch (group.indexOfChild(checkedView)) {
+                    case 0:
+                        clientId = LEANCLOUND_CLIENT_TOM;
+                        mEditText.setText(null);
+                        break;
+                    case 1:
+                        clientId = LEANCLOUND_CLIENT_JERRY;
+                        mEditText.setText(null);
+                        break;
                 }
             }
         });
-        radioButton.toggle();
+//        radioButton.toggle();
 
+        mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    iRadioGroup.clearCheck();
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN && Keyboard.hideKeyboard(this)) {
+            return true;
+        } else
+            return super.dispatchTouchEvent(ev);
     }
 
     public void onLogin(final View view) {
@@ -70,6 +97,14 @@ public class LoginActivity extends AppCompatActivity {
         mMessageText.setVisibility(View.VISIBLE);
         logining = true;
         view.setEnabled(false);
+
+
+        int length = mEditText.getText().length();
+        if (length > 0) {
+            clientId = mEditText.getText().toString().trim().toLowerCase();
+        }
+
+
         AVIMClient avimClient = LeanCloud.getInstance().createClient(clientId);
         AVIMClientOpenOption openOption = new AVIMClientOpenOption();
         openOption.setForceSingleLogin(true);
@@ -77,41 +112,19 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
                 if (e == null) {
+                    Saver.save(LoginActivity.this, clientId);
+
                     Debug.anchor(clientId + "【登录】成功");
                     mMessageText.setText("登录成功");
                     mMessageText.setVisibility(View.VISIBLE);
 
                     LeanCloud.getInstance().online(true);
 
-                    AVIMConversation conversation = avimClient.getConversation(LeanCloud.CONVERSATION_ID_TOM_JERRY);
-                    conversation.join(new AVIMConversationCallback() {
-                        @Override
-                        public void done(AVIMException e) {
-                            if (e == null) {
-                                Debug.anchor("加入 【Tom & Jerry】 会话，成功！");
-                            } else {
-                                Debug.error("加入【Tom & Jerry】 会话，失败：" + e);
-                            }
-                        }
-                    });
-
-                    final AVIMConversation c = avimClient.getConversation(LeanCloud.CONVERSATION_ID_TOM_JERRY_SYSTEM);
-                    c.join(new AVIMConversationCallback() {
-                        @Override
-                        public void done(AVIMException e) {
-                            if (e == null) {
-                                Debug.anchor("加入 【Tom系统】 会话，成功！");
-                            } else {
-                                Debug.error("加入【Tom系统】 会话，失败：" + e);
-                            }
-                        }
-                    });
-
-
                     new Handler() {
                         @Override
                         public void handleMessage(Message msg) {
-                            GiftSamplesActivity.launch(getBaseContext());
+//                            GiftSamplesActivity.launch(getBaseContext());
+                            CallOut.Companion.show(getBaseContext());
                             finish();
                             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         }

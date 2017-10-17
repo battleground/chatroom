@@ -1,6 +1,7 @@
 package com.abooc.im.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -27,12 +28,12 @@ public class Claim extends Activity {
     /**
      * 显示领取金币效果
      *
-     * @param activity
+     * @param ctx
      */
-    public static void show(Activity activity) {
-        Intent intent = new Intent(activity, Claim.class);
-        activity.startActivity(intent);
-        activity.overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+    public static void show(Context ctx) {
+        Intent intent = new Intent(ctx, Claim.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ctx.startActivity(intent);
     }
 
     private SoundPool mSoundPool;
@@ -41,6 +42,8 @@ public class Claim extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+
         setContentView(R.layout.activity_claim);
 
         View claimBackground = findViewById(R.id.ClaimBackground);
