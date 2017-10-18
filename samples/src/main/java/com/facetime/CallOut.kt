@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import com.abooc.im.LeanCloud
 import com.abooc.im.R
+import com.abooc.im.message.CallMessage
 import com.abooc.util.Debug
 import com.avos.avoscloud.im.v2.AVIMClient
 import com.avos.avoscloud.im.v2.AVIMClientEventHandler
@@ -17,7 +18,7 @@ import com.avos.avoscloud.im.v2.AVIMClientOpenOption
 import com.avos.avoscloud.im.v2.AVIMException
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback
 import com.facetime.mvp.CallOutPresenter
-import com.facetime.mvp.Viewer
+import com.facetime.mvp.CallViewer
 import kotlinx.android.synthetic.main.activity_face_time_call_out.*
 import kotlinx.android.synthetic.main.logs_view.*
 
@@ -28,7 +29,7 @@ import kotlinx.android.synthetic.main.logs_view.*
  * email:allnet@live.cn
  * on 15-5-22.
  */
-class CallOut : AppCompatActivity(), Viewer {
+class CallOut : AppCompatActivity(), CallViewer {
 
     val AVIMClientEventHandler = object : AVIMClientEventHandler() {
         override fun onConnectionResume(avimClient: AVIMClient) {
@@ -77,6 +78,7 @@ class CallOut : AppCompatActivity(), Viewer {
 
         })
         uid.text = null
+        scrollView.visibility = View.GONE
     }
 
     fun getPhone(): String {
@@ -105,6 +107,14 @@ class CallOut : AppCompatActivity(), Viewer {
     var onCallEvent: ((View) -> Unit) = {}
     var onPushCallback: ((View) -> Unit) = {}
 
+    fun onMoreEvent(view: View) {
+        if (scrollView.visibility == View.VISIBLE) {
+            scrollView.visibility = View.GONE
+        } else {
+            scrollView.visibility = View.VISIBLE
+        }
+    }
+
     /**
      * 上线
      */
@@ -128,7 +138,7 @@ class CallOut : AppCompatActivity(), Viewer {
      * 显示来电页面
      */
     fun onCallIn(view: View) {
-        CallIn.show(this)
+        FaceTime.show(this, "Obama", CallMessage.ACTION_CALL)
     }
 
     /**
@@ -136,8 +146,6 @@ class CallOut : AppCompatActivity(), Viewer {
      */
     fun onCallPhone(view: View) {
         onCallEvent.invoke(view)
-
-        CallIn.show(this)
     }
 
     /**

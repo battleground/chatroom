@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="#FFF">
 
     <LinearLayout
@@ -39,10 +40,20 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="320dp"
+        android:background="@drawable/default_item_selector"
+        android:onClick="onMoreEvent"
+        android:padding="12dp"
+        android:text="更多>>" />
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="340dp"
+        android:layout_height="320dp"
         android:layout_gravity="bottom">
 
         <LinearLayout

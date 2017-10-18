@@ -3,20 +3,14 @@ package com.facetime;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
+import com.abooc.im.message.CallMessage;
 import com.abooc.util.Debug;
 import com.avos.avoscloud.AVConstants;
-import com.avos.avoscloud.AVMiPushMessageReceiver;
-import com.xiaomi.mipush.sdk.MiPushMessage;
-import com.xiaomi.mipush.sdk.PushMessageHelper;
-import com.xiaomi.mipush.sdk.PushMessageReceiver;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.Serializable;
 
 public class XiaoMiReceiver extends BroadcastReceiver {
     @Override
@@ -62,7 +56,7 @@ public class XiaoMiReceiver extends BroadcastReceiver {
     private void processMiNotificationClickEvent(Context context, Intent intent) {
         Toast.makeText(context, "小米通知栏消息被点击", Toast.LENGTH_SHORT).show();
         Debug.error("processMiNotificationClickEvent");
-        CallIn.Companion.show(context);
+        FaceTime.Companion.show(context, "- -", CallMessage.ACTION_CALL);
     }
 
 //public class XiaoMiReceiver extends PushMessageReceiver {

@@ -77,7 +77,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing" />
         <activity
-            android:name="com.facetime.CallIn"
+            android:name="com.facetime.FaceTime"
             android:label="来电接听"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />

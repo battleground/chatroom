@@ -6,18 +6,19 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.text.TextUtils;
 
-import com.abooc.im.activity.Claim;
-import com.abooc.im.message.GiftMessage;
+import com.abooc.im.message.CallMessage;
 import com.abooc.util.Debug;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMMessageHandler;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
-import com.facetime.CallIn;
+import com.facetime.FaceTime;
 import com.google.gson.Gson;
 
-import java.util.Locale;
+import static com.abooc.im.message.CallMessage.ACTION_CALL;
+import static com.abooc.im.message.CallMessage.ACTION_HANG_UP;
+import static com.abooc.im.message.CallMessage.ACTION_HOLD_ON;
 
 public class CoreService extends Service {
 
@@ -39,8 +40,8 @@ public class CoreService extends Service {
 //        AVOSCloud.useAVCloudUS();
         LeanCloud.initLeanCloudSDK(this);
         LeanCloud.installAppAttributes(this.getApplicationContext());
-        AVIMMessageManager.registerAVIMMessageType(GiftMessage.class);
-        AVIMMessageManager.registerMessageHandler(GiftMessage.class, iCustomMessageHandler);
+        AVIMMessageManager.registerAVIMMessageType(CallMessage.class);
+        AVIMMessageManager.registerMessageHandler(CallMessage.class, iCustomMessageHandler);
 
         LeanCloud.subscribePush(this.getApplicationContext());
 
@@ -78,30 +79,25 @@ public class CoreService extends Service {
         super.onDestroy();
     }
 
-
-    Gson mGson = new Gson();
-
     public class CustomMessageHandler extends AVIMMessageHandler {
         //接收到消息后的处理逻辑
         @Override
-        public void onMessage(AVIMMessage message, AVIMConversation conversation, AVIMClient client) {
-            if (message instanceof GiftMessage) {
-                CallIn.Companion.show(CoreService.this);
-//                GiftMessage giftMessage = (GiftMessage) message;
-
-//                addToContainer(giftMessage);
-//                charge(giftMessage);
-
-//                switch (giftMessage.getMoney()) {
-//                    case 100:
-////                        doGift(giftMessage);
-//                        break;
-//                    case 1000:
-//                        doBigGift(giftMessage);
-//                        break;
-//                }
+        public void onMessage(AVIMMessage avimMessage, AVIMConversation conversation, AVIMClient client) {
+            Debug.anchor(new Gson().toJson(avimMessage));
+            if (avimMessage instanceof CallMessage) {
+                CallMessage message = (CallMessage) avimMessage;
+                int i = message.getAction();
+                switch (i) {
+                    case ACTION_CALL:
+                        FaceTime.Companion.show(CoreService.this, message.getFrom(), CallMessage.ACTION_CALL);
+                        break;
+                    case ACTION_HOLD_ON:
+                        break;
+                    case ACTION_HANG_UP:
+                        break;
+                }
             } else {
-                Debug.anchor(mGson.toJson(message));
+                Debug.anchor(new Gson().toJson(avimMessage));
             }
         }
 
@@ -109,32 +105,6 @@ public class CoreService extends Service {
             Debug.error();
         }
 
-//        void addToContainer(GiftMessage giftMessage) {
-//            int index = giftMessage.getGiftIndex();
-//            String giftIndex = index > 1 ? " X " + index : "";
-//            String messageString = "【" + giftMessage.getUid() + "】：" + giftMessage.getName() + giftIndex;
-//            CharSequence text = mMessageText.getText();
-//            String time = toTime(giftMessage.getTimestamp());
-//            mMessageText.setText(text + "\n" + time + messageString);
-//        }
-
-//        void doGift(GiftMessage giftMessage) {
-//            if (giftMessage.getGiftIndex() > 1) {
-//                mXText.startAnimation(mAnimationX);
-//                mXText.setText("X " + giftMessage.getGiftIndex());
-//            } else {
-//                mXText.setText(null);
-//            }
-//        }
-
-        void doBigGift(GiftMessage giftMessage) {
-            Claim.show(CoreService.this);
-        }
-
-        String toTime(long time) {
-            java.text.DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
-            return format1.format(time);
-        }
     }
 
 }

@@ -1,7 +1,6 @@
 package com.abooc.im.activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +15,7 @@ import com.abooc.im.LcConfig;
 import com.abooc.im.LeanCloud;
 import com.abooc.im.MessageIdentifier;
 import com.abooc.im.R;
+import com.abooc.im.message.CallMessage;
 import com.abooc.im.message.FMIMSystemMessage;
 import com.abooc.im.message.GiftMessage;
 import com.abooc.plugin.about.AboutActivity;
@@ -280,7 +280,6 @@ public class GiftSamplesActivity extends AppCompatActivity {
 
     }
 
-    Gson mGson = new Gson();
     public class NotificationMessageHandler extends AVIMMessageHandler {
         //接收到消息后的处理逻辑
         @Override
@@ -292,10 +291,65 @@ public class GiftSamplesActivity extends AppCompatActivity {
                 logout(false);
 
             } else {
-                Debug.anchor(mGson.toJson(message));
+                Debug.anchor(new Gson().toJson(message));
             }
         }
     }
 
+    public class CustomMessageHandler extends AVIMMessageHandler {
+        //接收到消息后的处理逻辑
+        @Override
+        public void onMessage(AVIMMessage message, AVIMConversation conversation, AVIMClient client) {
+            if (message instanceof CallMessage) {
+                GiftMessage giftMessage = (GiftMessage) message;
+
+                addToContainer(giftMessage);
+                charge(giftMessage);
+
+                switch (giftMessage.getMoney()) {
+                    case 100:
+                        doGift(giftMessage);
+                        break;
+                    case 1000:
+                        doBigGift(giftMessage);
+                        break;
+                }
+            } else {
+                Debug.anchor(new Gson().toJson(message));
+            }
+        }
+
+        public void onMessageReceipt(AVIMMessage message, AVIMConversation conversation, AVIMClient client) {
+            Debug.error();
+        }
+
+    }
+
+    void addToContainer(GiftMessage giftMessage) {
+        int index = giftMessage.getGiftIndex();
+        String giftIndex = index > 1 ? " X " + index : "";
+        String messageString = "【" + giftMessage.getUid() + "】：" + giftMessage.getName() + giftIndex;
+        CharSequence text = mMessageText.getText();
+        String time = toTime(giftMessage.getTimestamp());
+        mMessageText.setText(text + "\n" + time + messageString);
+    }
+
+    void doGift(GiftMessage giftMessage) {
+        if (giftMessage.getGiftIndex() > 1) {
+            mXText.startAnimation(mAnimationX);
+            mXText.setText("X " + giftMessage.getGiftIndex());
+        } else {
+            mXText.setText(null);
+        }
+    }
+
+    void doBigGift(GiftMessage giftMessage) {
+        Claim.show(this);
+    }
+
+    String toTime(long time) {
+        java.text.DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
+        return format1.format(time);
+    }
 
 }

@@ -15,8 +15,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.abooc.im.AppApplication;
+import com.abooc.im.CoreService;
 import com.abooc.im.LeanCloud;
 import com.abooc.im.R;
+import com.abooc.im.activity.GiftSamplesActivity;
 import com.abooc.im.activity.LeanCloudIMActivity;
 import com.abooc.plugin.about.AboutActivity;
 
@@ -52,7 +54,12 @@ public class DebugListActivity extends AppCompatActivity implements AdapterView.
 
         mListView = (ListView) findViewById(R.id.ListView);
         mListView.setOnItemClickListener(this);
-        mListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"LC实时消息", "礼物动画", "对话框"}));
+        mListView.setAdapter(
+                new ArrayAdapter<>(
+                        this,
+                        android.R.layout.simple_list_item_1,
+                        new String[]{"礼物Samples", "LC实时消息", "礼物动画", "对话框", "CoreService"}
+                ));
     }
 
     @Override
@@ -80,15 +87,20 @@ public class DebugListActivity extends AppCompatActivity implements AdapterView.
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 0:
-                LeanCloudIMActivity.launch(this);
+                GiftSamplesActivity.launch(this);
                 break;
             case 1:
-                TestAnimActivity.launch(this);
+                LeanCloudIMActivity.launch(this);
                 break;
             case 2:
-//                Intent intent = new Intent(getBaseContext(), CoreService.class);
-//                startService(intent);
+                TestAnimActivity.launch(this);
+                break;
+            case 3:
                 AppApplication.alert(getBaseContext(), null).show();
+                break;
+            case 4:
+                Intent intent = new Intent(getBaseContext(), CoreService.class);
+                startService(intent);
                 break;
         }
     }

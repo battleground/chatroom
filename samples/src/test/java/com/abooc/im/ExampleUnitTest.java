@@ -26,7 +26,8 @@ public class ExampleUnitTest {
 
     @Test
     public void addition_isCorrect() throws Exception {
-        String time = time();
+//        String time = time();
+        String time = formatTime(120 * 1000L, "HH:mm:ss");
         out(time);
     }
 
@@ -36,6 +37,90 @@ public class ExampleUnitTest {
 
         Date date = new Date(millis);
         return date.toString();
+    }
+
+
+    /**
+     * 00:00:00
+     */
+    public static String formatTime(Long ms, String format) {
+        Integer ss = 1000;
+        Integer mi = ss * 60;
+        Integer hh = mi * 60;
+        Integer dd = hh * 24;
+
+        Long day = ms / dd;
+        Long hour = (ms - day * dd) / hh;
+        Long minute = (ms - day * dd - hour * hh) / mi;
+        Long second = (ms - day * dd - hour * hh - minute * mi) / ss;
+        Long milliSecond = ms - day * dd - hour * hh - minute * mi - second * ss;
+
+        StringBuffer sb = new StringBuffer();
+        if (day > 0) {
+            sb.append(day + "天");
+        }
+        if (hour > 0) {
+            sb.append(fix(hour));
+        } else {
+            sb.append("00");
+        }
+        if (minute > 0) {
+            sb.append(":" + fix(minute));
+        } else {
+            sb.append(":00");
+        }
+        if (second > 0) {
+            sb.append(":" + fix(second));
+        } else {
+            sb.append(":00");
+        }
+        if (milliSecond > 0) {
+            sb.append(":" + fix(milliSecond) + "毫秒");
+        }
+        return sb.toString();
+    }
+
+    static String fix(long i) {
+        if (i < 10) {
+            return "0" + i;
+        } else {
+            return String.valueOf(i);
+        }
+    }
+
+
+    /**
+     * 毫秒转化时分秒毫秒
+     */
+    public static String formatTime(Long ms) {
+        Integer ss = 1000;
+        Integer mi = ss * 60;
+        Integer hh = mi * 60;
+        Integer dd = hh * 24;
+
+        Long day = ms / dd;
+        Long hour = (ms - day * dd) / hh;
+        Long minute = (ms - day * dd - hour * hh) / mi;
+        Long second = (ms - day * dd - hour * hh - minute * mi) / ss;
+        Long milliSecond = ms - day * dd - hour * hh - minute * mi - second * ss;
+
+        StringBuffer sb = new StringBuffer();
+        if (day > 0) {
+            sb.append(day + "天");
+        }
+        if (hour > 0) {
+            sb.append(hour + ":");
+        }
+        if (minute > 0) {
+            sb.append(minute + ":");
+        }
+        if (second > 0) {
+            sb.append(second);
+        }
+        if (milliSecond > 0) {
+            sb.append(":" + milliSecond + "毫秒");
+        }
+        return sb.toString();
     }
 
 

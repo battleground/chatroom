@@ -3,6 +3,7 @@ package com.facetime;
 import android.content.Context;
 import android.content.Intent;
 
+import com.abooc.im.message.CallMessage;
 import com.abooc.util.Debug;
 import com.avos.avoscloud.AVFlymePushMessageReceiver;
 import com.meizu.cloud.pushsdk.notification.PushNotificationBuilder;
@@ -15,7 +16,7 @@ public class FlymeReceiver extends AVFlymePushMessageReceiver {
         + intent.getExtras().toString());
 //        super.onReceive(context, intent);
 
-        CallIn.Companion.show(context);
+        FaceTime.Companion.show(context, "- -", CallMessage.ACTION_CALL);
     }
 
 

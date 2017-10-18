@@ -7,21 +7,19 @@ import com.abooc.im.LeanCloud
 import com.abooc.im.R
 import com.abooc.im.Saver
 import com.abooc.im.activity.LoginActivity
-import com.abooc.im.message.GiftMessage
+import com.abooc.im.message.CallMessage
 import com.abooc.util.Debug
 import com.abooc.widget.Toast
 import com.avos.avoscloud.AVInstallation
 import com.avos.avoscloud.AVMixpushManager
 import com.avos.avoscloud.AVPush
-import com.avos.avoscloud.im.v2.AVIMClient
-import com.avos.avoscloud.im.v2.AVIMConversation
-import com.avos.avoscloud.im.v2.AVIMException
-import com.avos.avoscloud.im.v2.AVIMMessageOption
+import com.avos.avoscloud.im.v2.*
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback
 import com.avos.avoscloud.im.v2.callback.AVIMOnlineClientsCallback
 import com.facetime.CallOut
+import com.facetime.FaceTime
 import org.json.JSONException
 import org.json.JSONObject
 import org.lee.java.util.Empty
@@ -32,12 +30,12 @@ import java.util.*
  * Created by dayu on 2017/10/16.
  */
 
-interface Viewer {
+interface CallViewer {
 
 }
 
 
-class CallOutPresenter(val viewer: Viewer) {
+class CallOutPresenter(val viewer: CallViewer) {
 
     val mSender = Sender()
 
@@ -45,6 +43,7 @@ class CallOutPresenter(val viewer: Viewer) {
         val callOutViewer = viewer as CallOut
         callOutViewer.onCallEvent = {
             Debug.error()
+            FaceTime.show(viewer.applicationContext, callOutViewer.getPhone(), CallMessage.ACTION_HANG_UP)
             mSender.call(callOutViewer.getPhone())
         }
         callOutViewer.onPushCallback = {
@@ -116,16 +115,17 @@ class Sender {
                         getConversation(phone, object : AVIMConversationCreatedCallback() {
                             override fun done(conversation: AVIMConversation, e: AVIMException?) {
                                 if (e == null) {
-                                    val giftMessage = GiftMessage()
-                                    giftMessage.text = "发送一个礼物！"
-                                    giftMessage.name = "【普通礼物】"
-                                    giftMessage.code = "GF-01-333"
-                                    giftMessage.money = 100
-                                    giftMessage.uid = clientId
+                                    val message = CallMessage()
+                                    message.text = "来电通话消息！"
+                                    message.title = "主叫"
+                                    message.action = CallMessage.ACTION_CALL
+                                    message.to = phone
+                                    message.from = clientId
 
-                                    doSend(conversation, giftMessage)
+                                    doSend(conversation, message)
                                 } else {
-
+                                    Debug.error("getConversation():" + e)
+                                    Toast.show("【主叫】出错！$e")
                                 }
                             }
                         })
@@ -133,25 +133,66 @@ class Sender {
 
                 } else {
                     Debug.error("getOnlineClients():" + e)
+                    Toast.show("【主叫】出错！$e")
                 }
             }
         })
 
     }
 
+    fun holdOn(from: String) {
+        getConversation(from, object : AVIMConversationCreatedCallback() {
+            override fun done(conversation: AVIMConversation, e: AVIMException?) {
+                if (e == null) {
+                    val message = CallMessage()
+                    message.text = "来电通话消息！"
+                    message.title = "接听"
+                    message.action = CallMessage.ACTION_HOLD_ON
+                    message.to = from
+                    message.from = clientId
+
+                    doSend(conversation, message)
+                } else {
+                    Debug.error("getConversation():" + e)
+                    Toast.show("【接听】出错！$e")
+                }
+            }
+        })
+    }
+
+    fun hungUp(from: String) {
+        getConversation(from, object : AVIMConversationCreatedCallback() {
+            override fun done(conversation: AVIMConversation, e: AVIMException?) {
+                if (e == null) {
+                    val message = CallMessage()
+                    message.text = "来电通话消息！"
+                    message.title = "挂断"
+                    message.action = CallMessage.ACTION_HANG_UP
+                    message.to = from
+                    message.from = clientId
+
+                    doSend(conversation, message)
+                } else {
+                    Debug.error("getConversation():" + e)
+                    Toast.show("【挂断】出错！$e")
+                }
+            }
+        })
+    }
+
     fun getConversation(phone: String, callback: AVIMConversationCreatedCallback) {
         mClient.createConversation(Arrays.asList(phone), "$clientId & $phone", null, false, true, callback)
     }
 
-    internal fun doSend(conversation: AVIMConversation, message: GiftMessage) {
+    fun doSend(conversation: AVIMConversation, message: CallMessage) {
         val messageOption = AVIMMessageOption()
         messageOption.pushData = "自定义离线消息推送内容"
         conversation.sendMessage(message, messageOption, object : AVIMConversationCallback() {
             override fun done(e: AVIMException?) {
                 if (e == null) {
-                    Toast.show("已发送！")
+                    Debug.error("【${message.title}】成功！")
                 } else {
-                    Debug.error("发送失败！" + e)
+                    Debug.error("【${message.title}】失败！" + e)
                 }
             }
         })
@@ -214,7 +255,7 @@ class Ring(val context: Context) {
 
 
     fun load() {
-        mSoundID = mSoundPool!!.load(context.applicationContext, R.raw.phonering, 1)
+        mSoundID = mSoundPool!!.load(context.applicationContext, R.raw.iphone_ring, 1)
         mSoundPool!!.setOnLoadCompleteListener { _, _, _ -> playSound() }
     }
 
