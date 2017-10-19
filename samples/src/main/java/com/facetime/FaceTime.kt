@@ -10,6 +10,7 @@ import android.os.PowerManager
 import android.view.View
 import com.abooc.im.R
 import com.abooc.im.message.CallMessage
+import com.abooc.util.Debug
 import com.facetime.mvp.FaceTimePresenter
 import com.facetime.mvp.FaceTimeViewer
 import com.facetime.mvp.Ring
@@ -27,6 +28,7 @@ class FaceTime : Activity(), FaceTimeViewer {
     inner class TimerDown : Handler() {
         override fun handleMessage(msg: Message) {
             if (!FaceTime.isConnected) {
+                CallOut.show(applicationContext)
                 this@FaceTime.finish()
             }
         }
@@ -69,7 +71,7 @@ class FaceTime : Activity(), FaceTimeViewer {
     }
 
     var onHoldOnEvent: ((View) -> Unit) = {}
-    var onHungUpEvent: ((View) -> Unit) = {}
+    var onHungUpEvent: (() -> Unit) = {}
 
     fun onHoldOn(view: View) {
         onHoldOnEvent.invoke(view)
@@ -77,7 +79,7 @@ class FaceTime : Activity(), FaceTimeViewer {
     }
 
     fun onHungUp(view: View) {
-        onHungUpEvent.invoke(view)
+        onHungUpEvent.invoke()
         onUIHungUp()
     }
 
@@ -113,18 +115,24 @@ class FaceTime : Activity(), FaceTimeViewer {
 
     }
 
+    override fun onStop() {
+        super.onStop()
+        onHungUpEvent.invoke()
+        onUIHungUp()
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out)
+    }
+
     override fun onDestroy() {
+        Debug.error()
         super.onDestroy()
         Ring.stop()
         keepScreenOn(this, false)
         uiTimer.stop()
         FaceTime.destroy()
-    }
-
-    override fun finish() {
-        super.finish()
-        CallOut.show(this)
-        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out)
     }
 
     companion object {

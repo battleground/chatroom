@@ -13,13 +13,17 @@ import com.abooc.widget.Toast
 import com.avos.avoscloud.AVInstallation
 import com.avos.avoscloud.AVMixpushManager
 import com.avos.avoscloud.AVPush
-import com.avos.avoscloud.im.v2.*
+import com.avos.avoscloud.im.v2.AVIMClient
+import com.avos.avoscloud.im.v2.AVIMConversation
+import com.avos.avoscloud.im.v2.AVIMException
+import com.avos.avoscloud.im.v2.AVIMMessageOption
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback
 import com.avos.avoscloud.im.v2.callback.AVIMOnlineClientsCallback
 import com.facetime.CallOut
 import com.facetime.FaceTime
+import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
 import org.lee.java.util.Empty
@@ -47,7 +51,28 @@ class CallOutPresenter(val viewer: CallViewer) {
             mSender.call(callOutViewer.getPhone())
         }
         callOutViewer.onPushCallback = {
-            mSender.sendPushWithAction(callOutViewer.getPhone())
+            val clientId = LeanCloud.getInstance().clientId
+
+            val message = CallMessage()
+            message.text = "正在呼叫你..."
+            message.c_Title = "主叫"
+            message.c_Action = CallMessage.ACTION_CALL
+            message.c_To = callOutViewer.getPhone()
+            message.c_From = clientId
+
+            mSender.sendPushWithAction(callOutViewer.getPhone(), message)
+        }
+        callOutViewer.onPushNotificationHungUp = {
+            val clientId = LeanCloud.getInstance().clientId
+
+            val message = CallMessage()
+            message.text = "你有未接来电！"
+            message.c_Title = "挂断"
+            message.c_Action = CallMessage.ACTION_HANG_UP
+            message.c_To = callOutViewer.getPhone()
+            message.c_From = clientId
+
+            mSender.sendPushWithAction(callOutViewer.getPhone(), message)
         }
         callOutViewer.onExitEvent = {
             val clientId = LeanCloud.getInstance().clientId
@@ -109,19 +134,19 @@ class Sender {
             override fun done(list: List<String>, e: AVIMException?) {
                 if (e == null) {
                     Debug.error("在线成员：" + ToString.toString(list))
+                    val message = CallMessage()
+                    message.text = "正在呼叫你..."
+                    message.c_Title = "主叫"
+                    message.c_Action = CallMessage.ACTION_CALL
+                    message.c_To = phone
+                    message.c_From = clientId
+
                     if (Empty.isEmpty(list)) {
-                        sendPushWithAction(phone)
+                        sendPushWithAction(phone, message)
                     } else {
                         getConversation(phone, object : AVIMConversationCreatedCallback() {
                             override fun done(conversation: AVIMConversation, e: AVIMException?) {
                                 if (e == null) {
-                                    val message = CallMessage()
-                                    message.text = "来电通话消息！"
-                                    message.title = "主叫"
-                                    message.action = CallMessage.ACTION_CALL
-                                    message.to = phone
-                                    message.from = clientId
-
                                     doSend(conversation, message)
                                 } else {
                                     Debug.error("getConversation():" + e)
@@ -146,10 +171,10 @@ class Sender {
                 if (e == null) {
                     val message = CallMessage()
                     message.text = "来电通话消息！"
-                    message.title = "接听"
-                    message.action = CallMessage.ACTION_HOLD_ON
-                    message.to = from
-                    message.from = clientId
+                    message.c_Title = "接听"
+                    message.c_Action = CallMessage.ACTION_HOLD_ON
+                    message.c_To = from
+                    message.c_From = clientId
 
                     doSend(conversation, message)
                 } else {
@@ -160,21 +185,36 @@ class Sender {
         })
     }
 
-    fun hungUp(from: String) {
-        getConversation(from, object : AVIMConversationCreatedCallback() {
-            override fun done(conversation: AVIMConversation, e: AVIMException?) {
+    fun hungUp(to: String) {
+        mClient.getOnlineClients(Arrays.asList(to), object : AVIMOnlineClientsCallback() {
+            override fun done(list: List<String>, e: AVIMException?) {
                 if (e == null) {
+                    Debug.error("在线成员：" + ToString.toString(list))
                     val message = CallMessage()
-                    message.text = "来电通话消息！"
-                    message.title = "挂断"
-                    message.action = CallMessage.ACTION_HANG_UP
-                    message.to = from
-                    message.from = clientId
+                    message.text = "你有未接来电！"
+                    message.c_Title = "挂断"
+                    message.c_Action = CallMessage.ACTION_HANG_UP
+                    message.c_To = to
+                    message.c_From = clientId
 
-                    doSend(conversation, message)
+                    if (Empty.isEmpty(list)) {
+                        sendPushWithAction(to, message)
+                    } else {
+                        getConversation(to, object : AVIMConversationCreatedCallback() {
+                            override fun done(conversation: AVIMConversation, e: AVIMException?) {
+                                if (e == null) {
+                                    doSend(conversation, message)
+                                } else {
+                                    Debug.error("getConversation():" + e)
+                                    Toast.show("【挂断】出错！$e")
+                                }
+                            }
+                        })
+                    }
+
                 } else {
-                    Debug.error("getConversation():" + e)
-                    Toast.show("【挂断】出错！$e")
+                    Debug.error("getOnlineClients():" + e)
+                    Toast.show("【主叫】出错！$e")
                 }
             }
         })
@@ -190,9 +230,9 @@ class Sender {
         conversation.sendMessage(message, messageOption, object : AVIMConversationCallback() {
             override fun done(e: AVIMException?) {
                 if (e == null) {
-                    Debug.error("【${message.title}】成功！")
+                    Debug.error("【${message.c_Title}】成功！")
                 } else {
-                    Debug.error("【${message.title}】失败！" + e)
+                    Debug.error("【${message.c_Title}】失败！" + e)
                 }
             }
         })
@@ -207,15 +247,15 @@ class Sender {
      * 小米手机:弹出通知栏
      * 华为手机&普通手机:发送到用户自定义 receiver
      */
-    fun sendPushWithAction(who: String) {
+    fun sendPushWithAction(who: String, message: CallMessage) {
         val pushQuery = AVInstallation.getQuery()
         pushQuery.whereEqualTo("uid", who)
-        //        pushQuery.whereEqualTo("installationId", "e691ccb5e4330dc93b22f72a3af0b158");
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("title", "[Tom]正在呼叫你...")
+            jsonObject.put("title", "【${message.c_From}】${message.text}")
             jsonObject.put("alert", "视频通话")
             jsonObject.put("action", CUSTOM_ACTION)
+            jsonObject.put("c_data", Gson().toJson(message))
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -249,13 +289,13 @@ class Sender {
 
 class Ring(val context: Context) {
 
-    private var mSoundPool: SoundPool = SoundPool(5, AudioManager.STREAM_RING, 5)
+    private var mSoundPool: SoundPool = SoundPool(5, AudioManager.STREAM_SYSTEM, 5)
     private var mSoundID: Int = 0
     private var streamId: Int = 0
 
 
     fun load() {
-        mSoundID = mSoundPool!!.load(context.applicationContext, R.raw.iphone_ring, 1)
+        mSoundID = mSoundPool!!.load(context.applicationContext, R.raw.phonering, 1)
         mSoundPool!!.setOnLoadCompleteListener { _, _, _ -> playSound() }
     }
 

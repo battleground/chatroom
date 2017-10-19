@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.abooc.im.message.CallMessage;
 import com.abooc.util.Debug;
 import com.avos.avoscloud.AVConstants;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,17 +25,6 @@ public class XiaoMiReceiver extends BroadcastReceiver {
             processCustomReceiverMessage(context, intent);
         }
     }
-
-//    @Override
-//    public void onReceive(Context context, Intent intent) {
-//
-//        Debug.error(intent.toString() + "\n" + intent.getExtras().toString());
-//
-//        MiPushMessage message = (MiPushMessage) intent.getSerializableExtra(PushMessageHelper.KEY_MESSAGE);
-//        Debug.error(message.toString());
-////        to(intent);
-//    }
-
 
     /**
      * 处理自定义消息
@@ -56,7 +46,18 @@ public class XiaoMiReceiver extends BroadcastReceiver {
     private void processMiNotificationClickEvent(Context context, Intent intent) {
         Toast.makeText(context, "小米通知栏消息被点击", Toast.LENGTH_SHORT).show();
         Debug.error("processMiNotificationClickEvent");
-        FaceTime.Companion.show(context, "- -", CallMessage.ACTION_CALL);
+
+        CallMessage message = to(intent);
+        if (message != null) {
+            int action = message.getC_Action();
+            Debug.error("CallMessage.c_action:" + action);
+            if (action == CallMessage.ACTION_CALL) {
+                FaceTime.Companion.show(context, message.getC_From(), CallMessage.ACTION_CALL);
+            } else {
+                com.abooc.widget.Toast.show("【" + message.getC_From() + "】未接来电！");
+                X.show(context);
+            }
+        }
     }
 
 //public class XiaoMiReceiver extends PushMessageReceiver {
@@ -70,18 +71,29 @@ public class XiaoMiReceiver extends BroadcastReceiver {
 //    }
 
 
-    void to(Intent intent) {
+    CallMessage to(Intent intent) {
         String action = intent.getAction();
         String channel = intent.getExtras().getString("com.avos.avoscloud.Channel");
         //获取消息内容
         try {
-            JSONObject json = new JSONObject(intent.getExtras().getString("com.avos.avoscloud.Data"));
+            JSONObject obj = new JSONObject(intent.getExtras().getString("com.avos.avoscloud.Data"));
             Debug.error(action + "\n"
                     + channel + "\n"
-                    + json);
+                    + obj);
+
+            String json = obj.getString("c_data");
+            CallMessage message = new Gson().fromJson(json, CallMessage.class);
+            Debug.error("c_action:" + message.getC_Action() + "\n"
+                    + "c_title:" + message.getC_Title() + "\n"
+                    + "text:" + message.getText() + "\n"
+                    + "c_from:" + message.getC_From() + "\n"
+                    + "c_to:" + message.getC_To() + "\n"
+                    + message.toString());
+            return message;
         } catch (JSONException e) {
-            e.printStackTrace();
+            Debug.error(e);
         }
+        return null;
     }
 
 }

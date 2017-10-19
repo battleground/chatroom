@@ -86,10 +86,10 @@ public class CoreService extends Service {
             Debug.anchor(new Gson().toJson(avimMessage));
             if (avimMessage instanceof CallMessage) {
                 CallMessage message = (CallMessage) avimMessage;
-                int i = message.getAction();
+                int i = message.getC_Action();
                 switch (i) {
                     case ACTION_CALL:
-                        FaceTime.Companion.show(CoreService.this, message.getFrom(), CallMessage.ACTION_CALL);
+                        FaceTime.Companion.show(CoreService.this, message.getC_From(), CallMessage.ACTION_CALL);
                         break;
                     case ACTION_HOLD_ON:
                         break;

@@ -1,6 +1,7 @@
 package com.facetime;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -63,6 +64,12 @@ public class X extends Activity {
     protected void onResume() {
         super.onResume();
 
+        clear();
+    }
+
+    void clear() {
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotificationManager.cancelAll();
     }
 
     @Override

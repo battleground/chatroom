@@ -64,7 +64,7 @@ class FaceTimePresenter(val viewer: FaceTimeViewer) {
             Debug.anchor(Gson().toJson(avimMessage))
             if (avimMessage is CallMessage) {
                 val message = avimMessage as CallMessage
-                val i = message!!.action
+                val i = message.c_Action
                 when (i) {
                     ACTION_HOLD_ON -> {
                         viewer.onUIHoldOn()

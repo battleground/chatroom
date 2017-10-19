@@ -28,42 +28,45 @@ public class CallMessage extends AVIMTextMessage {
         setAttrs(new HashMap<String, Object>());
     }
 
-    public String getTo() {
+    public String getC_To() {
         return (String) this.getAttrs().get("c_to");
     }
 
-    public void setTo(String to) {
+    public void setC_To(String to) {
         this.getAttrs().put("c_to", to);
     }
 
-    public String getFrom() {
+    public String getC_From() {
         return (String) this.getAttrs().get("c_from");
     }
 
-    public void setFrom(String from) {
+    public void setC_From(String from) {
         this.getAttrs().put("c_from", from);
     }
 
-    public int getAction() {
+    public int getC_Action() {
         Object obj = this.getAttrs().get("c_action");
-        return safeToInt(obj, 0);
+        return safeToInt(obj, -1);
     }
 
-    public void setAction(int action) {
+    public void setC_Action(int action) {
         this.getAttrs().put("c_action", action);
     }
 
-    public String getTitle() {
+    public String getC_Title() {
         return (String) this.getAttrs().get("c_title");
     }
 
-    public void setTitle(String title) {
+    public void setC_Title(String title) {
         this.getAttrs().put("c_title", title);
     }
 
     int safeToInt(Object obj, int defValue) {
         if (obj instanceof Integer) {
             return (int) obj;
+        }
+        if (obj instanceof String) {
+            return Integer.valueOf((String) obj).intValue();
         }
         return defValue;
     }

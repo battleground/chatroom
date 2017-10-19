@@ -73,6 +73,7 @@ class CallOut : AppCompatActivity(), CallViewer {
                 call.isEnabled = b
                 queryStatus.isEnabled = b
                 pushNotification.isEnabled = b
+                pushNotificationHungUp.isEnabled = b
                 pushSilent.isEnabled = b
             }
 
@@ -106,6 +107,7 @@ class CallOut : AppCompatActivity(), CallViewer {
 
     var onCallEvent: ((View) -> Unit) = {}
     var onPushCallback: ((View) -> Unit) = {}
+    var onPushNotificationHungUp: ((View) -> Unit) = {}
 
     fun onMoreEvent(view: View) {
         if (scrollView.visibility == View.VISIBLE) {
@@ -153,6 +155,13 @@ class CallOut : AppCompatActivity(), CallViewer {
      */
     fun onPush(view: View) {
         onPushCallback.invoke(view)
+    }
+
+    /**
+     * 推送通知栏消息
+     */
+    fun onPushNotificationHungUp(view: View) {
+        onPushNotificationHungUp.invoke(view)
     }
 
     var onQueryEvent: ((View) -> Unit) = {}
