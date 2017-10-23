@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.lee.java.util.Empty;
 
 public class XiaoMiReceiver extends BroadcastReceiver {
     @Override
@@ -35,6 +36,8 @@ public class XiaoMiReceiver extends BroadcastReceiver {
     private void processCustomReceiverMessage(Context context, Intent intent) {
         Toast.makeText(context, "自定义 receiver 收到消息", Toast.LENGTH_SHORT).show();
         Debug.error("processCustomReceiverMessage");
+
+        handleIntent(context, intent);
     }
 
     /**
@@ -47,16 +50,22 @@ public class XiaoMiReceiver extends BroadcastReceiver {
         Toast.makeText(context, "小米通知栏消息被点击", Toast.LENGTH_SHORT).show();
         Debug.error("processMiNotificationClickEvent");
 
+        handleIntent(context, intent);
+    }
+
+    public static void handleIntent(Context context, Intent intent) {
+
         CallMessage message = to(intent);
         if (message != null) {
             int action = message.getC_Action();
-            Debug.error("CallMessage.c_action:" + action);
             if (action == CallMessage.ACTION_CALL) {
-                FaceTime.Companion.show(context, message.getC_From(), CallMessage.ACTION_CALL);
+                FaceTimeActivity.Companion.show(context, message.getC_From(), CallMessage.ACTION_CALL);
             } else {
                 com.abooc.widget.Toast.show("【" + message.getC_From() + "】未接来电！");
                 X.show(context);
             }
+        } else {
+            X.show(context);
         }
     }
 
@@ -71,12 +80,16 @@ public class XiaoMiReceiver extends BroadcastReceiver {
 //    }
 
 
-    CallMessage to(Intent intent) {
+    public static CallMessage to(Intent intent) {
         String action = intent.getAction();
         String channel = intent.getExtras().getString("com.avos.avoscloud.Channel");
+        String data = intent.getExtras().getString("com.avos.avoscloud.Data");
+        if (Empty.isEmpty(data)) {
+            return null;
+        }
         //获取消息内容
         try {
-            JSONObject obj = new JSONObject(intent.getExtras().getString("com.avos.avoscloud.Data"));
+            JSONObject obj = new JSONObject(data);
             Debug.error(action + "\n"
                     + channel + "\n"
                     + obj);

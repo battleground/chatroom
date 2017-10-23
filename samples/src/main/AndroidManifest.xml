@@ -71,13 +71,13 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name="com.facetime.CallOut"
+            android:name="com.facetime.CallOutActivity"
             android:label="拨打"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing" />
         <activity
-            android:name="com.facetime.FaceTime"
+            android:name="com.facetime.FaceTimeActivity"
             android:label="来电接听"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
@@ -265,7 +265,18 @@
 
         <service
             android:name="com.huawei.android.pushagent.PushService"
-            android:process=":pushservice"></service>
+            android:process=":pushservice" />
+
+        <receiver
+            android:name="com.facetime.HuaWeiReceiver"
+            android:process=":pushservice">
+            <intent-filter>
+                <action android:name="com.huawei.android.push.intent.REFRESH_PUSH_CHANNEL" />
+                <action android:name="com.huawei.intent.action.PUSH" />
+                <action android:name="com.huawei.intent.action.PUSH_ON" />
+                <action android:name="com.huawei.android.push.PLUGIN" />
+            </intent-filter>
+        </receiver>
         <!-- END 华为推送 -->
 
 

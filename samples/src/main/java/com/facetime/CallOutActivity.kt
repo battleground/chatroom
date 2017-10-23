@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.logs_view.*
  * email:allnet@live.cn
  * on 15-5-22.
  */
-class CallOut : AppCompatActivity(), CallViewer {
+class CallOutActivity : AppCompatActivity(), CallViewer {
 
     val AVIMClientEventHandler = object : AVIMClientEventHandler() {
         override fun onConnectionResume(avimClient: AVIMClient) {
@@ -83,7 +83,8 @@ class CallOut : AppCompatActivity(), CallViewer {
     }
 
     fun getPhone(): String {
-        return "86 ${uid.text}"
+//        return "86 ${uid.text}"
+        return "${uid.text}"
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
@@ -140,7 +141,7 @@ class CallOut : AppCompatActivity(), CallViewer {
      * 显示来电页面
      */
     fun onCallIn(view: View) {
-        FaceTime.show(this, "Obama", CallMessage.ACTION_CALL)
+        FaceTimeActivity.show(this, "Obama", CallMessage.ACTION_CALL)
     }
 
     /**
@@ -201,7 +202,7 @@ class CallOut : AppCompatActivity(), CallViewer {
          * @param ctx
          */
         fun show(ctx: Context) {
-            val intent = Intent(ctx, CallOut::class.java)
+            val intent = Intent(ctx, CallOutActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             ctx.startActivity(intent)
         }

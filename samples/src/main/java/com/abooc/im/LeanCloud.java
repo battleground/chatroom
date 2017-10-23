@@ -20,8 +20,8 @@ import com.avos.avoscloud.im.v2.AVIMConversationEventHandler;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
-import com.facetime.FaceTime;
-import com.facetime.CallOut;
+import com.facetime.FaceTimeActivity;
+import com.facetime.CallOutActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -251,10 +251,10 @@ public class LeanCloud {
         context = context.getApplicationContext();
         String versionName = getVersionName(context);
 
-        PushService.setDefaultPushCallback(context, FaceTime.class);
-        PushService.subscribe(context, "version-" + versionName, CallOut.class);
-        PushService.subscribe(context, BuildConfig.DEBUG ? "dev" : "release", CallOut.class);
-        PushService.subscribe(context, "update", CallOut.class);
+        PushService.setDefaultPushCallback(context, FaceTimeActivity.class);
+        PushService.subscribe(context, "version-" + versionName, CallOutActivity.class);
+        PushService.subscribe(context, BuildConfig.DEBUG ? "dev" : "release", CallOutActivity.class);
+        PushService.subscribe(context, "update", CallOutActivity.class);
     }
 
     public void online(final boolean online) {

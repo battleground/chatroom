@@ -51,7 +51,7 @@ public class X extends Activity {
                     LoginActivity.launch(X.this);
                 } else {
                     LeanCloud.getInstance().createClient(uid);
-                    CallOut.Companion.show(X.this);
+                    CallOutActivity.Companion.show(X.this);
                 }
 
                 finish();

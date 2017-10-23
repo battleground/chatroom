@@ -1,5 +1,6 @@
 package com.abooc.im.message;
 
+import com.abooc.util.Debug;
 import com.avos.avoscloud.im.v2.AVIMMessageType;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 
@@ -50,7 +51,7 @@ public class CallMessage extends AVIMTextMessage {
     }
 
     public void setC_Action(int action) {
-        this.getAttrs().put("c_action", action);
+        this.getAttrs().put("c_action", String.valueOf(action));
     }
 
     public String getC_Title() {
@@ -61,14 +62,24 @@ public class CallMessage extends AVIMTextMessage {
         this.getAttrs().put("c_title", title);
     }
 
+    public String getC_Extras() {
+        return (String) this.getAttrs().get("c_extras");
+    }
+
+    public void setC_Extras(String extras) {
+        this.getAttrs().put("c_extras", extras);
+    }
+
     int safeToInt(Object obj, int defValue) {
-        if (obj instanceof Integer) {
-            return (int) obj;
-        }
         if (obj instanceof String) {
-            return Integer.valueOf((String) obj).intValue();
+            try {
+                return Integer.valueOf((String) obj);
+            } catch (NumberFormatException e) {
+                Debug.error(e);
+            }
         }
         return defValue;
     }
+
 
 }

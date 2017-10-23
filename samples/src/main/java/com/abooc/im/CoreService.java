@@ -13,7 +13,7 @@ import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMMessageHandler;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
-import com.facetime.FaceTime;
+import com.facetime.FaceTimeActivity;
 import com.google.gson.Gson;
 
 import static com.abooc.im.message.CallMessage.ACTION_CALL;
@@ -38,14 +38,13 @@ public class CoreService extends Service {
         super.onCreate();
         // 这是使用美国节点
 //        AVOSCloud.useAVCloudUS();
-        LeanCloud.initLeanCloudSDK(this);
         LeanCloud.installAppAttributes(this.getApplicationContext());
         AVIMMessageManager.registerAVIMMessageType(CallMessage.class);
         AVIMMessageManager.registerMessageHandler(CallMessage.class, iCustomMessageHandler);
 
         LeanCloud.subscribePush(this.getApplicationContext());
 
-        String uid = Saver.read(this);
+        String uid = Saver.read(this.getApplicationContext());
         if (TextUtils.isEmpty(uid)) {
         } else {
             LeanCloud.getInstance().createClient(uid);
@@ -57,6 +56,7 @@ public class CoreService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Debug.anchor();
 
+        super.onStartCommand(intent, flags, startId);
         return Service.START_STICKY;
     }
 
@@ -89,7 +89,7 @@ public class CoreService extends Service {
                 int i = message.getC_Action();
                 switch (i) {
                     case ACTION_CALL:
-                        FaceTime.Companion.show(CoreService.this, message.getC_From(), CallMessage.ACTION_CALL);
+                        FaceTimeActivity.Companion.show(CoreService.this, message.getC_From(), CallMessage.ACTION_CALL);
                         break;
                     case ACTION_HOLD_ON:
                         break;

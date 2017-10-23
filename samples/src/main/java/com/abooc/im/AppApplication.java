@@ -26,6 +26,7 @@ public class AppApplication extends Application {
         Toast.init(this);
 
         About.defaultAbout(this);
+        LeanCloud.initLeanCloudSDK(this.getApplicationContext());
         CoreService.launch(this);
     }
 

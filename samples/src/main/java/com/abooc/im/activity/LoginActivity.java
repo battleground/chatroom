@@ -23,7 +23,7 @@ import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMClientOpenOption;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
-import com.facetime.CallOut;
+import com.facetime.CallOutActivity;
 import com.facetime.Keyboard;
 
 public class LoginActivity extends AppCompatActivity {
@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void handleMessage(Message msg) {
 //                            GiftSamplesActivity.launch(getBaseContext());
-                            CallOut.Companion.show(getBaseContext());
+                            CallOutActivity.Companion.show(getBaseContext());
                             finish();
                             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         }

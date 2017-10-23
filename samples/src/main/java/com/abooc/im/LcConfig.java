@@ -1,7 +1,9 @@
 package com.abooc.im;
 
 import android.content.Context;
+import android.telephony.TelephonyManager;
 
+import com.abooc.util.Debug;
 import com.avos.avoscloud.AVMixpushManager;
 
 /**
@@ -41,9 +43,12 @@ public class LcConfig {
 
 
     public static void xPush(Context context){
-        AVMixpushManager.registerXiaomiPush(context, "2882303761517624249", "5491762483249", "call_in");
+//        AVMixpushManager.registerXiaomiPush(context, "2882303761517624249", "5491762483249", "call_in");
 //        AVMixpushManager.registerFlymePush(context, "111435", "37476741a4b14796b649252e4b8c020c", "call_in");
-//        AVMixpushManager.registerHuaweiPush(context, "call_in");
+        AVMixpushManager.registerHuaweiPush(context, "im");
+        String Imei = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE))
+                .getDeviceId();
+        Debug.error(Imei);
     }
 
 }

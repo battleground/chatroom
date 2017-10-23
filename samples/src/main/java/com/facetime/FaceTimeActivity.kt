@@ -23,13 +23,13 @@ import kotlinx.android.synthetic.main.activity_face_time.*
  * email:allnet@live.cn
  * on 15-5-22.
  */
-class FaceTime : Activity(), FaceTimeViewer {
+class FaceTimeActivity : Activity(), FaceTimeViewer {
 
     inner class TimerDown : Handler() {
         override fun handleMessage(msg: Message) {
             if (!FaceTime.isConnected) {
-                CallOut.show(applicationContext)
-                this@FaceTime.finish()
+                CallOutActivity.show(applicationContext)
+                this@FaceTimeActivity.finish()
             }
         }
     }
@@ -101,7 +101,7 @@ class FaceTime : Activity(), FaceTimeViewer {
 
     fun keepScreenOn(context: Context, on: Boolean) {
         var pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-        val wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "FaceTime.KeepScreenOn")
+        val wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "FaceTimeActivity.KeepScreenOn")
         wakeLock.setReferenceCounted(false)
         if (wakeLock != null)
             if (on) {
@@ -143,7 +143,7 @@ class FaceTime : Activity(), FaceTimeViewer {
          * @param ctx
          */
         fun show(ctx: Context, uid: String, action: Int) {
-            val intent = Intent(ctx, FaceTime::class.java)
+            val intent = Intent(ctx, FaceTimeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             intent.putExtra("uid", uid)
             intent.putExtra("action", action)
