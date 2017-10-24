@@ -34,10 +34,9 @@ public class XiaoMiReceiver extends BroadcastReceiver {
      * @param intent
      */
     private void processCustomReceiverMessage(Context context, Intent intent) {
-        Toast.makeText(context, "自定义 receiver 收到消息", Toast.LENGTH_SHORT).show();
         Debug.error("processCustomReceiverMessage");
 
-        handleIntent(context, intent);
+//        handleIntent(context, intent);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.facetime
 
 import android.app.Activity
+import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.os.Handler
 import android.os.Message
 import android.os.PowerManager
 import android.view.View
+import android.view.WindowManager
 import com.abooc.im.R
 import com.abooc.im.message.CallMessage
 import com.abooc.util.Debug
@@ -58,12 +60,14 @@ class FaceTimeActivity : Activity(), FaceTimeViewer {
 
         Ring.load()
         iTimerDown.sendEmptyMessageDelayed(0, (60 * 1000).toLong())
+
+        keepScreenOn(this, true)
+        openKeyguard()
     }
 
     override fun onResume() {
         super.onResume()
 
-        keepScreenOn(this, true)
     }
 
     override fun onTick(seconds: Long, time: String) {
@@ -99,17 +103,6 @@ class FaceTimeActivity : Activity(), FaceTimeViewer {
         Handler().postDelayed({ finish() }, 1000)
     }
 
-    fun keepScreenOn(context: Context, on: Boolean) {
-        var pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-        val wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "FaceTimeActivity.KeepScreenOn")
-        wakeLock.setReferenceCounted(false)
-        if (wakeLock != null)
-            if (on) {
-                wakeLock.acquire()
-            } else {
-                wakeLock.release()
-            }
-    }
 
     override fun onBackPressed() {
 
@@ -117,8 +110,6 @@ class FaceTimeActivity : Activity(), FaceTimeViewer {
 
     override fun onStop() {
         super.onStop()
-        onHungUpEvent.invoke()
-        onUIHungUp()
     }
 
     override fun finish() {
@@ -129,10 +120,43 @@ class FaceTimeActivity : Activity(), FaceTimeViewer {
     override fun onDestroy() {
         Debug.error()
         super.onDestroy()
+        onHungUpEvent.invoke()
+        onUIHungUp()
+
         Ring.stop()
         keepScreenOn(this, false)
         uiTimer.stop()
         FaceTime.destroy()
+    }
+
+
+    fun keepScreenOn(context: Context, on: Boolean) {
+        var pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val wakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP or PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "FaceTimeActivity.KeepScreenOn")
+        wakeLock.setReferenceCounted(false)
+        if (wakeLock != null)
+            if (on) {
+                wakeLock.acquire()
+            } else {
+                wakeLock.release()
+            }
+    }
+
+    private fun openKeyguard() {
+        window.addFlags(
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                        WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        try {
+            //打开锁屏
+            val keyguardManager = applicationContext.getSystemService(KEYGUARD_SERVICE) as KeyguardManager
+            val keyguardLock = keyguardManager.newKeyguardLock("unLock")
+            //解锁
+            keyguardLock.disableKeyguard()
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
     }
 
     companion object {
