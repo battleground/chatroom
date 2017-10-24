@@ -4,6 +4,8 @@ package com.facetime.mvp
 import android.content.Context
 import android.media.AudioManager
 import android.media.SoundPool
+import android.os.Handler
+import android.os.Message
 import com.abooc.im.LeanCloud
 import com.abooc.im.R
 import com.abooc.im.message.CallMessage
@@ -33,19 +35,41 @@ interface FaceTimeViewer {
 
     fun onUIHoldOn()
     fun onUIHungUp()
-
     fun onTick(seconds: Long, time: String)
+
+    fun onNoAnswer()
 
 }
 
 
 class FaceTimePresenter(val viewer: FaceTimeViewer) {
 
+    companion object {
+        val CALL_CONNECTING = 1
+        val CALL_WAITING = 2
+        val CALL_NO_ANSWER = 3
+        val CALL_HUNG_UP = 4
+
+        val MESSAGE_HUNG_UP = 0
+        val HUNG_UP_TIME_DELAY_MILLIS = 60 * 1000
+    }
+
+    inner class NoAnswerTimer : Handler() {
+
+        override fun handleMessage(msg: Message) {
+            Debug.error()
+            viewer.onNoAnswer()
+        }
+
+    }
+
+    val hungUpTimer = NoAnswerTimer()
+
     var uid: String? = null
     val mSender = Sender()
     var iReceiver: Receiver? = null
 
-    var isConnected = false
+    var callStatus = CALL_WAITING
 
     init {
     }
@@ -63,11 +87,37 @@ class FaceTimePresenter(val viewer: FaceTimeViewer) {
             Debug.error(uid)
             mSender.hungUp(uid!!)
         }
+        hungUpTimer.sendEmptyMessageDelayed(MESSAGE_HUNG_UP, (HUNG_UP_TIME_DELAY_MILLIS).toLong())
+    }
+
+    /**
+     * 呼叫等待接听中...
+     */
+    fun isWaiting(): Boolean {
+        return callStatus == CALL_WAITING
+    }
+
+    /**
+     * 通话中...
+     */
+    fun isConnecting(): Boolean {
+        return callStatus == CALL_CONNECTING
+    }
+
+    fun hungUp() {
+        callStatus = CALL_HUNG_UP
+        hungUpTimer.removeMessages(MESSAGE_HUNG_UP)
+    }
+
+    fun holdOn() {
+        callStatus = CALL_CONNECTING
+        hungUpTimer.removeMessages(MESSAGE_HUNG_UP)
     }
 
     fun destroy() {
+        callStatus = CALL_WAITING
+        hungUpTimer.removeMessages(MESSAGE_HUNG_UP)
         iReceiver?.destroy()
-        isConnected = false
     }
 
     class CustomMessageHandler(val viewer: FaceTimeViewer) : AVIMMessageHandler() {
@@ -171,7 +221,6 @@ class Sender {
         mClient.getOnlineClients(Arrays.asList(to), object : AVIMOnlineClientsCallback() {
             override fun done(list: List<String>, e: AVIMException?) {
                 if (e == null) {
-                    Debug.error("在线成员：" + ToString.toString(list))
                     val message = CallMessage()
                     message.text = "你有未接来电！"
                     message.c_Title = "挂断"

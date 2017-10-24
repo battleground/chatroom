@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- START 小米 -->
@@ -79,6 +80,8 @@
         <activity
             android:name="com.facetime.FaceTimeActivity"
             android:label="来电接听"
+            android:launchMode="singleTask"
+            android:parentActivityName="com.facetime.CallOutActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
 

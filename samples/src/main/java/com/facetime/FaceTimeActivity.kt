@@ -1,13 +1,13 @@
 package com.facetime
 
-import android.app.Activity
-import android.app.KeyguardManager
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.os.Message
 import android.os.PowerManager
+import android.support.v4.app.TaskStackBuilder
+import android.support.v7.app.NotificationCompat
 import android.view.View
 import android.view.WindowManager
 import com.abooc.im.R
@@ -27,39 +27,26 @@ import kotlinx.android.synthetic.main.activity_face_time.*
  */
 class FaceTimeActivity : Activity(), FaceTimeViewer {
 
-    inner class TimerDown : Handler() {
-        override fun handleMessage(msg: Message) {
-            if (!FaceTime.isConnected) {
-                CallOutActivity.show(applicationContext)
-                this@FaceTimeActivity.finish()
-            }
-        }
-    }
-
-    val iTimerDown = TimerDown()
-
     val FaceTime = FaceTimePresenter(this)
     val Ring = Ring(this)
-    var uiTimer = UITimer(this)
+    var durationTimer = DurationTimer(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out)
 
         setContentView(R.layout.activity_face_time)
-        val action = intent.getIntExtra("action", CallMessage.ACTION_HANG_UP)
+        val action = intent.getIntExtra(INTENT_KEY_ACTION, CallMessage.ACTION_HANG_UP)
         if (action == CallMessage.ACTION_HANG_UP) {
             holdOn.visibility = View.GONE
         }
 
-        FaceTime.onCreate()
-
-        val who = intent.getStringExtra("uid")
+        val who = intent.getStringExtra(INTENT_KEY_UID)
         FaceTime.uid = who
         uidText.text = "+$who"
 
+        FaceTime.onCreate()
         Ring.load()
-        iTimerDown.sendEmptyMessageDelayed(0, (60 * 1000).toLong())
 
         keepScreenOn(this, true)
         openKeyguard()
@@ -72,6 +59,13 @@ class FaceTimeActivity : Activity(), FaceTimeViewer {
 
     override fun onTick(seconds: Long, time: String) {
         timeText.text = time
+    }
+
+    override fun onNoAnswer() {
+        stopCall()
+
+        CallOutActivity.show(applicationContext)
+        this@FaceTimeActivity.finish()
     }
 
     var onHoldOnEvent: ((View) -> Unit) = {}
@@ -88,17 +82,21 @@ class FaceTimeActivity : Activity(), FaceTimeViewer {
     }
 
     override fun onUIHoldOn() {
-        FaceTime.isConnected = true
+        FaceTime.holdOn()
         holdOn.visibility = View.GONE
-        uiTimer.start()
+        durationTimer.start()
         Ring.stop()
     }
 
     override fun onUIHungUp() {
-        FaceTime.isConnected = false
+        FaceTime.hungUp()
+        stopCall()
+    }
+
+    fun stopCall() {
         hungUp.isEnabled = false
         holdOn.isEnabled = false
-        uiTimer.stop()
+        durationTimer.stop()
         timeText.text = "结束通话"
         Handler().postDelayed({ finish() }, 1000)
     }
@@ -106,10 +104,6 @@ class FaceTimeActivity : Activity(), FaceTimeViewer {
 
     override fun onBackPressed() {
 
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 
     override fun finish() {
@@ -120,12 +114,11 @@ class FaceTimeActivity : Activity(), FaceTimeViewer {
     override fun onDestroy() {
         Debug.error()
         super.onDestroy()
-        onHungUpEvent.invoke()
-        onUIHungUp()
+//        onHungUpEvent.invoke()
+//        onUIHungUp()
 
         Ring.stop()
         keepScreenOn(this, false)
-        uiTimer.stop()
         FaceTime.destroy()
     }
 
@@ -161,6 +154,9 @@ class FaceTimeActivity : Activity(), FaceTimeViewer {
 
     companion object {
 
+        val INTENT_KEY_ACTION = "action"
+        val INTENT_KEY_UID = "uid"
+
         /**
          * 显示电话接听页面
 
@@ -169,10 +165,64 @@ class FaceTimeActivity : Activity(), FaceTimeViewer {
         fun show(ctx: Context, uid: String, action: Int) {
             val intent = Intent(ctx, FaceTimeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            intent.putExtra("uid", uid)
-            intent.putExtra("action", action)
+            intent.putExtra(INTENT_KEY_UID, uid)
+            intent.putExtra(INTENT_KEY_ACTION, action)
             ctx.startActivity(intent)
         }
+    }
+
+    override fun onStart() {
+        Debug.error("noti-cancel()")
+        super.onStart()
+        cancel()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (FaceTime.isWaiting()
+                || FaceTime.isConnecting()) {
+            show()
+        }
+    }
+
+
+    var idNotification = 0x111
+    fun show() {
+        Debug.error("noti-show()")
+        val mBuilder = NotificationCompat.Builder(this)
+                .setSmallIcon(android.R.drawable.ic_menu_call)
+                .setContentTitle("正在通话...")
+                .setContentText("与【${FaceTime.uid}】正在进行视频通话")
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+
+        // Creates an explicit intent for an Activity in your app
+//        val resultIntent = Intent(this, FaceTimeActivity::class.java)
+        intent.setClass(this, FaceTimeActivity::class.java)
+        val resultIntent = intent
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        val stackBuilder = TaskStackBuilder.create(this)
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(FaceTimeActivity::class.java)
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent)
+        val resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+        mBuilder.setContentIntent(resultPendingIntent)
+        val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        val notification = mBuilder.build()
+        notification.flags = Notification.FLAG_AUTO_CANCEL or Notification.FLAG_NO_CLEAR
+//        notification.sound = Uri.parse("android_asset:///phonering.mp3")
+        // mId allows you to update the notification later on.
+        mNotificationManager.notify(idNotification, notification)
+    }
+
+    fun cancel() {
+        val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        mNotificationManager.cancel(idNotification)
     }
 
 }

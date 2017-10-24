@@ -5,7 +5,10 @@ import android.os.Message
 import com.abooc.util.Debug
 import com.facetime.mvp.FaceTimeViewer
 
-class UITimer(val viewer: FaceTimeViewer) : Handler() {
+/**
+ * 通话时长
+ */
+class DurationTimer(val viewer: FaceTimeViewer) : Handler() {
 
     var time = 0L
     var run = true

@@ -64,7 +64,7 @@ public class X extends Activity {
     protected void onResume() {
         super.onResume();
 
-        clear();
+//        clear();
     }
 
     void clear() {
